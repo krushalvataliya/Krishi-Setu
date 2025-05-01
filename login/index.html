@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login - Krishi Setu Admin Panel</title>
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script>tailwind.config={theme:{extend:{colors:{primary:'#2c6e31',secondary:'#f0f4e8'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+<style>
+:where([class^="ri-"])::before { content: "\f3c2"; }
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #d1d5db;
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+}
+input[type="checkbox"]:checked {
+  background-color: #2c6e31;
+  border-color: #2c6e31;
+}
+input[type="checkbox"]:checked::after {
+  content: "";
+  position: absolute;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  top: 1px;
+  left: 5px;
+  transform: rotate(45deg);
+}
+</style>
+</head>
+<body class="bg-gray-50">
+<div class="w-full max-w-md mx-auto p-6">
+  <div class="text-center mb-8">
+    <div class="inline-flex items-center justify-center mb-4">
+      <div class="w-12 h-12 rounded-full bg-primary flex items-center justify-center mr-3">
+        <span class="font-['Pacifico'] text-white text-xl">logo</span>
+      </div>
+    </div>
+    <h1 class="text-2xl font-bold text-gray-800">Welcome to Krishi Setu</h1>
+    <p class="text-gray-600 mt-2">Login to manage your agricultural marketplace</p>
+  </div>
+  
+  <div class="bg-white rounded-lg shadow-lg p-8">
+    <div id="error-message" class="hidden mb-4 p-3 bg-red-50 text-red-600 text-sm rounded-md"></div>
+    
+    <form id="login-form">
+      <div class="mb-6">
+        <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email or Username</label>
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <div class="w-5 h-5 flex items-center justify-center">
+              <i class="ri-user-line text-gray-400"></i>
+            </div>
+          </div>
+          <input type="text" id="email" name="email" class="pl-10 w-full h-12 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 outline-none px-4" placeholder="Enter your email or username">
+        </div>
+      </div>
+      
+      <div class="mb-6">
+        <div class="flex justify-between mb-2">
+          <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+          <a href="#" class="text-sm text-primary hover:text-primary/80">Forgot password?</a>
+        </div>
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <div class="w-5 h-5 flex items-center justify-center">
+              <i class="ri-lock-line text-gray-400"></i>
+            </div>
+          </div>
+          <input type="password" id="password" name="password" class="pl-10 w-full h-12 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 outline-none px-4" placeholder="Enter your password">
+          <div class="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer" id="toggle-password">
+            <div class="w-5 h-5 flex items-center justify-center">
+              <i class="ri-eye-off-line text-gray-400" id="password-icon"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="flex items-center justify-between mb-6">
+        <div class="flex items-center">
+          <input type="checkbox" id="remember" name="remember" class="mr-2">
+          <label for="remember" class="text-sm text-gray-700">Remember me</label>
+        </div>
+      </div>
+      
+      <button type="submit" id="login-button" class="w-full bg-primary hover:bg-primary/90 text-white py-3 rounded-button font-medium transition-colors flex items-center justify-center whitespace-nowrap">
+        <span id="login-text">Login</span>
+        <div id="login-spinner" class="hidden w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin ml-2"></div>
+      </button>
+    </form>
+    
+    <div class="mt-6 text-center">
+      <a href="https://readdy.ai/home/6be06d49-0367-45b4-a145-f9a00824ed8a/b17fac50-6c73-4de6-806b-67ea8986e3ae" data-readdy="true" class="text-primary hover:text-primary/80 font-medium">Return to Dashboard</a>
+    </div>
+  </div>
+  
+  <div class="mt-8 text-center">
+    <p class="text-gray-600 text-sm">© 2025 Krishi Setu. All rights reserved.</p>
+    <div class="flex justify-center mt-3 space-x-4">
+      <a href="#" class="text-gray-500 hover:text-gray-700">
+        <div class="w-5 h-5 flex items-center justify-center">
+          <i class="ri-global-line"></i>
+        </div>
+      </a>
+      <a href="#" class="text-gray-500 hover:text-gray-700">
+        <div class="w-5 h-5 flex items-center justify-center">
+          <i class="ri-twitter-x-line"></i>
+        </div>
+      </a>
+      <a href="#" class="text-gray-500 hover:text-gray-700">
+        <div class="w-5 h-5 flex items-center justify-center">
+          <i class="ri-instagram-line"></i>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const loginForm = document.getElementById('login-form');
+  const loginButton = document.getElementById('login-button');
+  const loginText = document.getElementById('login-text');
+  const loginSpinner = document.getElementById('login-spinner');
+  const errorMessage = document.getElementById('error-message');
+  const togglePassword = document.getElementById('toggle-password');
+  const passwordInput = document.getElementById('password');
+  const passwordIcon = document.getElementById('password-icon');
+  
+  togglePassword.addEventListener('click', function() {
+    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+    passwordInput.setAttribute('type', type);
+    
+    if (type === 'text') {
+      passwordIcon.classList.remove('ri-eye-off-line');
+      passwordIcon.classList.add('ri-eye-line');
+    } else {
+      passwordIcon.classList.remove('ri-eye-line');
+      passwordIcon.classList.add('ri-eye-off-line');
+    }
+  });
+  
+  loginForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    
+    if (!email || !password) {
+      errorMessage.textContent = 'Please enter both email and password';
+      errorMessage.classList.remove('hidden');
+      return;
+    }
+    
+    loginText.classList.add('hidden');
+    loginSpinner.classList.remove('hidden');
+    loginButton.disabled = true;
+    
+    setTimeout(function() {
+      window.location.href = 'https://readdy.ai/home/6be06d49-0367-45b4-a145-f9a00824ed8a/b17fac50-6c73-4de6-806b-67ea8986e3ae';
+    }, 1500);
+  });
+});
+</script>
+</body>
+</html>

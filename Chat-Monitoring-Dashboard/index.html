@@ -1,0 +1,2015 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Monitoring - Krishi Setu Admin Panel</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config = { theme: { extend: { colors: { primary: '#2C5F2D', secondary: '#8B4513' }, borderRadius: { 'none': '0px', 'sm': '4px', DEFAULT: '8px', 'md': '12px', 'lg': '16px', 'xl': '20px', '2xl': '24px', '3xl': '32px', 'full': '9999px', 'button': '8px' } } } }</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <style>
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 8px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #a1a1a1;
+        }
+
+        .custom-checkbox {
+            position: relative;
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #d1d5db;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .custom-checkbox.checked {
+            background-color: #2C5F2D;
+            border-color: #2C5F2D;
+        }
+
+        .custom-checkbox.checked::after {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 2px;
+            width: 5px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        .custom-switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 22px;
+        }
+
+        .custom-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .switch-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #e5e7eb;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .switch-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 2px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.switch-slider {
+            background-color: #2C5F2D;
+        }
+
+        input:checked+.switch-slider:before {
+            transform: translateX(20px);
+        }
+
+        .message-bubble {
+            position: relative;
+            max-width: 80%;
+            padding: 10px 14px;
+            margin-bottom: 8px;
+            border-radius: 16px;
+        }
+
+        .message-bubble.sent {
+            background-color: #e9f5e9;
+            margin-left: auto;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message-bubble.received {
+            background-color: #f3f4f6;
+            margin-right: auto;
+            border-bottom-left-radius: 4px;
+        }
+
+        .tab-active {
+            color: #2C5F2D;
+            border-bottom: 2px solid #2C5F2D;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <div id="sidebar"
+            class="bg-primary text-white w-64 flex-shrink-0 transition-all duration-300 z-20 h-full fixed lg:relative">
+            <div class="p-4 flex items-center border-b border-white/10">
+                <div class="w-10 h-10 flex items-center justify-center bg-white rounded-full mr-3">
+                    <span class="font-['Pacifico'] text-primary text-lg">logo</span>
+                </div>
+                <h1 class="text-xl font-semibold">Krishi Setu</h1>
+            </div>
+
+            <nav class="py-4 custom-scrollbar overflow-y-auto h-[calc(100%-64px)]">
+                <ul>
+                    <li class="mb-1">
+                        <a href="/krishi-setu"
+                            class="flex items-center py-2 px-4 text-white/80 hover:bg-white/10 rounded-md mx-2 transition">
+                            <div class="w-6 h-6 flex items-center justify-center mr-3">
+                                <i class="ri-dashboard-line"></i>
+                            </div>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="mb-1">
+                        <a href="/krishi-setu/User-Management"
+                            class="flex items-center py-2 px-4 text-white/80 hover:bg-white/10 rounded-md mx-2 transition">
+                            <div class="w-6 h-6 flex items-center justify-center mr-3">
+                                <i class="ri-user-line"></i>
+                            </div>
+                            <span>User Management</span>
+                        </a>
+                    </li>
+                    <li class="mb-1">
+                        <a href="/krishi-setu/Product-Listing-Moderation"
+                            class="flex items-center py-2 px-4 text-white/80 hover:bg-white/10 rounded-md mx-2 transition">
+                            <div class="w-6 h-6 flex items-center justify-center mr-3">
+                                <i class="ri-store-line"></i>
+                            </div>
+                            <span>Listing Moderation</span>
+                        </a>
+                    </li>
+                    <li class="mb-1">
+                        <a href="/krishi-setu/Chat-Monitoring-Dashboard"
+                            class="flex items-center py-2 px-4 text-white  bg-white/10 rounded-md mx-2">
+                            <div class="w-6 h-6 flex items-center justify-center mr-3">
+                                <i class="ri-chat-3-line"></i>
+                            </div>
+                            <span>Chat Monitoring</span>
+                        </a>
+                    </li>
+                    <li class="mb-1">
+                        <a href="/krishi-setu/Reports"
+                            class="flex items-center py-2 px-4 text-white/80 hover:bg-white/10 rounded-md mx-2 transition">
+                            <div class="w-6 h-6 flex items-center justify-center mr-3">
+                                <i class="ri-bar-chart-line"></i>
+                            </div>
+                            <span>Analytics & Reports</span>
+                        </a>
+                    </li>
+                    <li class="mb-1">
+                        <a href="/krishi-setu/Settings-Configuration"
+                            class="flex items-center py-2 px-4 text-white/80 hover:bg-white/10 rounded-md mx-2 transition">
+                            <div class="w-6 h-6 flex items-center justify-center mr-3">
+                                <i class="ri-settings-line"></i>
+                            </div>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                </ul>
+                <div class="mt-8 px-4">
+                    <div class="bg-white/10 rounded-lg p-4">
+                        <h3 class="text-sm font-medium mb-2">System Status</h3>
+                        <div class="mb-2">
+                            <div class="flex justify-between text-xs mb-1">
+                                <span>API Uptime</span>
+                                <span>99.8%</span>
+                            </div>
+                            <div class="h-1.5 bg-white/20 rounded-full overflow-hidden">
+                                <div class="h-full bg-green-400 rounded-full" style="width: 99.8%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs mb-1">
+                                <span>Error Rate</span>
+                                <span>0.2%</span>
+                            </div>
+                            <div class="h-1.5 bg-white/20 rounded-full overflow-hidden">
+                                <div class="h-full bg-red-400 rounded-full" style="width: 0.2%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <!--  <nav class="py-4 custom-scrollbar overflow-y-auto h-[calc(100%-64px)]">
+            <ul>
+                <li class="mb-1">
+                    <a href="https://readdy.ai/home/aeb81bd4-96f3-4a80-8d50-179641ad53d2/e6d63a3f-e23e-46f5-813f-620a591c48f1" data-readdy="true" class="flex items-center py-2 px-4 text-white/80 hover:bg-white/10 rounded-md mx-2 transition">
+                        <div class="w-6 h-6 flex items-center justify-center mr-3">
+                            <i class="ri-dashboard-line"></i>
+                        </div>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="mb-1">
+                    <a href="#" class="flex items-center py-2 px-4 text-white/80 hover:bg-white/10 rounded-md mx-2 transition">
+                        <div class="w-6 h-6 flex items-center justify-center mr-3">
+                            <i class="ri-user-line"></i>
+                        </div>
+                        <span>User Management</span>
+                    </a>
+                </li>
+                <li class="mb-1">
+                    <a href="https://readdy.ai/home/aeb81bd4-96f3-4a80-8d50-179641ad53d2/f294afc0-9bcd-48c6-98d4-3779cb16e0fb" data-readdy="true" class="flex items-center py-2 px-4 text-white/80 hover:bg-white/10 rounded-md mx-2 transition">
+                        <div class="w-6 h-6 flex items-center justify-center mr-3">
+                            <i class="ri-store-line"></i>
+                        </div>
+                        <span>Listing Moderation</span>
+                    </a>
+                </li>
+                <li class="mb-1">
+                    <a href="https://readdy.ai/home/aeb81bd4-96f3-4a80-8d50-179641ad53d2/f294afc0-9bcd-48c6-98d4-3779cb16e0fb" data-readdy="true" class="flex items-center py-2 px-4 text-white bg-white/10 rounded-md mx-2">
+                        <div class="w-6 h-6 flex items-center justify-center mr-3">
+                            <i class="ri-chat-3-line"></i>
+                        </div>
+                        <span>Chat Monitoring</span>
+                    </a>
+                </li>
+                <li class="mb-1">
+                    <a href="#" class="flex items-center py-2 px-4 text-white/80 hover:bg-white/10 rounded-md mx-2 transition">
+                        <div class="w-6 h-6 flex items-center justify-center mr-3">
+                            <i class="ri-bar-chart-line"></i>
+                        </div>
+                        <span>Analytics & Reports</span>
+                    </a>
+                </li>
+                <li class="mb-1">
+                    <a href="#" class="flex items-center py-2 px-4 text-white/80 hover:bg-white/10 rounded-md mx-2 transition">
+                        <div class="w-6 h-6 flex items-center justify-center mr-3">
+                            <i class="ri-settings-line"></i>
+                        </div>
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="mt-8 px-4">
+                <div class="bg-white/10 rounded-lg p-4">
+                    <h3 class="text-sm font-medium mb-2">System Status</h3>
+                    <div class="mb-2">
+                        <div class="flex justify-between text-xs mb-1">
+                            <span>API Uptime</span>
+                            <span>99.8%</span>
+                        </div>
+                        <div class="h-1.5 bg-white/20 rounded-full overflow-hidden">
+                            <div class="h-full bg-green-400 rounded-full" style="width: 99.8%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-xs mb-1">
+                            <span>Error Rate</span>
+                            <span>0.2%</span>
+                        </div>
+                        <div class="h-1.5 bg-white/20 rounded-full overflow-hidden">
+                            <div class="h-full bg-red-400 rounded-full" style="width: 0.2%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav> -->
+        </div>
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- Header -->
+            <header class="bg-white border-b border-gray-200 shadow-sm z-10">
+                <div class="flex items-center justify-between px-4 py-3">
+                    <div class="flex items-center lg:hidden">
+                        <button id="sidebar-toggle" class="text-gray-600 focus:outline-none !rounded-button">
+                            <div class="w-6 h-6 flex items-center justify-center">
+                                <i class="ri-menu-line"></i>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="flex-1 mx-4 lg:max-w-md">
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                    <i class="ri-search-line"></i>
+                                </div>
+                            </div>
+                            <input type="text"
+                                class="w-full bg-gray-100 border-none pl-10 pr-4 py-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+                                placeholder="Search conversations...">
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <button class="relative text-gray-600 hover:text-gray-800 !rounded-button">
+                            <div class="w-6 h-6 flex items-center justify-center">
+                                <i class="ri-notification-3-line"></i>
+                            </div>
+                            <span class="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
+                        </button>
+                        <div class="relative">
+                            <button id="profile-menu-button"
+                                class="flex items-center space-x-2 focus:outline-none !rounded-button">
+                                <div
+                                    class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+                                    <div class="w-5 h-5 flex items-center justify-center text-gray-600">
+                                        <i class="ri-user-line"></i>
+                                    </div>
+                                </div>
+                                <span class="text-sm font-medium text-gray-700 hidden md:block">Admin User</span>
+                                <div class="w-5 h-5 flex items-center justify-center text-gray-600">
+                                    <i class="ri-arrow-down-s-line"></i>
+                                </div>
+                            </button>
+                            <div id="profile-dropdown"
+                                class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-1 z-20 hidden">
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                                <div class="border-t border-gray-100"></div>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <!-- Main Content Area -->
+            <main class="flex-1 overflow-y-auto custom-scrollbar bg-gray-50 p-4 lg:p-6">
+                <div class="max-w-7xl mx-auto">
+                    <!-- Breadcrumb -->
+                    <div class="flex items-center text-sm text-gray-500 mb-4">
+                        <a href="https://readdy.ai/home/aeb81bd4-96f3-4a80-8d50-179641ad53d2/e6d63a3f-e23e-46f5-813f-620a591c48f1"
+                            data-readdy="true" class="hover:text-primary">Dashboard</a>
+                        <div class="w-4 h-4 flex items-center justify-center mx-1">
+                            <i class="ri-arrow-right-s-line"></i>
+                        </div>
+                        <span class="text-gray-700 font-medium">Chat Monitoring</span>
+                    </div>
+                    <!-- Page Header -->
+                    <div class="flex flex-col md:flex-row md:items-center justify-between mb-6">
+                        <div>
+                            <h1 class="text-2xl font-bold text-gray-800">Chat Monitoring</h1>
+                            <p class="text-gray-600 mt-1">Monitor and moderate user conversations on the Krishi Setu
+                                platform</p>
+                        </div>
+                        <div class="mt-4 md:mt-0 flex space-x-3">
+                            <button id="export-chats-btn"
+                                class="flex items-center px-4 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap">
+                                <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                    <i class="ri-download-line"></i>
+                                </div>
+                                Export Data
+                            </button>
+                            <button id="chat-settings-btn"
+                                class="flex items-center px-4 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-primary/90 whitespace-nowrap">
+                                <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                    <i class="ri-settings-3-line"></i>
+                                </div>
+                                Moderation Settings
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Filters and Search -->
+                    <div class="bg-white rounded-lg shadow-sm p-4 mb-6">
+                        <div class="flex flex-wrap items-center justify-between gap-4">
+                            <!-- Status Filter Tabs -->
+                            <div class="flex space-x-1 bg-gray-100 p-1 rounded-full">
+                                <button
+                                    class="px-4 py-1.5 bg-white text-primary rounded-full text-sm font-medium shadow-sm whitespace-nowrap">All
+                                    Chats</button>
+                                <button
+                                    class="px-4 py-1.5 text-gray-700 rounded-full text-sm font-medium whitespace-nowrap hover:bg-gray-50">Active</button>
+                                <button
+                                    class="px-4 py-1.5 text-gray-700 rounded-full text-sm font-medium whitespace-nowrap hover:bg-gray-50">Flagged</button>
+                                <button
+                                    class="px-4 py-1.5 text-gray-700 rounded-full text-sm font-medium whitespace-nowrap hover:bg-gray-50">Resolved</button>
+                            </div>
+                            <!-- Advanced Filters -->
+                            <div class="flex flex-wrap items-center gap-3">
+                                <div class="relative">
+                                    <button id="date-filter-btn"
+                                        class="flex items-center px-3 py-1.5 bg-gray-100 rounded-lg text-sm text-gray-700 hover:bg-gray-200 whitespace-nowrap">
+                                        <span>Date Range</span>
+                                        <div class="w-4 h-4 flex items-center justify-center ml-2">
+                                            <i class="ri-arrow-down-s-line"></i>
+                                        </div>
+                                    </button>
+                                    <div id="date-dropdown"
+                                        class="absolute z-10 mt-1 w-64 bg-white rounded-lg shadow-lg p-3 hidden">
+                                        <div class="grid grid-cols-2 gap-2">
+                                            <div>
+                                                <label class="text-xs text-gray-500 mb-1 block">From</label>
+                                                <input type="date"
+                                                    class="w-full text-sm border border-gray-300 rounded p-1.5">
+                                            </div>
+                                            <div>
+                                                <label class="text-xs text-gray-500 mb-1 block">To</label>
+                                                <input type="date"
+                                                    class="w-full text-sm border border-gray-300 rounded p-1.5">
+                                            </div>
+                                        </div>
+                                        <button
+                                            class="w-full mt-2 px-3 py-1.5 bg-primary text-white rounded text-sm font-medium !rounded-button">Apply</button>
+                                    </div>
+                                </div>
+                                <div class="relative">
+                                    <button id="keywords-filter-btn"
+                                        class="flex items-center px-3 py-1.5 bg-gray-100 rounded-lg text-sm text-gray-700 hover:bg-gray-200 whitespace-nowrap">
+                                        <span>Keywords</span>
+                                        <div class="w-4 h-4 flex items-center justify-center ml-2">
+                                            <i class="ri-arrow-down-s-line"></i>
+                                        </div>
+                                    </button>
+                                    <div id="keywords-dropdown"
+                                        class="absolute z-10 mt-1 w-64 bg-white rounded-lg shadow-lg p-3 hidden">
+                                        <input type="text"
+                                            class="w-full text-sm border border-gray-300 rounded p-1.5 mb-2"
+                                            placeholder="Add keyword and press Enter">
+                                        <div class="flex flex-wrap gap-2 mb-2">
+                                            <div class="flex items-center bg-gray-100 rounded-full px-2 py-1">
+                                                <span class="text-xs text-gray-700">pricing</span>
+                                                <button class="ml-1 text-gray-400 hover:text-gray-600">
+                                                    <div class="w-3 h-3 flex items-center justify-center">
+                                                        <i class="ri-close-line"></i>
+                                                    </div>
+                                                </button>
+                                            </div>
+                                            <div class="flex items-center bg-gray-100 rounded-full px-2 py-1">
+                                                <span class="text-xs text-gray-700">dispute</span>
+                                                <button class="ml-1 text-gray-400 hover:text-gray-600">
+                                                    <div class="w-3 h-3 flex items-center justify-center">
+                                                        <i class="ri-close-line"></i>
+                                                    </div>
+                                                </button>
+                                            </div>
+                                            <div class="flex items-center bg-gray-100 rounded-full px-2 py-1">
+                                                <span class="text-xs text-gray-700">complaint</span>
+                                                <button class="ml-1 text-gray-400 hover:text-gray-600">
+                                                    <div class="w-3 h-3 flex items-center justify-center">
+                                                        <i class="ri-close-line"></i>
+                                                    </div>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <button
+                                            class="w-full mt-2 px-3 py-1.5 bg-primary text-white rounded text-sm font-medium !rounded-button">Apply</button>
+                                    </div>
+                                </div>
+                                <div class="relative">
+                                    <button id="participants-filter-btn"
+                                        class="flex items-center px-3 py-1.5 bg-gray-100 rounded-lg text-sm text-gray-700 hover:bg-gray-200 whitespace-nowrap">
+                                        <span>Participants</span>
+                                        <div class="w-4 h-4 flex items-center justify-center ml-2">
+                                            <i class="ri-arrow-down-s-line"></i>
+                                        </div>
+                                    </button>
+                                    <div id="participants-dropdown"
+                                        class="absolute z-10 mt-1 w-64 bg-white rounded-lg shadow-lg p-3 hidden">
+                                        <input type="text"
+                                            class="w-full text-sm border border-gray-300 rounded p-1.5 mb-2"
+                                            placeholder="Search users">
+                                        <div class="max-h-40 overflow-y-auto custom-scrollbar mb-2">
+                                            <div class="flex items-center mb-2">
+                                                <div class="custom-checkbox" id="user-rajesh"></div>
+                                                <label for="user-rajesh"
+                                                    class="ml-2 text-sm text-gray-700 cursor-pointer">Rajesh
+                                                    Kumar</label>
+                                            </div>
+                                            <div class="flex items-center mb-2">
+                                                <div class="custom-checkbox" id="user-priya"></div>
+                                                <label for="user-priya"
+                                                    class="ml-2 text-sm text-gray-700 cursor-pointer">Priya
+                                                    Gupta</label>
+                                            </div>
+                                            <div class="flex items-center mb-2">
+                                                <div class="custom-checkbox" id="user-amit"></div>
+                                                <label for="user-amit"
+                                                    class="ml-2 text-sm text-gray-700 cursor-pointer">Amit Singh</label>
+                                            </div>
+                                            <div class="flex items-center mb-2">
+                                                <div class="custom-checkbox" id="user-sunita"></div>
+                                                <label for="user-sunita"
+                                                    class="ml-2 text-sm text-gray-700 cursor-pointer">Sunita
+                                                    Patel</label>
+                                            </div>
+                                            <div class="flex items-center">
+                                                <div class="custom-checkbox" id="user-mohan"></div>
+                                                <label for="user-mohan"
+                                                    class="ml-2 text-sm text-gray-700 cursor-pointer">Mohan
+                                                    Reddy</label>
+                                            </div>
+                                        </div>
+                                        <button
+                                            class="w-full mt-2 px-3 py-1.5 bg-primary text-white rounded text-sm font-medium !rounded-button">Apply</button>
+                                    </div>
+                                </div>
+                                <!-- Sort Dropdown -->
+                                <div class="relative">
+                                    <button id="sort-btn"
+                                        class="flex items-center px-3 py-1.5 bg-gray-100 rounded-lg text-sm text-gray-700 hover:bg-gray-200 whitespace-nowrap">
+                                        <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                            <i class="ri-sort-asc"></i>
+                                        </div>
+                                        <span>Sort By</span>
+                                    </button>
+                                    <div id="sort-dropdown"
+                                        class="absolute right-0 z-10 mt-1 w-40 bg-white rounded-lg shadow-lg py-1 hidden">
+                                        <button
+                                            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Recent
+                                            Activity</button>
+                                        <button
+                                            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Oldest
+                                            First</button>
+                                        <button
+                                            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Most
+                                            Messages</button>
+                                        <button
+                                            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Most
+                                            Flagged</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Bulk Actions (Hidden by default) -->
+                    <div id="bulk-actions" class="bg-gray-100 rounded-lg p-3 mb-6 hidden">
+                        <div class="flex flex-wrap items-center justify-between gap-3">
+                            <div class="flex items-center">
+                                <span class="text-sm font-medium text-gray-700 mr-2">3 conversations selected</span>
+                                <button class="text-sm text-primary hover:underline">Clear selection</button>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <button
+                                    class="px-3 py-1.5 bg-yellow-500 text-white rounded-button text-sm font-medium hover:bg-yellow-600 whitespace-nowrap">
+                                    <div class="w-4 h-4 flex items-center justify-center mr-1 inline-block">
+                                        <i class="ri-flag-line"></i>
+                                    </div>
+                                    Flag Selected
+                                </button>
+                                <button
+                                    class="px-3 py-1.5 bg-blue-500 text-white rounded-button text-sm font-medium hover:bg-blue-600 whitespace-nowrap">
+                                    <div class="w-4 h-4 flex items-center justify-center mr-1 inline-block">
+                                        <i class="ri-mail-send-line"></i>
+                                    </div>
+                                    Send Warning
+                                </button>
+                                <button
+                                    class="px-3 py-1.5 bg-red-500 text-white rounded-button text-sm font-medium hover:bg-red-600 whitespace-nowrap">
+                                    <div class="w-4 h-4 flex items-center justify-center mr-1 inline-block">
+                                        <i class="ri-lock-line"></i>
+                                    </div>
+                                    Block Conversations
+                                </button>
+                                <button
+                                    class="px-3 py-1.5 bg-green-500 text-white rounded-button text-sm font-medium hover:bg-green-600 whitespace-nowrap">
+                                    <div class="w-4 h-4 flex items-center justify-center mr-1 inline-block">
+                                        <i class="ri-check-line"></i>
+                                    </div>
+                                    Mark as Resolved
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Chat Conversations Table -->
+                    <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-6">
+                        <div class="overflow-x-auto">
+                            <table class="w-full">
+                                <thead>
+                                    <tr
+                                        class="bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        <th class="px-4 py-3 w-10">
+                                            <div class="custom-checkbox" id="select-all-checkbox"></div>
+                                        </th>
+                                        <th class="px-4 py-3">Participants</th>
+                                        <th class="px-4 py-3">Last Message</th>
+                                        <th class="px-4 py-3">Status</th>
+                                        <th class="px-4 py-3">Last Activity</th>
+                                        <th class="px-4 py-3 text-right">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-100">
+                                    <!-- Conversation Row 1 -->
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-4 py-3">
+                                            <div class="custom-checkbox conversation-checkbox"></div>
+                                        </td>
+                                        <td class="px-4 py-3">
+                                            <div class="flex items-center">
+                                                <div class="flex -space-x-2 mr-3">
+                                                    <div
+                                                        class="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center border-2 border-white">
+                                                        <span class="text-orange-600 font-medium text-xs">RK</span>
+                                                    </div>
+                                                    <div
+                                                        class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center border-2 border-white">
+                                                        <span class="text-blue-600 font-medium text-xs">SP</span>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <p class="text-sm font-medium text-gray-800">Rajesh Kumar & Sunil
+                                                        Patel</p>
+                                                    <p class="text-xs text-gray-500">Discussing tractor pricing</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-4 py-3">
+                                            <p class="text-sm text-gray-600 truncate max-w-xs">I can offer ₹360,000 for
+                                                the tractor, that's my final price.</p>
+                                        </td>
+                                        <td class="px-4 py-3">
+                                            <span
+                                                class="px-2 py-1 text-xs font-medium bg-yellow-100 text-yellow-800 rounded-full">Flagged</span>
+                                        </td>
+                                        <td class="px-4 py-3 text-sm text-gray-500">30 minutes ago</td>
+                                        <td class="px-4 py-3 text-right">
+                                            <div class="flex items-center justify-end space-x-2">
+                                                <button
+                                                    class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary hover:bg-gray-100 rounded-full !rounded-button"
+                                                    title="View Conversation" data-conversation-id="1">
+                                                    <i class="ri-eye-line"></i>
+                                                </button>
+                                                <button
+                                                    class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-yellow-600 hover:bg-gray-100 rounded-full !rounded-button"
+                                                    title="Flag Conversation">
+                                                    <i class="ri-flag-line"></i>
+                                                </button>
+                                                <button
+                                                    class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-red-600 hover:bg-gray-100 rounded-full !rounded-button"
+                                                    title="Block Conversation">
+                                                    <i class="ri-lock-line"></i>
+                                                </button>
+                                                <button
+                                                    class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-blue-600 hover:bg-gray-100 rounded-full !rounded-button"
+                                                    title="Send Warning">
+                                                    <i class="ri-mail-warning-line"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <!-- Conversation Row 2 -->
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-4 py-3">
+                                            <div class="custom-checkbox conversation-checkbox"></div>
+                                        </td>
+                                        <td class="px-4 py-3">
+                                            <div class="flex items-center">
+                                                <div class="flex -space-x-2 mr-3">
+                                                    <div
+                                                        class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center border-2 border-white">
+                                                        <span class="text-green-600 font-medium text-xs">AS</span>
+                                                    </div>
+                                                    <div
+                                                        class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center border-2 border-white">
+                                                        <span class="text-purple-600 font-medium text-xs">VJ</span>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <p class="text-sm font-medium text-gray-800">Amit Singh & Vidya
+                                                        Joshi</p>
+                                                    <p class="text-xs text-gray-500">Organic fertilizer inquiry</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-4 py-3">
+                                            <p class="text-sm text-gray-600 truncate max-w-xs">Yes, I can deliver 50kg
+                                                of vermicompost by next Tuesday. Would that work for you?</p>
+                                        </td>
+                                        <td class="px-4 py-3">
+                                            <span
+                                                class="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">Active</span>
+                                        </td>
+                                        <td class="px-4 py-3 text-sm text-gray-500">2 hours ago</td>
+                                        <td class="px-4 py-3 text-right">
+                                            <div class="flex items-center justify-end space-x-2">
+                                                <button
+                                                    class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary hover:bg-gray-100 rounded-full !rounded-button"
+                                                    title="View Conversation" data-conversation-id="2">
+                                                    <i class="ri-eye-line"></i>
+                                                </button>
+                                                <button
+                                                    class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-yellow-600 hover:bg-gray-100 rounded-full !rounded-button"
+                                                    title="Flag Conversation">
+                                                    <i class="ri-flag-line"></i>
+                                                </button>
+                                                <button
+                                                    class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-red-600 hover:bg-gray-100 rounded-full !rounded-button"
+                                                    title="Block Conversation">
+                                                    <i class="ri-lock-line"></i>
+                                                </button>
+                                                <button
+                                                    class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-blue-600 hover:bg-gray-100 rounded-full !rounded-button"
+                                                    title="Send Warning">
+                                                    <i class="ri-mail-warning-line"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <!-- Conversation Row 3 -->
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-4 py-3">
+                                            <div class="custom-checkbox conversation-checkbox"></div>
+                                        </td>
+                                        <td class="px-4 py-3">
+                                            <div class="flex items-center">
+                                                <div class="flex -space-x-2 mr-3">
+                                                    <div
+                                                        class="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center border-2 border-white">
+                                                        <span class="text-red-600 font-medium text-xs">MR</span>
+                                                    </div>
+                                                    <div
+                                                        class="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center border-2 border-white">
+                                                        <span class="text-yellow-600 font-medium text-xs">PG</span>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <p class="text-sm font-medium text-gray-800">Mohan Reddy & Priya
+                                                        Gupta</p>
+                                                    <p class="text-xs text-gray-500">Livestock purchase dispute</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-4 py-3">
+                                            <p class="text-sm text-gray-600 truncate max-w-xs">The cow you sold me is
+                                                not producing the amount of milk you promised. This is unacceptable!</p>
+                                        </td>
+                                        <td class="px-4 py-3">
+                                            <span
+                                                class="px-2 py-1 text-xs font-medium bg-red-100 text-red-800 rounded-full">Blocked</span>
+                                        </td>
+                                        <td class="px-4 py-3 text-sm text-gray-500">Yesterday</td>
+                                        <td class="px-4 py-3 text-right">
+                                            <div class="flex items-center justify-end space-x-2">
+                                                <button
+                                                    class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary hover:bg-gray-100 rounded-full !rounded-button"
+                                                    title="View Conversation" data-conversation-id="3">
+                                                    <i class="ri-eye-line"></i>
+                                                </button>
+                                                <button
+                                                    class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-green-600 hover:bg-gray-100 rounded-full !rounded-button"
+                                                    title="Unblock Conversation">
+                                                    <i class="ri-lock-unlock-line"></i>
+                                                </button>
+                                                <button
+                                                    class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-blue-600 hover:bg-gray-100 rounded-full !rounded-button"
+                                                    title="Send Warning">
+                                                    <i class="ri-mail-warning-line"></i>
+                                                </button>
+                                                <button
+                                                    class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-green-600 hover:bg-gray-100 rounded-full !rounded-button"
+                                                    title="Mark as Resolved">
+                                                    <i class="ri-check-double-line"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <!-- Conversation Row 4 -->
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-4 py-3">
+                                            <div class="custom-checkbox conversation-checkbox"></div>
+                                        </td>
+                                        <td class="px-4 py-3">
+                                            <div class="flex items-center">
+                                                <div class="flex -space-x-2 mr-3">
+                                                    <div
+                                                        class="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center border-2 border-white">
+                                                        <span class="text-indigo-600 font-medium text-xs">KP</span>
+                                                    </div>
+                                                    <div
+                                                        class="w-8 h-8 rounded-full bg-pink-100 flex items-center justify-center border-2 border-white">
+                                                        <span class="text-pink-600 font-medium text-xs">SM</span>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <p class="text-sm font-medium text-gray-800">Kiran Patil & Santosh
+                                                        Mehta</p>
+                                                    <p class="text-xs text-gray-500">Irrigation system installation</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-4 py-3">
+                                            <p class="text-sm text-gray-600 truncate max-w-xs">I'll come by tomorrow to
+                                                check the field and give you a proper installation quote.</p>
+                                        </td>
+                                        <td class="px-4 py-3">
+                                            <span
+                                                class="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">Active</span>
+                                        </td>
+                                        <td class="px-4 py-3 text-sm text-gray-500">Yesterday</td>
+                                        <td class="px-4 py-3 text-right">
+                                            <div class="flex items-center justify-end space-x-2">
+                                                <button
+                                                    class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary hover:bg-gray-100 rounded-full !rounded-button"
+                                                    title="View Conversation" data-conversation-id="4">
+                                                    <i class="ri-eye-line"></i>
+                                                </button>
+                                                <button
+                                                    class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-yellow-600 hover:bg-gray-100 rounded-full !rounded-button"
+                                                    title="Flag Conversation">
+                                                    <i class="ri-flag-line"></i>
+                                                </button>
+                                                <button
+                                                    class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-red-600 hover:bg-gray-100 rounded-full !rounded-button"
+                                                    title="Block Conversation">
+                                                    <i class="ri-lock-line"></i>
+                                                </button>
+                                                <button
+                                                    class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-blue-600 hover:bg-gray-100 rounded-full !rounded-button"
+                                                    title="Send Warning">
+                                                    <i class="ri-mail-warning-line"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <!-- Conversation Row 5 -->
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-4 py-3">
+                                            <div class="custom-checkbox conversation-checkbox"></div>
+                                        </td>
+                                        <td class="px-4 py-3">
+                                            <div class="flex items-center">
+                                                <div class="flex -space-x-2 mr-3">
+                                                    <div
+                                                        class="w-8 h-8 rounded-full bg-teal-100 flex items-center justify-center border-2 border-white">
+                                                        <span class="text-teal-600 font-medium text-xs">AN</span>
+                                                    </div>
+                                                    <div
+                                                        class="w-8 h-8 rounded-full bg-cyan-100 flex items-center justify-center border-2 border-white">
+                                                        <span class="text-cyan-600 font-medium text-xs">RV</span>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <p class="text-sm font-medium text-gray-800">Anita Nair & Rahul
+                                                        Verma</p>
+                                                    <p class="text-xs text-gray-500">Organic pesticide discussion</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-4 py-3">
+                                            <p class="text-sm text-gray-600 truncate max-w-xs">This neem pesticide has
+                                                worked wonders on my onion crop. Thank you for the recommendation!</p>
+                                        </td>
+                                        <td class="px-4 py-3">
+                                            <span
+                                                class="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full">Resolved</span>
+                                        </td>
+                                        <td class="px-4 py-3 text-sm text-gray-500">2 days ago</td>
+                                        <td class="px-4 py-3 text-right">
+                                            <div class="flex items-center justify-end space-x-2">
+                                                <button
+                                                    class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary hover:bg-gray-100 rounded-full !rounded-button"
+                                                    title="View Conversation" data-conversation-id="5">
+                                                    <i class="ri-eye-line"></i>
+                                                </button>
+                                                <button
+                                                    class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-yellow-600 hover:bg-gray-100 rounded-full !rounded-button"
+                                                    title="Flag Conversation">
+                                                    <i class="ri-flag-line"></i>
+                                                </button>
+                                                <button
+                                                    class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-green-600 hover:bg-gray-100 rounded-full !rounded-button"
+                                                    title="Reopen Conversation">
+                                                    <i class="ri-refresh-line"></i>
+                                                </button>
+                                                <button
+                                                    class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-red-600 hover:bg-gray-100 rounded-full !rounded-button"
+                                                    title="Delete Conversation">
+                                                    <i class="ri-delete-bin-line"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <!-- Conversation Row 6 -->
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-4 py-3">
+                                            <div class="custom-checkbox conversation-checkbox"></div>
+                                        </td>
+                                        <td class="px-4 py-3">
+                                            <div class="flex items-center">
+                                                <div class="flex -space-x-2 mr-3">
+                                                    <div
+                                                        class="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center border-2 border-white">
+                                                        <span class="text-orange-600 font-medium text-xs">RK</span>
+                                                    </div>
+                                                    <div
+                                                        class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center border-2 border-white">
+                                                        <span class="text-green-600 font-medium text-xs">AS</span>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <p class="text-sm font-medium text-gray-800">Rajesh Kumar & Amit
+                                                        Singh</p>
+                                                    <p class="text-xs text-gray-500">Tomato purchase negotiation</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-4 py-3">
+                                            <p class="text-sm text-gray-600 truncate max-w-xs">Can you deliver 20kg of
+                                                tomatoes weekly for the next month? I need them for my restaurant.</p>
+                                        </td>
+                                        <td class="px-4 py-3">
+                                            <span
+                                                class="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">Active</span>
+                                        </td>
+                                        <td class="px-4 py-3 text-sm text-gray-500">3 days ago</td>
+                                        <td class="px-4 py-3 text-right">
+                                            <div class="flex items-center justify-end space-x-2">
+                                                <button
+                                                    class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary hover:bg-gray-100 rounded-full !rounded-button"
+                                                    title="View Conversation" data-conversation-id="6">
+                                                    <i class="ri-eye-line"></i>
+                                                </button>
+                                                <button
+                                                    class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-yellow-600 hover:bg-gray-100 rounded-full !rounded-button"
+                                                    title="Flag Conversation">
+                                                    <i class="ri-flag-line"></i>
+                                                </button>
+                                                <button
+                                                    class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-red-600 hover:bg-gray-100 rounded-full !rounded-button"
+                                                    title="Block Conversation">
+                                                    <i class="ri-lock-line"></i>
+                                                </button>
+                                                <button
+                                                    class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-blue-600 hover:bg-gray-100 rounded-full !rounded-button"
+                                                    title="Send Warning">
+                                                    <i class="ri-mail-warning-line"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <!-- Conversation Row 7 -->
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-4 py-3">
+                                            <div class="custom-checkbox conversation-checkbox"></div>
+                                        </td>
+                                        <td class="px-4 py-3">
+                                            <div class="flex items-center">
+                                                <div class="flex -space-x-2 mr-3">
+                                                    <div
+                                                        class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center border-2 border-white">
+                                                        <span class="text-blue-600 font-medium text-xs">SP</span>
+                                                    </div>
+                                                    <div
+                                                        class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center border-2 border-white">
+                                                        <span class="text-purple-600 font-medium text-xs">VJ</span>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <p class="text-sm font-medium text-gray-800">Sunil Patel & Vidya
+                                                        Joshi</p>
+                                                    <p class="text-xs text-gray-500">Equipment rental inquiry</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-4 py-3">
+                                            <p class="text-sm text-gray-600 truncate max-w-xs">I'd like to rent your
+                                                tractor for 3 days next week. What's your daily rate?</p>
+                                        </td>
+                                        <td class="px-4 py-3">
+                                            <span
+                                                class="px-2 py-1 text-xs font-medium bg-yellow-100 text-yellow-800 rounded-full">Flagged</span>
+                                        </td>
+                                        <td class="px-4 py-3 text-sm text-gray-500">4 days ago</td>
+                                        <td class="px-4 py-3 text-right">
+                                            <div class="flex items-center justify-end space-x-2">
+                                                <button
+                                                    class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary hover:bg-gray-100 rounded-full !rounded-button"
+                                                    title="View Conversation" data-conversation-id="7">
+                                                    <i class="ri-eye-line"></i>
+                                                </button>
+                                                <button
+                                                    class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-red-600 hover:bg-gray-100 rounded-full !rounded-button"
+                                                    title="Block Conversation">
+                                                    <i class="ri-lock-line"></i>
+                                                </button>
+                                                <button
+                                                    class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-blue-600 hover:bg-gray-100 rounded-full !rounded-button"
+                                                    title="Send Warning">
+                                                    <i class="ri-mail-warning-line"></i>
+                                                </button>
+                                                <button
+                                                    class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-green-600 hover:bg-gray-100 rounded-full !rounded-button"
+                                                    title="Mark as Resolved">
+                                                    <i class="ri-check-double-line"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <!-- Conversation Row 8 -->
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-4 py-3">
+                                            <div class="custom-checkbox conversation-checkbox"></div>
+                                        </td>
+                                        <td class="px-4 py-3">
+                                            <div class="flex items-center">
+                                                <div class="flex -space-x-2 mr-3">
+                                                    <div
+                                                        class="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center border-2 border-white">
+                                                        <span class="text-red-600 font-medium text-xs">MR</span>
+                                                    </div>
+                                                    <div
+                                                        class="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center border-2 border-white">
+                                                        <span class="text-indigo-600 font-medium text-xs">KP</span>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <p class="text-sm font-medium text-gray-800">Mohan Reddy & Kiran
+                                                        Patil</p>
+                                                    <p class="text-xs text-gray-500">Seed quality discussion</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-4 py-3">
+                                            <p class="text-sm text-gray-600 truncate max-w-xs">The germination rate of
+                                                these seeds is much lower than what you promised. I want a refund.</p>
+                                        </td>
+                                        <td class="px-4 py-3">
+                                            <span
+                                                class="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full">Resolved</span>
+                                        </td>
+                                        <td class="px-4 py-3 text-sm text-gray-500">1 week ago</td>
+                                        <td class="px-4 py-3 text-right">
+                                            <div class="flex items-center justify-end space-x-2">
+                                                <button
+                                                    class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary hover:bg-gray-100 rounded-full !rounded-button"
+                                                    title="View Conversation" data-conversation-id="8">
+                                                    <i class="ri-eye-line"></i>
+                                                </button>
+                                                <button
+                                                    class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-yellow-600 hover:bg-gray-100 rounded-full !rounded-button"
+                                                    title="Flag Conversation">
+                                                    <i class="ri-flag-line"></i>
+                                                </button>
+                                                <button
+                                                    class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-green-600 hover:bg-gray-100 rounded-full !rounded-button"
+                                                    title="Reopen Conversation">
+                                                    <i class="ri-refresh-line"></i>
+                                                </button>
+                                                <button
+                                                    class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-red-600 hover:bg-gray-100 rounded-full !rounded-button"
+                                                    title="Delete Conversation">
+                                                    <i class="ri-delete-bin-line"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- Pagination -->
+                        <div class="px-4 py-3 flex flex-wrap items-center justify-between border-t border-gray-200">
+                            <div class="text-sm text-gray-500 mb-2 sm:mb-0">
+                                Showing <span class="font-medium text-gray-700">1</span> to <span
+                                    class="font-medium text-gray-700">8</span> of <span
+                                    class="font-medium text-gray-700">42</span> conversations
+                            </div>
+                            <div class="flex items-center space-x-1">
+                                <div class="flex items-center mr-4">
+                                    <span class="text-sm text-gray-500 mr-2">Items per page:</span>
+                                    <div class="relative">
+                                        <button id="per-page-btn"
+                                            class="flex items-center px-2 py-1 bg-gray-100 rounded text-sm text-gray-700 hover:bg-gray-200">
+                                            <span>10</span>
+                                            <div class="w-4 h-4 flex items-center justify-center ml-1">
+                                                <i class="ri-arrow-down-s-line"></i>
+                                            </div>
+                                        </button>
+                                        <div id="per-page-dropdown"
+                                            class="absolute right-0 bottom-full mb-1 w-16 bg-white rounded-lg shadow-lg py-1 z-10 hidden">
+                                            <button
+                                                class="w-full text-left px-3 py-1 text-sm text-gray-700 hover:bg-gray-100">10</button>
+                                            <button
+                                                class="w-full text-left px-3 py-1 text-sm text-gray-700 hover:bg-gray-100">25</button>
+                                            <button
+                                                class="w-full text-left px-3 py-1 text-sm text-gray-700 hover:bg-gray-100">50</button>
+                                            <button
+                                                class="w-full text-left px-3 py-1 text-sm text-gray-700 hover:bg-gray-100">100</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button
+                                    class="px-3 py-1 bg-gray-100 text-gray-400 rounded-l-lg cursor-not-allowed !rounded-button">
+                                    <div class="w-5 h-5 flex items-center justify-center">
+                                        <i class="ri-arrow-left-s-line"></i>
+                                    </div>
+                                </button>
+                                <button class="px-3 py-1 bg-primary text-white rounded-none !rounded-button">1</button>
+                                <button
+                                    class="px-3 py-1 bg-gray-100 text-gray-700 rounded-none hover:bg-gray-200 !rounded-button">2</button>
+                                <button
+                                    class="px-3 py-1 bg-gray-100 text-gray-700 rounded-none hover:bg-gray-200 !rounded-button">3</button>
+                                <button
+                                    class="px-3 py-1 bg-gray-100 text-gray-700 rounded-none hover:bg-gray-200 !rounded-button">4</button>
+                                <button
+                                    class="px-3 py-1 bg-gray-100 text-gray-700 rounded-none hover:bg-gray-200 !rounded-button">5</button>
+                                <button
+                                    class="px-3 py-1 bg-gray-100 text-gray-700 rounded-r-lg hover:bg-gray-200 !rounded-button">
+                                    <div class="w-5 h-5 flex items-center justify-center">
+                                        <i class="ri-arrow-right-s-line"></i>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <!-- Mobile Overlay -->
+    <div id="mobile-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-10 hidden"></div>
+
+    <!-- Chat Detail Modal -->
+    <div id="chat-detail-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+        <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+        <div class="relative bg-white rounded-lg shadow-xl w-full max-w-5xl mx-4 h-[80vh] flex flex-col">
+            <div class="flex items-center justify-between p-4 border-b border-gray-200">
+                <div class="flex items-center">
+                    <h3 class="text-lg font-semibold text-gray-800">Conversation Details</h3>
+                    <span id="conversation-status"
+                        class="ml-3 px-2 py-1 text-xs font-medium bg-yellow-100 text-yellow-800 rounded-full">Flagged</span>
+                </div>
+                <button id="close-chat-detail-modal"
+                    class="text-gray-400 hover:text-gray-600 focus:outline-none !rounded-button">
+                    <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-close-line"></i>
+                    </div>
+                </button>
+            </div>
+            <div class="flex flex-1 overflow-hidden">
+                <!-- Conversation Info -->
+                <div class="w-72 border-r border-gray-200 p-4 bg-gray-50 overflow-y-auto custom-scrollbar">
+                    <div class="mb-6">
+                        <h4 class="text-sm font-medium text-gray-500 mb-2">PARTICIPANTS</h4>
+                        <div class="space-y-3">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center mr-3">
+                                    <span class="text-orange-600 font-medium text-sm">RK</span>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-800">Rajesh Kumar</p>
+                                    <p class="text-xs text-gray-500">Farmer • Delhi</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mr-3">
+                                    <span class="text-blue-600 font-medium text-sm">SP</span>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-800">Sunil Patel</p>
+                                    <p class="text-xs text-gray-500">Equipment Seller • Mumbai</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-6">
+                        <h4 class="text-sm font-medium text-gray-500 mb-2">CONVERSATION INFO</h4>
+                        <div class="space-y-2">
+                            <div>
+                                <p class="text-xs text-gray-500">Started</p>
+                                <p class="text-sm text-gray-800">April 28, 2025 • 10:23 AM</p>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500">Last Activity</p>
+                                <p class="text-sm text-gray-800">April 30, 2025 • 30 minutes ago</p>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500">Total Messages</p>
+                                <p class="text-sm text-gray-800">16 messages</p>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500">Topic</p>
+                                <p class="text-sm text-gray-800">Tractor pricing negotiation</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-6">
+                        <h4 class="text-sm font-medium text-gray-500 mb-2">FLAGGED CONTENT</h4>
+                        <div class="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                            <p class="text-xs text-gray-500 mb-1">Flagged by System</p>
+                            <p class="text-sm text-gray-800 mb-2">Potential pricing dispute detected</p>
+                            <p class="text-xs text-gray-500">April 30, 2025 • 35 minutes ago</p>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-medium text-gray-500 mb-2">MODERATION ACTIONS</h4>
+                        <div class="space-y-3">
+                            <button
+                                class="w-full flex items-center justify-center px-3 py-2 bg-yellow-500 text-white rounded-button text-sm font-medium hover:bg-yellow-600">
+                                <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                    <i class="ri-flag-line"></i>
+                                </div>
+                                <span>Flag Conversation</span>
+                            </button>
+                            <button
+                                class="w-full flex items-center justify-center px-3 py-2 bg-blue-500 text-white rounded-button text-sm font-medium hover:bg-blue-600">
+                                <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                    <i class="ri-mail-send-line"></i>
+                                </div>
+                                <span>Send Warning</span>
+                            </button>
+                            <button
+                                class="w-full flex items-center justify-center px-3 py-2 bg-red-500 text-white rounded-button text-sm font-medium hover:bg-red-600">
+                                <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                    <i class="ri-lock-line"></i>
+                                </div>
+                                <span>Block Conversation</span>
+                            </button>
+                            <button
+                                class="w-full flex items-center justify-center px-3 py-2 bg-green-500 text-white rounded-button text-sm font-medium hover:bg-green-600">
+                                <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                    <i class="ri-check-line"></i>
+                                </div>
+                                <span>Mark as Resolved</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Conversation Messages -->
+                <div class="flex-1 flex flex-col overflow-hidden">
+                    <div class="flex-1 p-4 overflow-y-auto custom-scrollbar">
+                        <div class="space-y-4">
+                            <div class="text-center">
+                                <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">April 28,
+                                    2025</span>
+                            </div>
+                            <!-- Message 1 -->
+                            <div class="flex flex-col">
+                                <div class="message-bubble received">
+                                    <p class="text-sm text-gray-800">Hello, I'm interested in your Mahindra 575 DI
+                                        Tractor. Is it still available?</p>
+                                </div>
+                                <div class="flex items-center ml-2 mt-1">
+                                    <div
+                                        class="w-5 h-5 rounded-full bg-orange-100 flex items-center justify-center mr-1">
+                                        <span class="text-orange-600 font-medium text-xs">RK</span>
+                                    </div>
+                                    <span class="text-xs text-gray-500">10:23 AM</span>
+                                </div>
+                            </div>
+                            <!-- Message 2 -->
+                            <div class="flex flex-col">
+                                <div class="message-bubble sent">
+                                    <p class="text-sm text-gray-800">Yes, it's available. It's a 2020 model with 2500
+                                        hours, well maintained and in excellent condition.</p>
+                                </div>
+                                <div class="flex items-center justify-end mr-2 mt-1">
+                                    <span class="text-xs text-gray-500">10:25 AM</span>
+                                    <div class="w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center ml-1">
+                                        <span class="text-blue-600 font-medium text-xs">SP</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Message 3 -->
+                            <div class="flex flex-col">
+                                <div class="message-bubble received">
+                                    <p class="text-sm text-gray-800">Great. What's your asking price?</p>
+                                </div>
+                                <div class="flex items-center ml-2 mt-1">
+                                    <div
+                                        class="w-5 h-5 rounded-full bg-orange-100 flex items-center justify-center mr-1">
+                                        <span class="text-orange-600 font-medium text-xs">RK</span>
+                                    </div>
+                                    <span class="text-xs text-gray-500">10:27 AM</span>
+                                </div>
+                            </div>
+                            <!-- Message 4 -->
+                            <div class="flex flex-col">
+                                <div class="message-bubble sent">
+                                    <p class="text-sm text-gray-800">I'm asking ₹375,000 for it. It comes with all the
+                                        original accessories and documentation.</p>
+                                </div>
+                                <div class="flex items-center justify-end mr-2 mt-1">
+                                    <span class="text-xs text-gray-500">10:30 AM</span>
+                                    <div class="w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center ml-1">
+                                        <span class="text-blue-600 font-medium text-xs">SP</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">April 29,
+                                    2025</span>
+                            </div>
+                            <!-- Message 5 -->
+                            <div class="flex flex-col">
+                                <div class="message-bubble received">
+                                    <p class="text-sm text-gray-800">I've been looking at similar models, and I think
+                                        ₹375,000 is a bit high. Would you consider ₹340,000?</p>
+                                </div>
+                                <div class="flex items-center ml-2 mt-1">
+                                    <div
+                                        class="w-5 h-5 rounded-full bg-orange-100 flex items-center justify-center mr-1">
+                                        <span class="text-orange-600 font-medium text-xs">RK</span>
+                                    </div>
+                                    <span class="text-xs text-gray-500">9:15 AM</span>
+                                </div>
+                            </div>
+                            <!-- Message 6 -->
+                            <div class="flex flex-col">
+                                <div class="message-bubble sent">
+                                    <p class="text-sm text-gray-800">That's too low for this model and condition. I've
+                                        maintained it perfectly and it has a new battery and tires. The lowest I can go
+                                        is ₹365,000.</p>
+                                </div>
+                                <div class="flex items-center justify-end mr-2 mt-1">
+                                    <span class="text-xs text-gray-500">9:22 AM</span>
+                                    <div class="w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center ml-1">
+                                        <span class="text-blue-600 font-medium text-xs">SP</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">April 30,
+                                    2025</span>
+                            </div>
+                            <!-- Message 7 -->
+                            <div class="flex flex-col">
+                                <div class="message-bubble received">
+                                    <p class="text-sm text-gray-800">I've checked with other sellers and found similar
+                                        tractors for around ₹350,000. Can we meet at ₹355,000?</p>
+                                </div>
+                                <div class="flex items-center ml-2 mt-1">
+                                    <div
+                                        class="w-5 h-5 rounded-full bg-orange-100 flex items-center justify-center mr-1">
+                                        <span class="text-orange-600 font-medium text-xs">RK</span>
+                                    </div>
+                                    <span class="text-xs text-gray-500">11:05 AM</span>
+                                </div>
+                            </div>
+                            <!-- Message 8 -->
+                            <div class="flex flex-col">
+                                <div class="message-bubble sent">
+                                    <p class="text-sm text-gray-800">I'm sorry, but I have other interested buyers.
+                                        ₹365,000 is already a fair discount from my original price.</p>
+                                </div>
+                                <div class="flex items-center justify-end mr-2 mt-1">
+                                    <span class="text-xs text-gray-500">11:10 AM</span>
+                                    <div class="w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center ml-1">
+                                        <span class="text-blue-600 font-medium text-xs">SP</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Message 9 - Flagged -->
+                            <div class="flex flex-col">
+                                <div class="message-bubble received bg-yellow-50 border border-yellow-200">
+                                    <div
+                                        class="absolute -top-2 -right-2 w-5 h-5 bg-yellow-500 rounded-full flex items-center justify-center">
+                                        <i class="ri-flag-line text-white text-xs"></i>
+                                    </div>
+                                    <p class="text-sm text-gray-800">I can offer ₹360,000 for the tractor, that's my
+                                        final price. If you won't accept it, I'll find another seller who will be more
+                                        reasonable.</p>
+                                </div>
+                                <div class="flex items-center ml-2 mt-1">
+                                    <div
+                                        class="w-5 h-5 rounded-full bg-orange-100 flex items-center justify-center mr-1">
+                                        <span class="text-orange-600 font-medium text-xs">RK</span>
+                                    </div>
+                                    <span class="text-xs text-gray-500">11:25 AM</span>
+                                </div>
+                            </div>
+                            <!-- System Message -->
+                            <div class="flex justify-center">
+                                <div class="bg-gray-100 text-xs text-gray-600 px-3 py-1 rounded-full">
+                                    Content flagged by system for potential dispute
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Message Input -->
+                    <div class="p-3 border-t border-gray-200 bg-gray-50">
+                        <div class="flex items-center">
+                            <div class="w-full relative">
+                                <textarea rows="1"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 pr-10"
+                                    placeholder="Type a moderation note (only visible to admins)..."></textarea>
+                                <div
+                                    class="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center space-x-1">
+                                    <button
+                                        class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-700 !rounded-button">
+                                        <i class="ri-emotion-line"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <button
+                                class="ml-2 px-4 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-primary/90 whitespace-nowrap">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-send-plane-line"></i>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Warning Modal -->
+    <div id="warning-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+        <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+        <div class="relative bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
+            <div class="p-6">
+                <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-4">
+                    <div class="w-6 h-6 flex items-center justify-center text-blue-600">
+                        <i class="ri-mail-warning-line"></i>
+                    </div>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 text-center mb-2">Send Warning</h3>
+                <p class="text-gray-600 text-center mb-4">Send a warning message to the participants of this
+                    conversation.</p>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Recipients</label>
+                    <div class="flex flex-wrap gap-2 p-2 border border-gray-300 rounded-lg mb-3">
+                        <div class="flex items-center bg-gray-100 rounded-full px-2 py-1">
+                            <span class="text-xs text-gray-700">Rajesh Kumar</span>
+                            <button class="ml-1 text-gray-400 hover:text-gray-600">
+                                <div class="w-3 h-3 flex items-center justify-center">
+                                    <i class="ri-close-line"></i>
+                                </div>
+                            </button>
+                        </div>
+                        <div class="flex items-center bg-gray-100 rounded-full px-2 py-1">
+                            <span class="text-xs text-gray-700">Sunil Patel</span>
+                            <button class="ml-1 text-gray-400 hover:text-gray-600">
+                                <div class="w-3 h-3 flex items-center justify-center">
+                                    <i class="ri-close-line"></i>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Warning Message</label>
+                    <textarea rows="4"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+                        placeholder="Enter warning message...">We've noticed some tension in your conversation. Please keep discussions respectful and focused on the transaction. Continued disputes may result in temporary restrictions on your account.</textarea>
+                </div>
+                <div class="flex justify-center space-x-3">
+                    <button id="cancel-warning"
+                        class="px-4 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+                    <button id="send-warning"
+                        class="px-4 py-2 bg-blue-600 text-white rounded-button text-sm font-medium hover:bg-blue-700 whitespace-nowrap">Send
+                        Warning</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Block Confirmation Modal -->
+    <div id="block-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+        <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+        <div class="relative bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
+            <div class="p-6">
+                <div class="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-4">
+                    <div class="w-6 h-6 flex items-center justify-center text-red-600">
+                        <i class="ri-lock-line"></i>
+                    </div>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 text-center mb-2">Block Conversation</h3>
+                <p class="text-gray-600 text-center mb-4">Blocking this conversation will prevent participants from
+                    sending further messages. Are you sure you want to proceed?</p>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Reason for Blocking</label>
+                    <textarea rows="3"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+                        placeholder="Enter reason for blocking..."></textarea>
+                </div>
+                <div class="flex justify-center space-x-3">
+                    <button id="cancel-block"
+                        class="px-4 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+                    <button id="confirm-block"
+                        class="px-4 py-2 bg-red-600 text-white rounded-button text-sm font-medium hover:bg-red-700 whitespace-nowrap">Block
+                        Conversation</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Flag Confirmation Modal -->
+    <div id="flag-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+        <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+        <div class="relative bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
+            <div class="p-6">
+                <div class="w-12 h-12 rounded-full bg-yellow-100 flex items-center justify-center mx-auto mb-4">
+                    <div class="w-6 h-6 flex items-center justify-center text-yellow-600">
+                        <i class="ri-flag-line"></i>
+                    </div>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 text-center mb-2">Flag Conversation</h3>
+                <p class="text-gray-600 text-center mb-4">Flagging this conversation will mark it for further review by
+                    the moderation team.</p>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Reason for Flagging</label>
+                    <div class="relative">
+                        <select
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 appearance-none pr-8">
+                            <option value="">Select reason</option>
+                            <option value="pricing_dispute">Pricing Dispute</option>
+                            <option value="inappropriate">Inappropriate Content</option>
+                            <option value="harassment">Harassment</option>
+                            <option value="scam">Potential Scam</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                            <div class="w-4 h-4 flex items-center justify-center text-gray-500">
+                                <i class="ri-arrow-down-s-line"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Additional Notes</label>
+                    <textarea rows="3"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+                        placeholder="Enter additional details..."></textarea>
+                </div>
+                <div class="flex justify-center space-x-3">
+                    <button id="cancel-flag"
+                        class="px-4 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+                    <button id="confirm-flag"
+                        class="px-4 py-2 bg-yellow-500 text-white rounded-button text-sm font-medium hover:bg-yellow-600 whitespace-nowrap">Flag
+                        Conversation</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Moderation Settings Modal -->
+    <div id="settings-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+        <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+        <div class="relative bg-white rounded-lg shadow-xl w-full max-w-3xl mx-4 overflow-hidden">
+            <div class="flex items-center justify-between p-4 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800">Chat Moderation Settings</h3>
+                <button id="close-settings-modal"
+                    class="text-gray-400 hover:text-gray-600 focus:outline-none !rounded-button">
+                    <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-close-line"></i>
+                    </div>
+                </button>
+            </div>
+            <div class="p-4 max-h-[80vh] overflow-y-auto custom-scrollbar">
+                <div class="mb-6">
+                    <h4 class="text-md font-medium text-gray-800 mb-3">Automated Moderation</h4>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Auto-flag suspicious messages</p>
+                                <p class="text-xs text-gray-500">Automatically flag messages that may contain
+                                    inappropriate content</p>
+                            </div>
+                            <label class="custom-switch">
+                                <input type="checkbox" checked>
+                                <span class="switch-slider"></span>
+                            </label>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Detect pricing disputes</p>
+                                <p class="text-xs text-gray-500">Flag conversations with potential pricing disagreements
+                                </p>
+                            </div>
+                            <label class="custom-switch">
+                                <input type="checkbox" checked>
+                                <span class="switch-slider"></span>
+                            </label>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Detect harassment</p>
+                                <p class="text-xs text-gray-500">Flag conversations with potential harassment or
+                                    bullying</p>
+                            </div>
+                            <label class="custom-switch">
+                                <input type="checkbox" checked>
+                                <span class="switch-slider"></span>
+                            </label>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Auto-block severe violations</p>
+                                <p class="text-xs text-gray-500">Automatically block conversations with severe policy
+                                    violations</p>
+                            </div>
+                            <label class="custom-switch">
+                                <input type="checkbox">
+                                <span class="switch-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-6">
+                    <h4 class="text-md font-medium text-gray-800 mb-3">Keyword Monitoring</h4>
+                    <div class="mb-3">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Flagged Keywords</label>
+                        <div class="relative">
+                            <input type="text"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 pr-10"
+                                placeholder="Add keyword and press Enter">
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+                                <button class="text-primary hover:text-primary/80 !rounded-button">
+                                    <div class="w-5 h-5 flex items-center justify-center">
+                                        <i class="ri-add-line"></i>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <div class="flex items-center bg-gray-100 rounded-full px-2 py-1">
+                            <span class="text-xs text-gray-700">scam</span>
+                            <button class="ml-1 text-gray-400 hover:text-gray-600">
+                                <div class="w-3 h-3 flex items-center justify-center">
+                                    <i class="ri-close-line"></i>
+                                </div>
+                            </button>
+                        </div>
+                        <div class="flex items-center bg-gray-100 rounded-full px-2 py-1">
+                            <span class="text-xs text-gray-700">fraud</span>
+                            <button class="ml-1 text-gray-400 hover:text-gray-600">
+                                <div class="w-3 h-3 flex items-center justify-center">
+                                    <i class="ri-close-line"></i>
+                                </div>
+                            </button>
+                        </div>
+                        <div class="flex items-center bg-gray-100 rounded-full px-2 py-1">
+                            <span class="text-xs text-gray-700">dispute</span>
+                            <button class="ml-1 text-gray-400 hover:text-gray-600">
+                                <div class="w-3 h-3 flex items-center justify-center">
+                                    <i class="ri-close-line"></i>
+                                </div>
+                            </button>
+                        </div>
+                        <div class="flex items-center bg-gray-100 rounded-full px-2 py-1">
+                            <span class="text-xs text-gray-700">refund</span>
+                            <button class="ml-1 text-gray-400 hover:text-gray-600">
+                                <div class="w-3 h-3 flex items-center justify-center">
+                                    <i class="ri-close-line"></i>
+                                </div>
+                            </button>
+                        </div>
+                        <div class="flex items-center bg-gray-100 rounded-full px-2 py-1">
+                            <span class="text-xs text-gray-700">complaint</span>
+                            <button class="ml-1 text-gray-400 hover:text-gray-600">
+                                <div class="w-3 h-3 flex items-center justify-center">
+                                    <i class="ri-close-line"></i>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-700">Sensitivity Level</p>
+                            <p class="text-xs text-gray-500">Adjust how strictly keywords are monitored</p>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-xs text-gray-500">Low</span>
+                            <input type="range" min="1" max="3" value="2" class="range-slider w-32">
+                            <span class="text-xs text-gray-500">High</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-6">
+                    <h4 class="text-md font-medium text-gray-800 mb-3">Notification Settings</h4>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Email alerts for flagged content</p>
+                                <p class="text-xs text-gray-500">Receive email notifications when content is flagged</p>
+                            </div>
+                            <label class="custom-switch">
+                                <input type="checkbox" checked>
+                                <span class="switch-slider"></span>
+                            </label>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Daily moderation summary</p>
+                                <p class="text-xs text-gray-500">Receive a daily summary of moderation activities</p>
+                            </div>
+                            <label class="custom-switch">
+                                <input type="checkbox" checked>
+                                <span class="switch-slider"></span>
+                            </label>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Urgent alerts for severe violations</p>
+                                <p class="text-xs text-gray-500">Receive immediate alerts for severe policy violations
+                                </p>
+                            </div>
+                            <label class="custom-switch">
+                                <input type="checkbox" checked>
+                                <span class="switch-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-end space-x-3 mt-6">
+                    <button
+                        class="px-4 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+                    <button
+                        class="px-4 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-primary/90 whitespace-nowrap">Save
+                        Settings</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Sidebar toggle
+            const sidebarToggle = document.getElementById('sidebar-toggle');
+            const sidebar = document.getElementById('sidebar');
+            const mobileOverlay = document.getElementById('mobile-overlay');
+
+            sidebarToggle.addEventListener('click', function () {
+                sidebar.classList.toggle('-translate-x-full');
+                mobileOverlay.classList.toggle('hidden');
+            });
+
+            mobileOverlay.addEventListener('click', function () {
+                sidebar.classList.add('-translate-x-full');
+                mobileOverlay.classList.add('hidden');
+            });
+
+            // Initialize sidebar state based on screen size
+            function checkScreenSize() {
+                if (window.innerWidth < 1024) {
+                    sidebar.classList.add('-translate-x-full');
+                } else {
+                    sidebar.classList.remove('-translate-x-full');
+                    mobileOverlay.classList.add('hidden');
+                }
+            }
+
+            window.addEventListener('resize', checkScreenSize);
+            checkScreenSize();
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Profile dropdown toggle
+            const profileMenuButton = document.getElementById('profile-menu-button');
+            const profileDropdown = document.getElementById('profile-dropdown');
+
+            profileMenuButton.addEventListener('click', function () {
+                profileDropdown.classList.toggle('hidden');
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function (event) {
+                if (!profileMenuButton.contains(event.target) && !profileDropdown.contains(event.target)) {
+                    profileDropdown.classList.add('hidden');
+                }
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Toggle dropdowns
+            function setupDropdown(buttonId, dropdownId) {
+                const button = document.getElementById(buttonId);
+                const dropdown = document.getElementById(dropdownId);
+
+                if (button && dropdown) {
+                    button.addEventListener('click', function (e) {
+                        e.stopPropagation();
+                        dropdown.classList.toggle('hidden');
+                    });
+                }
+            }
+
+            setupDropdown('date-filter-btn', 'date-dropdown');
+            setupDropdown('keywords-filter-btn', 'keywords-dropdown');
+            setupDropdown('participants-filter-btn', 'participants-dropdown');
+            setupDropdown('sort-btn', 'sort-dropdown');
+            setupDropdown('per-page-btn', 'per-page-dropdown');
+
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', function (e) {
+                const dropdowns = [
+                    'date-dropdown', 'keywords-dropdown', 'participants-dropdown',
+                    'sort-dropdown', 'per-page-dropdown'
+                ];
+
+                dropdowns.forEach(id => {
+                    const dropdown = document.getElementById(id);
+                    const button = document.getElementById(id.replace('dropdown', 'btn'));
+
+                    if (dropdown && !dropdown.classList.contains('hidden') &&
+                        button && !button.contains(e.target) && !dropdown.contains(e.target)) {
+                        dropdown.classList.add('hidden');
+                    }
+                });
+            });
+
+            // Custom checkbox functionality
+            const selectAllCheckbox = document.getElementById('select-all-checkbox');
+            const conversationCheckboxes = document.querySelectorAll('.conversation-checkbox');
+            const bulkActions = document.getElementById('bulk-actions');
+
+            function updateBulkActionsVisibility() {
+                let checkedCount = document.querySelectorAll('.conversation-checkbox.checked').length;
+                if (checkedCount > 0) {
+                    bulkActions.classList.remove('hidden');
+                } else {
+                    bulkActions.classList.add('hidden');
+                }
+            }
+
+            if (selectAllCheckbox) {
+                selectAllCheckbox.addEventListener('click', function () {
+                    this.classList.toggle('checked');
+                    const isChecked = this.classList.contains('checked');
+
+                    conversationCheckboxes.forEach(checkbox => {
+                        if (isChecked) {
+                            checkbox.classList.add('checked');
+                        } else {
+                            checkbox.classList.remove('checked');
+                        }
+                    });
+
+                    updateBulkActionsVisibility();
+                });
+            }
+
+            conversationCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('click', function () {
+                    this.classList.toggle('checked');
+                    updateBulkActionsVisibility();
+
+                    // Update select all checkbox state
+                    const allChecked = document.querySelectorAll('.conversation-checkbox:not(.checked)').length === 0;
+                    if (allChecked) {
+                        selectAllCheckbox.classList.add('checked');
+                    } else {
+                        selectAllCheckbox.classList.remove('checked');
+                    }
+                });
+            });
+
+            // Participants filter checkboxes
+            const userCheckboxes = document.querySelectorAll('#participants-dropdown .custom-checkbox');
+            userCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('click', function () {
+                    this.classList.toggle('checked');
+                });
+            });
+
+            // Chat Detail Modal
+            const viewButtons = document.querySelectorAll('[title="View Conversation"]');
+            const chatDetailModal = document.getElementById('chat-detail-modal');
+            const closeChatDetailModal = document.getElementById('close-chat-detail-modal');
+
+            viewButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    chatDetailModal.classList.remove('hidden');
+                });
+            });
+
+            if (closeChatDetailModal) {
+                closeChatDetailModal.addEventListener('click', function () {
+                    chatDetailModal.classList.add('hidden');
+                });
+            }
+
+            // Warning Modal
+            const warningButtons = document.querySelectorAll('[title="Send Warning"]');
+            const warningModal = document.getElementById('warning-modal');
+            const cancelWarning = document.getElementById('cancel-warning');
+            const sendWarning = document.getElementById('send-warning');
+
+            warningButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    warningModal.classList.remove('hidden');
+                });
+            });
+
+            if (cancelWarning) {
+                cancelWarning.addEventListener('click', function () {
+                    warningModal.classList.add('hidden');
+                });
+            }
+
+            if (sendWarning) {
+                sendWarning.addEventListener('click', function () {
+                    warningModal.classList.add('hidden');
+                    // Here you would handle sending the warning
+                });
+            }
+
+            // Block Modal
+            const blockButtons = document.querySelectorAll('[title="Block Conversation"]');
+            const blockModal = document.getElementById('block-modal');
+            const cancelBlock = document.getElementById('cancel-block');
+            const confirmBlock = document.getElementById('confirm-block');
+
+            blockButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    blockModal.classList.remove('hidden');
+                });
+            });
+
+            if (cancelBlock) {
+                cancelBlock.addEventListener('click', function () {
+                    blockModal.classList.add('hidden');
+                });
+            }
+
+            if (confirmBlock) {
+                confirmBlock.addEventListener('click', function () {
+                    blockModal.classList.add('hidden');
+                    // Here you would handle blocking the conversation
+                });
+            }
+
+            // Flag Modal
+            const flagButtons = document.querySelectorAll('[title="Flag Conversation"]');
+            const flagModal = document.getElementById('flag-modal');
+            const cancelFlag = document.getElementById('cancel-flag');
+            const confirmFlag = document.getElementById('confirm-flag');
+
+            flagButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    flagModal.classList.remove('hidden');
+                });
+            });
+
+            if (cancelFlag) {
+                cancelFlag.addEventListener('click', function () {
+                    flagModal.classList.add('hidden');
+                });
+            }
+
+            if (confirmFlag) {
+                confirmFlag.addEventListener('click', function () {
+                    flagModal.classList.add('hidden');
+                    // Here you would handle flagging the conversation
+                });
+            }
+
+            // Settings Modal
+            const settingsButton = document.getElementById('chat-settings-btn');
+            const settingsModal = document.getElementById('settings-modal');
+            const closeSettingsModal = document.getElementById('close-settings-modal');
+
+            if (settingsButton) {
+                settingsButton.addEventListener('click', function () {
+                    settingsModal.classList.remove('hidden');
+                });
+            }
+
+            if (closeSettingsModal) {
+                closeSettingsModal.addEventListener('click', function () {
+                    settingsModal.classList.add('hidden');
+                });
+            }
+
+            // Close modals when clicking outside
+            window.addEventListener('click', function (e) {
+                if (e.target === chatDetailModal) {
+                    chatDetailModal.classList.add('hidden');
+                }
+                if (e.target === warningModal) {
+                    warningModal.classList.add('hidden');
+                }
+                if (e.target === blockModal) {
+                    blockModal.classList.add('hidden');
+                }
+                if (e.target === flagModal) {
+                    flagModal.classList.add('hidden');
+                }
+                if (e.target === settingsModal) {
+                    settingsModal.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

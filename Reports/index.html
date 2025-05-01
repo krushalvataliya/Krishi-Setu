@@ -1,0 +1,1508 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analytics & Reports - Krishi Setu Admin Panel</title>
+  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+  <script>tailwind.config = { theme: { extend: { colors: { primary: '#2C5F2D', secondary: '#8B4513' }, borderRadius: { 'none': '0px', 'sm': '4px', DEFAULT: '8px', 'md': '12px', 'lg': '16px', 'xl': '20px', '2xl': '24px', '3xl': '32px', 'full': '9999px', 'button': '8px' } } } }</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+  <style>
+    :where([class^="ri-"])::before {
+      content: "\f3c2";
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #c1c1c1;
+      border-radius: 8px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #a1a1a1;
+    }
+
+    .custom-checkbox {
+      position: relative;
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      border: 2px solid #d1d5db;
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+
+    .custom-checkbox.checked {
+      background-color: #2C5F2D;
+      border-color: #2C5F2D;
+    }
+
+    .custom-checkbox.checked::after {
+      content: '';
+      position: absolute;
+      left: 5px;
+      top: 2px;
+      width: 5px;
+      height: 10px;
+      border: solid white;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+
+    .custom-switch {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 22px;
+    }
+
+    .custom-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .switch-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #e5e7eb;
+      transition: .4s;
+      border-radius: 34px;
+    }
+
+    .switch-slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 2px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+
+    input:checked+.switch-slider {
+      background-color: #2C5F2D;
+    }
+
+    input:checked+.switch-slider:before {
+      transform: translateX(20px);
+    }
+
+    .date-picker {
+      position: relative;
+    }
+
+    .date-picker input {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #e5e7eb;
+      border-radius: 0.375rem;
+      font-size: 0.875rem;
+    }
+
+    .date-picker input::-webkit-calendar-picker-indicator {
+      opacity: 0;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+    }
+
+    .date-picker .icon {
+      position: absolute;
+      right: 0.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50">
+  <div class="flex h-screen">
+    <!-- Sidebar -->
+    <div id="sidebar"
+      class="bg-primary text-white w-64 flex-shrink-0 transition-all duration-300 z-20 h-full fixed lg:relative">
+      <div class="p-4 flex items-center border-b border-white/10">
+        <div class="w-10 h-10 flex items-center justify-center bg-white rounded-full mr-3">
+          <span class="font-['Pacifico'] text-primary text-lg">logo</span>
+        </div>
+        <h1 class="text-xl font-semibold">Krishi Setu</h1>
+      </div>
+      <nav class="py-4 custom-scrollbar overflow-y-auto h-[calc(100%-64px)]">
+        <ul>
+          <li class="mb-1">
+            <a href="/krishi-setu" class="flex items-center py-2 px-4 text-white/80 hover:bg-white/10 rounded-md mx-2 transition">
+              <div class="w-6 h-6 flex items-center justify-center mr-3">
+                <i class="ri-dashboard-line"></i>
+              </div>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <li class="mb-1">
+            <a href="/krishi-setu/User-Management"
+              class="flex items-center py-2 px-4 text-white/80 hover:bg-white/10 rounded-md mx-2 transition">
+              <div class="w-6 h-6 flex items-center justify-center mr-3">
+                <i class="ri-user-line"></i>
+              </div>
+              <span>User Management</span>
+            </a>
+          </li>
+          <li class="mb-1">
+            <a href="/krishi-setu/Product-Listing-Moderation"
+              class="flex items-center py-2 px-4 text-white/80 hover:bg-white/10 rounded-md mx-2 transition">
+              <div class="w-6 h-6 flex items-center justify-center mr-3">
+                <i class="ri-store-line"></i>
+              </div>
+              <span>Listing Moderation</span>
+            </a>
+          </li>
+          <li class="mb-1">
+            <a href="/krishi-setu/Chat-Monitoring-Dashboard"
+              class="flex items-center py-2 px-4 text-white/80 hover:bg-white/10 rounded-md mx-2 transition">
+              <div class="w-6 h-6 flex items-center justify-center mr-3">
+                <i class="ri-chat-3-line"></i>
+              </div>
+              <span>Chat Monitoring</span>
+            </a>
+          </li>
+          <li class="mb-1">
+            <a href="/krishi-setu/Reports"
+              class="flex items-center py-2 px-4 text-white/80 hover:bg-white/10 rounded-md mx-2 transition">
+              <div class="w-6 h-6 flex items-center justify-center mr-3">
+                <i class="ri-bar-chart-line"></i>
+              </div>
+              <span>Analytics & Reports</span>
+            </a>
+          </li>
+          <li class="mb-1">
+            <a href="/krishi-setu/Settings-Configuration"
+              class="flex items-center py-2 px-4 text-white bg-white/10 rounded-md mx-2">
+              <div class="w-6 h-6 flex items-center justify-center mr-3">
+                <i class="ri-settings-line"></i>
+              </div>
+              <span>Settings</span>
+            </a>
+          </li>
+        </ul>
+        <div class="mt-8 px-4">
+          <div class="bg-white/10 rounded-lg p-4">
+            <h3 class="text-sm font-medium mb-2">System Status</h3>
+            <div class="mb-2">
+              <div class="flex justify-between text-xs mb-1">
+                <span>API Uptime</span>
+                <span>99.8%</span>
+              </div>
+              <div class="h-1.5 bg-white/20 rounded-full overflow-hidden">
+                <div class="h-full bg-green-400 rounded-full" style="width: 99.8%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span>Error Rate</span>
+                <span>0.2%</span>
+              </div>
+              <div class="h-1.5 bg-white/20 rounded-full overflow-hidden">
+                <div class="h-full bg-red-400 rounded-full" style="width: 0.2%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <!-- <nav class="py-4 custom-scrollbar overflow-y-auto h-[calc(100%-64px)]">
+        <ul>
+          <li class="mb-1">
+            <a href="https://readdy.ai/home/aeb81bd4-96f3-4a80-8d50-179641ad53d2/e6d63a3f-e23e-46f5-813f-620a591c48f1"
+              data-readdy="true"
+              class="flex items-center py-2 px-4 text-white/80 hover:bg-white/10 rounded-md mx-2 transition">
+              <div class="w-6 h-6 flex items-center justify-center mr-3">
+                <i class="ri-dashboard-line"></i>
+              </div>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <li class="mb-1">
+            <a href="#" class="flex items-center py-2 px-4 text-white/80 hover:bg-white/10 rounded-md mx-2 transition">
+              <div class="w-6 h-6 flex items-center justify-center mr-3">
+                <i class="ri-user-line"></i>
+              </div>
+              <span>User Management</span>
+            </a>
+          </li>
+          <li class="mb-1">
+            <a href="https://readdy.ai/home/aeb81bd4-96f3-4a80-8d50-179641ad53d2/f294afc0-9bcd-48c6-98d4-3779cb16e0fb"
+              data-readdy="true"
+              class="flex items-center py-2 px-4 text-white/80 hover:bg-white/10 rounded-md mx-2 transition">
+              <div class="w-6 h-6 flex items-center justify-center mr-3">
+                <i class="ri-store-line"></i>
+              </div>
+              <span>Listing Moderation</span>
+            </a>
+          </li>
+          <li class="mb-1">
+            <a href="https://readdy.ai/home/aeb81bd4-96f3-4a80-8d50-179641ad53d2/4f67dc83-b4fd-4c52-9d32-4cf867525420"
+              data-readdy="true"
+              class="flex items-center py-2 px-4 text-white/80 hover:bg-white/10 rounded-md mx-2 transition">
+              <div class="w-6 h-6 flex items-center justify-center mr-3">
+                <i class="ri-chat-3-line"></i>
+              </div>
+              <span>Chat Monitoring</span>
+            </a>
+          </li>
+          <li class="mb-1">
+            <a href="#" class="flex items-center py-2 px-4 text-white bg-white/10 rounded-md mx-2">
+              <div class="w-6 h-6 flex items-center justify-center mr-3">
+                <i class="ri-bar-chart-line"></i>
+              </div>
+              <span>Analytics & Reports</span>
+            </a>
+          </li>
+          <li class="mb-1">
+            <a href="#" class="flex items-center py-2 px-4 text-white/80 hover:bg-white/10 rounded-md mx-2 transition">
+              <div class="w-6 h-6 flex items-center justify-center mr-3">
+                <i class="ri-settings-line"></i>
+              </div>
+              <span>Settings</span>
+            </a>
+          </li>
+        </ul>
+        <div class="mt-8 px-4">
+          <div class="bg-white/10 rounded-lg p-4">
+            <h3 class="text-sm font-medium mb-2">System Status</h3>
+            <div class="mb-2">
+              <div class="flex justify-between text-xs mb-1">
+                <span>API Uptime</span>
+                <span>99.8%</span>
+              </div>
+              <div class="h-1.5 bg-white/20 rounded-full overflow-hidden">
+                <div class="h-full bg-green-400 rounded-full" style="width: 99.8%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span>Error Rate</span>
+                <span>0.2%</span>
+              </div>
+              <div class="h-1.5 bg-white/20 rounded-full overflow-hidden">
+                <div class="h-full bg-red-400 rounded-full" style="width: 0.2%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav> -->
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+      <!-- Header -->
+      <header class="bg-white border-b border-gray-200 shadow-sm z-10">
+        <div class="flex items-center justify-between px-4 py-3">
+          <div class="flex items-center lg:hidden">
+            <button id="sidebar-toggle" class="text-gray-600 focus:outline-none !rounded-button">
+              <div class="w-6 h-6 flex items-center justify-center">
+                <i class="ri-menu-line"></i>
+              </div>
+            </button>
+          </div>
+          <div class="flex-1 mx-4 lg:max-w-md">
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                  <i class="ri-search-line"></i>
+                </div>
+              </div>
+              <input type="text"
+                class="w-full bg-gray-100 border-none pl-10 pr-4 py-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+                placeholder="Search reports...">
+            </div>
+          </div>
+          <div class="flex items-center space-x-4">
+            <button class="relative text-gray-600 hover:text-gray-800 !rounded-button">
+              <div class="w-6 h-6 flex items-center justify-center">
+                <i class="ri-notification-3-line"></i>
+              </div>
+              <span class="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
+            </button>
+            <div class="relative">
+              <button id="profile-menu-button" class="flex items-center space-x-2 focus:outline-none !rounded-button">
+                <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+                  <div class="w-5 h-5 flex items-center justify-center text-gray-600">
+                    <i class="ri-user-line"></i>
+                  </div>
+                </div>
+                <span class="text-sm font-medium text-gray-700 hidden md:block">Admin User</span>
+                <div class="w-5 h-5 flex items-center justify-center text-gray-600">
+                  <i class="ri-arrow-down-s-line"></i>
+                </div>
+              </button>
+              <div id="profile-dropdown"
+                class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-1 z-20 hidden">
+                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
+                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                <div class="border-t border-gray-100"></div>
+                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Content Area -->
+      <main class="flex-1 overflow-y-auto custom-scrollbar bg-gray-50 p-4 lg:p-6">
+        <div class="max-w-7xl mx-auto">
+          <!-- Breadcrumb -->
+          <div class="flex items-center text-sm text-gray-500 mb-4">
+            <a href="https://readdy.ai/home/aeb81bd4-96f3-4a80-8d50-179641ad53d2/e6d63a3f-e23e-46f5-813f-620a591c48f1"
+              data-readdy="true" class="hover:text-primary">Dashboard</a>
+            <div class="w-4 h-4 flex items-center justify-center mx-1">
+              <i class="ri-arrow-right-s-line"></i>
+            </div>
+            <span class="text-gray-700 font-medium">Analytics & Reports</span>
+          </div>
+
+          <!-- Page Header -->
+          <div class="flex flex-col md:flex-row md:items-center justify-between mb-6">
+            <div>
+              <h1 class="text-2xl font-bold text-gray-800">Analytics & Reports</h1>
+              <p class="text-gray-600 mt-1">Monitor conversation trends and moderation activities on Krishi Setu</p>
+            </div>
+            <div class="mt-4 md:mt-0 flex space-x-3">
+              <div class="relative">
+                <button id="export-btn"
+                  class="flex items-center px-4 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap">
+                  <div class="w-4 h-4 flex items-center justify-center mr-2">
+                    <i class="ri-download-line"></i>
+                  </div>
+                  Export Report
+                  <div class="w-4 h-4 flex items-center justify-center ml-2">
+                    <i class="ri-arrow-down-s-line"></i>
+                  </div>
+                </button>
+                <div id="export-dropdown"
+                  class="absolute right-0 mt-1 w-40 bg-white rounded-lg shadow-lg py-1 z-10 hidden">
+                  <button class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                    <div class="w-4 h-4 flex items-center justify-center mr-2">
+                      <i class="ri-file-pdf-line"></i>
+                    </div>
+                    PDF
+                  </button>
+                  <button class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                    <div class="w-4 h-4 flex items-center justify-center mr-2">
+                      <i class="ri-file-excel-line"></i>
+                    </div>
+                    Excel
+                  </button>
+                  <button class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                    <div class="w-4 h-4 flex items-center justify-center mr-2">
+                      <i class="ri-file-text-line"></i>
+                    </div>
+                    CSV
+                  </button>
+                </div>
+              </div>
+              <button
+                class="flex items-center px-4 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-primary/90 whitespace-nowrap">
+                <div class="w-4 h-4 flex items-center justify-center mr-2">
+                  <i class="ri-settings-3-line"></i>
+                </div>
+                Customize Dashboard
+              </button>
+            </div>
+          </div>
+
+          <!-- Filters and Date Range -->
+          <div class="bg-white rounded-lg shadow-sm p-4 mb-6">
+            <div class="flex flex-wrap items-center justify-between gap-4">
+              <!-- Date Range Selector -->
+              <div class="flex items-center space-x-3">
+                <span class="text-sm font-medium text-gray-700">Date Range:</span>
+                <div class="relative">
+                  <button id="date-range-btn"
+                    class="flex items-center px-3 py-1.5 bg-gray-100 rounded-lg text-sm text-gray-700 hover:bg-gray-200 whitespace-nowrap">
+                    <div class="w-4 h-4 flex items-center justify-center mr-2">
+                      <i class="ri-calendar-line"></i>
+                    </div>
+                    <span>Last 30 Days</span>
+                    <div class="w-4 h-4 flex items-center justify-center ml-2">
+                      <i class="ri-arrow-down-s-line"></i>
+                    </div>
+                  </button>
+                  <div id="date-range-dropdown"
+                    class="absolute z-10 mt-1 w-64 bg-white rounded-lg shadow-lg p-3 hidden">
+                    <div class="grid grid-cols-2 gap-2 mb-2">
+                      <div class="date-picker">
+                        <label class="text-xs text-gray-500 mb-1 block">From</label>
+                        <input type="date" class="text-sm" value="2025-03-30">
+                        <div class="icon w-4 h-4 flex items-center justify-center text-gray-400">
+                          <i class="ri-calendar-line"></i>
+                        </div>
+                      </div>
+                      <div class="date-picker">
+                        <label class="text-xs text-gray-500 mb-1 block">To</label>
+                        <input type="date" class="text-sm" value="2025-04-30">
+                        <div class="icon w-4 h-4 flex items-center justify-center text-gray-400">
+                          <i class="ri-calendar-line"></i>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="flex flex-wrap gap-2 mb-2">
+                      <button
+                        class="px-2 py-1 text-xs bg-gray-100 rounded text-gray-700 hover:bg-gray-200">Today</button>
+                      <button
+                        class="px-2 py-1 text-xs bg-gray-100 rounded text-gray-700 hover:bg-gray-200">Yesterday</button>
+                      <button class="px-2 py-1 text-xs bg-gray-100 rounded text-gray-700 hover:bg-gray-200">Last 7
+                        Days</button>
+                      <button class="px-2 py-1 text-xs bg-primary/10 rounded text-primary font-medium">Last 30
+                        Days</button>
+                      <button class="px-2 py-1 text-xs bg-gray-100 rounded text-gray-700 hover:bg-gray-200">This
+                        Month</button>
+                      <button class="px-2 py-1 text-xs bg-gray-100 rounded text-gray-700 hover:bg-gray-200">Last
+                        Month</button>
+                    </div>
+                    <button
+                      class="w-full mt-2 px-3 py-1.5 bg-primary text-white rounded text-sm font-medium !rounded-button">Apply</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Conversation Type Filter -->
+              <div class="flex space-x-1 bg-gray-100 p-1 rounded-full">
+                <button
+                  class="px-4 py-1.5 bg-white text-primary rounded-full text-sm font-medium shadow-sm whitespace-nowrap">All</button>
+                <button
+                  class="px-4 py-1.5 text-gray-700 rounded-full text-sm font-medium whitespace-nowrap hover:bg-gray-50">Active</button>
+                <button
+                  class="px-4 py-1.5 text-gray-700 rounded-full text-sm font-medium whitespace-nowrap hover:bg-gray-50">Flagged</button>
+                <button
+                  class="px-4 py-1.5 text-gray-700 rounded-full text-sm font-medium whitespace-nowrap hover:bg-gray-50">Resolved</button>
+              </div>
+
+              <!-- Refresh and View Toggle -->
+              <div class="flex items-center space-x-2">
+                <button class="p-2 bg-gray-100 rounded-lg text-gray-600 hover:bg-gray-200 !rounded-button"
+                  title="Refresh Data">
+                  <div class="w-5 h-5 flex items-center justify-center">
+                    <i class="ri-refresh-line"></i>
+                  </div>
+                </button>
+                <div class="flex bg-gray-100 p-1 rounded-lg">
+                  <button class="p-1 bg-white rounded text-primary !rounded-button" title="Chart View">
+                    <div class="w-5 h-5 flex items-center justify-center">
+                      <i class="ri-bar-chart-2-line"></i>
+                    </div>
+                  </button>
+                  <button class="p-1 text-gray-600 hover:bg-gray-200 rounded !rounded-button" title="Table View">
+                    <div class="w-5 h-5 flex items-center justify-center">
+                      <i class="ri-table-line"></i>
+                    </div>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Key Metrics Cards -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+            <!-- Total Conversations -->
+            <div class="bg-white rounded-lg shadow-sm p-5">
+              <div class="flex items-center justify-between mb-3">
+                <h3 class="text-sm font-medium text-gray-500">Total Conversations</h3>
+                <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+                  <div class="w-4 h-4 flex items-center justify-center text-blue-600">
+                    <i class="ri-chat-3-line"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="flex items-end justify-between">
+                <div>
+                  <p class="text-2xl font-bold text-gray-800">2,438</p>
+                  <div class="flex items-center mt-1">
+                    <div class="w-4 h-4 flex items-center justify-center text-green-500 mr-1">
+                      <i class="ri-arrow-up-line"></i>
+                    </div>
+                    <span class="text-xs font-medium text-green-500">12.5%</span>
+                    <span class="text-xs text-gray-500 ml-1">vs last period</span>
+                  </div>
+                </div>
+                <div class="h-10 w-20">
+                  <div id="total-conversations-sparkline"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Active Conversations -->
+            <div class="bg-white rounded-lg shadow-sm p-5">
+              <div class="flex items-center justify-between mb-3">
+                <h3 class="text-sm font-medium text-gray-500">Active Conversations</h3>
+                <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+                  <div class="w-4 h-4 flex items-center justify-center text-green-600">
+                    <i class="ri-chat-check-line"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="flex items-end justify-between">
+                <div>
+                  <p class="text-2xl font-bold text-gray-800">1,247</p>
+                  <div class="flex items-center mt-1">
+                    <div class="w-4 h-4 flex items-center justify-center text-green-500 mr-1">
+                      <i class="ri-arrow-up-line"></i>
+                    </div>
+                    <span class="text-xs font-medium text-green-500">8.3%</span>
+                    <span class="text-xs text-gray-500 ml-1">vs last period</span>
+                  </div>
+                </div>
+                <div class="h-10 w-20">
+                  <div id="active-conversations-sparkline"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Flagged Content -->
+            <div class="bg-white rounded-lg shadow-sm p-5">
+              <div class="flex items-center justify-between mb-3">
+                <h3 class="text-sm font-medium text-gray-500">Flagged Content</h3>
+                <div class="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center">
+                  <div class="w-4 h-4 flex items-center justify-center text-yellow-600">
+                    <i class="ri-flag-line"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="flex items-end justify-between">
+                <div>
+                  <p class="text-2xl font-bold text-gray-800">187</p>
+                  <div class="flex items-center mt-1">
+                    <div class="w-4 h-4 flex items-center justify-center text-red-500 mr-1">
+                      <i class="ri-arrow-up-line"></i>
+                    </div>
+                    <span class="text-xs font-medium text-red-500">5.2%</span>
+                    <span class="text-xs text-gray-500 ml-1">vs last period</span>
+                  </div>
+                </div>
+                <div class="h-10 w-20">
+                  <div id="flagged-content-sparkline"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Average Resolution Time -->
+            <div class="bg-white rounded-lg shadow-sm p-5">
+              <div class="flex items-center justify-between mb-3">
+                <h3 class="text-sm font-medium text-gray-500">Avg. Resolution Time</h3>
+                <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center">
+                  <div class="w-4 h-4 flex items-center justify-center text-purple-600">
+                    <i class="ri-time-line"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="flex items-end justify-between">
+                <div>
+                  <p class="text-2xl font-bold text-gray-800">4.2h</p>
+                  <div class="flex items-center mt-1">
+                    <div class="w-4 h-4 flex items-center justify-center text-green-500 mr-1">
+                      <i class="ri-arrow-down-line"></i>
+                    </div>
+                    <span class="text-xs font-medium text-green-500">10.3%</span>
+                    <span class="text-xs text-gray-500 ml-1">vs last period</span>
+                  </div>
+                </div>
+                <div class="h-10 w-20">
+                  <div id="resolution-time-sparkline"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Main Charts Section -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <!-- Conversation Trends Chart -->
+            <div class="bg-white rounded-lg shadow-sm p-5">
+              <div class="flex items-center justify-between mb-5">
+                <h3 class="text-base font-semibold text-gray-800">Conversation Trends</h3>
+                <div class="relative">
+                  <button id="trend-period-btn"
+                    class="flex items-center px-2 py-1 text-xs bg-gray-100 rounded text-gray-700 hover:bg-gray-200 whitespace-nowrap">
+                    <span>Daily</span>
+                    <div class="w-4 h-4 flex items-center justify-center ml-1">
+                      <i class="ri-arrow-down-s-line"></i>
+                    </div>
+                  </button>
+                  <div id="trend-period-dropdown"
+                    class="absolute right-0 mt-1 w-24 bg-white rounded-lg shadow-lg py-1 z-10 hidden">
+                    <button
+                      class="w-full text-left px-3 py-1 text-xs text-primary font-medium hover:bg-gray-100">Daily</button>
+                    <button class="w-full text-left px-3 py-1 text-xs text-gray-700 hover:bg-gray-100">Weekly</button>
+                    <button class="w-full text-left px-3 py-1 text-xs text-gray-700 hover:bg-gray-100">Monthly</button>
+                  </div>
+                </div>
+              </div>
+              <div class="h-64">
+                <div id="conversation-trends-chart" class="w-full h-full"></div>
+              </div>
+            </div>
+
+            <!-- Content Flags Distribution -->
+            <div class="bg-white rounded-lg shadow-sm p-5">
+              <div class="flex items-center justify-between mb-5">
+                <h3 class="text-base font-semibold text-gray-800">Content Flags Distribution</h3>
+                <button class="flex items-center text-primary text-sm hover:underline">
+                  <span>View Details</span>
+                  <div class="w-4 h-4 flex items-center justify-center ml-1">
+                    <i class="ri-arrow-right-s-line"></i>
+                  </div>
+                </button>
+              </div>
+              <div class="h-64">
+                <div id="flags-distribution-chart" class="w-full h-full"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Secondary Metrics Grid -->
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+            <!-- Moderator Actions Timeline -->
+            <div class="bg-white rounded-lg shadow-sm p-5">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-base font-semibold text-gray-800">Moderator Actions</h3>
+                <div class="relative">
+                  <button id="mod-actions-btn"
+                    class="flex items-center px-2 py-1 text-xs bg-gray-100 rounded text-gray-700 hover:bg-gray-200 whitespace-nowrap">
+                    <span>Last 7 Days</span>
+                    <div class="w-4 h-4 flex items-center justify-center ml-1">
+                      <i class="ri-arrow-down-s-line"></i>
+                    </div>
+                  </button>
+                  <div id="mod-actions-dropdown"
+                    class="absolute right-0 mt-1 w-32 bg-white rounded-lg shadow-lg py-1 z-10 hidden">
+                    <button class="w-full text-left px-3 py-1 text-xs text-primary font-medium hover:bg-gray-100">Last 7
+                      Days</button>
+                    <button class="w-full text-left px-3 py-1 text-xs text-gray-700 hover:bg-gray-100">Last 14
+                      Days</button>
+                    <button class="w-full text-left px-3 py-1 text-xs text-gray-700 hover:bg-gray-100">Last 30
+                      Days</button>
+                  </div>
+                </div>
+              </div>
+              <div class="h-48">
+                <div id="moderator-actions-chart" class="w-full h-full"></div>
+              </div>
+            </div>
+
+            <!-- Resolution Time Analysis -->
+            <div class="bg-white rounded-lg shadow-sm p-5">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-base font-semibold text-gray-800">Resolution Time Analysis</h3>
+                <div class="relative">
+                  <button id="resolution-type-btn"
+                    class="flex items-center px-2 py-1 text-xs bg-gray-100 rounded text-gray-700 hover:bg-gray-200 whitespace-nowrap">
+                    <span>By Priority</span>
+                    <div class="w-4 h-4 flex items-center justify-center ml-1">
+                      <i class="ri-arrow-down-s-line"></i>
+                    </div>
+                  </button>
+                  <div id="resolution-type-dropdown"
+                    class="absolute right-0 mt-1 w-32 bg-white rounded-lg shadow-lg py-1 z-10 hidden">
+                    <button class="w-full text-left px-3 py-1 text-xs text-primary font-medium hover:bg-gray-100">By
+                      Priority</button>
+                    <button class="w-full text-left px-3 py-1 text-xs text-gray-700 hover:bg-gray-100">By Type</button>
+                    <button class="w-full text-left px-3 py-1 text-xs text-gray-700 hover:bg-gray-100">By
+                      Moderator</button>
+                  </div>
+                </div>
+              </div>
+              <div class="h-48">
+                <div id="resolution-time-chart" class="w-full h-full"></div>
+              </div>
+            </div>
+
+            <!-- Keyword Monitoring -->
+            <div class="bg-white rounded-lg shadow-sm p-5">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-base font-semibold text-gray-800">Flagged Keywords</h3>
+                <button class="flex items-center text-primary text-sm hover:underline">
+                  <span>Manage Keywords</span>
+                  <div class="w-4 h-4 flex items-center justify-center ml-1">
+                    <i class="ri-settings-line"></i>
+                  </div>
+                </button>
+              </div>
+              <div class="h-48">
+                <div id="keyword-monitoring-chart" class="w-full h-full"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Detailed Reports Table -->
+          <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-6">
+            <div class="px-5 py-4 border-b border-gray-200">
+              <h3 class="text-base font-semibold text-gray-800">Detailed Reports</h3>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full">
+                <thead>
+                  <tr class="bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th class="px-5 py-3">Period</th>
+                    <th class="px-5 py-3">Conversations</th>
+                    <th class="px-5 py-3">Flagged Content</th>
+                    <th class="px-5 py-3">Moderation Actions</th>
+                    <th class="px-5 py-3">Resolution Rate</th>
+                    <th class="px-5 py-3 text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                  <!-- Report Row 1 -->
+                  <tr class="hover:bg-gray-50">
+                    <td class="px-5 py-4">
+                      <span class="text-sm font-medium text-gray-800">Apr 24 - Apr 30, 2025</span>
+                    </td>
+                    <td class="px-5 py-4">
+                      <div class="flex items-center">
+                        <span class="text-sm text-gray-700">352</span>
+                        <span class="ml-2 px-2 py-0.5 text-xs bg-green-100 text-green-800 rounded-full">+8%</span>
+                      </div>
+                    </td>
+                    <td class="px-5 py-4">
+                      <div class="flex items-center">
+                        <span class="text-sm text-gray-700">28</span>
+                        <span class="ml-2 px-2 py-0.5 text-xs bg-red-100 text-red-800 rounded-full">+12%</span>
+                      </div>
+                    </td>
+                    <td class="px-5 py-4">
+                      <div class="flex items-center">
+                        <span class="text-sm text-gray-700">45</span>
+                        <span class="ml-2 px-2 py-0.5 text-xs bg-blue-100 text-blue-800 rounded-full">+5%</span>
+                      </div>
+                    </td>
+                    <td class="px-5 py-4">
+                      <div class="flex items-center">
+                        <div class="w-16 h-2 bg-gray-200 rounded-full mr-2">
+                          <div class="h-full bg-primary rounded-full" style="width: 92%"></div>
+                        </div>
+                        <span class="text-sm text-gray-700">92%</span>
+                      </div>
+                    </td>
+                    <td class="px-5 py-4 text-right">
+                      <button class="text-primary hover:underline text-sm font-medium">View Details</button>
+                    </td>
+                  </tr>
+
+                  <!-- Report Row 2 -->
+                  <tr class="hover:bg-gray-50">
+                    <td class="px-5 py-4">
+                      <span class="text-sm font-medium text-gray-800">Apr 17 - Apr 23, 2025</span>
+                    </td>
+                    <td class="px-5 py-4">
+                      <div class="flex items-center">
+                        <span class="text-sm text-gray-700">326</span>
+                        <span class="ml-2 px-2 py-0.5 text-xs bg-green-100 text-green-800 rounded-full">+5%</span>
+                      </div>
+                    </td>
+                    <td class="px-5 py-4">
+                      <div class="flex items-center">
+                        <span class="text-sm text-gray-700">25</span>
+                        <span class="ml-2 px-2 py-0.5 text-xs bg-green-100 text-green-800 rounded-full">-3%</span>
+                      </div>
+                    </td>
+                    <td class="px-5 py-4">
+                      <div class="flex items-center">
+                        <span class="text-sm text-gray-700">42</span>
+                        <span class="ml-2 px-2 py-0.5 text-xs bg-yellow-100 text-yellow-800 rounded-full">0%</span>
+                      </div>
+                    </td>
+                    <td class="px-5 py-4">
+                      <div class="flex items-center">
+                        <div class="w-16 h-2 bg-gray-200 rounded-full mr-2">
+                          <div class="h-full bg-primary rounded-full" style="width: 88%"></div>
+                        </div>
+                        <span class="text-sm text-gray-700">88%</span>
+                      </div>
+                    </td>
+                    <td class="px-5 py-4 text-right">
+                      <button class="text-primary hover:underline text-sm font-medium">View Details</button>
+                    </td>
+                  </tr>
+
+                  <!-- Report Row 3 -->
+                  <tr class="hover:bg-gray-50">
+                    <td class="px-5 py-4">
+                      <span class="text-sm font-medium text-gray-800">Apr 10 - Apr 16, 2025</span>
+                    </td>
+                    <td class="px-5 py-4">
+                      <div class="flex items-center">
+                        <span class="text-sm text-gray-700">310</span>
+                        <span class="ml-2 px-2 py-0.5 text-xs bg-green-100 text-green-800 rounded-full">+12%</span>
+                      </div>
+                    </td>
+                    <td class="px-5 py-4">
+                      <div class="flex items-center">
+                        <span class="text-sm text-gray-700">26</span>
+                        <span class="ml-2 px-2 py-0.5 text-xs bg-red-100 text-red-800 rounded-full">+4%</span>
+                      </div>
+                    </td>
+                    <td class="px-5 py-4">
+                      <div class="flex items-center">
+                        <span class="text-sm text-gray-700">42</span>
+                        <span class="ml-2 px-2 py-0.5 text-xs bg-green-100 text-green-800 rounded-full">-2%</span>
+                      </div>
+                    </td>
+                    <td class="px-5 py-4">
+                      <div class="flex items-center">
+                        <div class="w-16 h-2 bg-gray-200 rounded-full mr-2">
+                          <div class="h-full bg-primary rounded-full" style="width: 85%"></div>
+                        </div>
+                        <span class="text-sm text-gray-700">85%</span>
+                      </div>
+                    </td>
+                    <td class="px-5 py-4 text-right">
+                      <button class="text-primary hover:underline text-sm font-medium">View Details</button>
+                    </td>
+                  </tr>
+
+                  <!-- Report Row 4 -->
+                  <tr class="hover:bg-gray-50">
+                    <td class="px-5 py-4">
+                      <span class="text-sm font-medium text-gray-800">Apr 3 - Apr 9, 2025</span>
+                    </td>
+                    <td class="px-5 py-4">
+                      <div class="flex items-center">
+                        <span class="text-sm text-gray-700">278</span>
+                        <span class="ml-2 px-2 py-0.5 text-xs bg-red-100 text-red-800 rounded-full">-4%</span>
+                      </div>
+                    </td>
+                    <td class="px-5 py-4">
+                      <div class="flex items-center">
+                        <span class="text-sm text-gray-700">25</span>
+                        <span class="ml-2 px-2 py-0.5 text-xs bg-green-100 text-green-800 rounded-full">-8%</span>
+                      </div>
+                    </td>
+                    <td class="px-5 py-4">
+                      <div class="flex items-center">
+                        <span class="text-sm text-gray-700">43</span>
+                        <span class="ml-2 px-2 py-0.5 text-xs bg-red-100 text-red-800 rounded-full">+6%</span>
+                      </div>
+                    </td>
+                    <td class="px-5 py-4">
+                      <div class="flex items-center">
+                        <div class="w-16 h-2 bg-gray-200 rounded-full mr-2">
+                          <div class="h-full bg-primary rounded-full" style="width: 90%"></div>
+                        </div>
+                        <span class="text-sm text-gray-700">90%</span>
+                      </div>
+                    </td>
+                    <td class="px-5 py-4 text-right">
+                      <button class="text-primary hover:underline text-sm font-medium">View Details</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- Pagination -->
+            <div class="px-5 py-3 flex flex-wrap items-center justify-between border-t border-gray-200">
+              <div class="text-sm text-gray-500 mb-2 sm:mb-0">
+                Showing <span class="font-medium text-gray-700">1</span> to <span
+                  class="font-medium text-gray-700">4</span> of <span class="font-medium text-gray-700">12</span>
+                reports
+              </div>
+              <div class="flex items-center space-x-1">
+                <button class="px-3 py-1 bg-gray-100 text-gray-400 rounded-l-lg cursor-not-allowed !rounded-button">
+                  <div class="w-5 h-5 flex items-center justify-center">
+                    <i class="ri-arrow-left-s-line"></i>
+                  </div>
+                </button>
+                <button class="px-3 py-1 bg-primary text-white rounded-none !rounded-button">1</button>
+                <button
+                  class="px-3 py-1 bg-gray-100 text-gray-700 rounded-none hover:bg-gray-200 !rounded-button">2</button>
+                <button
+                  class="px-3 py-1 bg-gray-100 text-gray-700 rounded-none hover:bg-gray-200 !rounded-button">3</button>
+                <button class="px-3 py-1 bg-gray-100 text-gray-700 rounded-r-lg hover:bg-gray-200 !rounded-button">
+                  <div class="w-5 h-5 flex items-center justify-center">
+                    <i class="ri-arrow-right-s-line"></i>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Mobile Overlay -->
+  <div id="mobile-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-10 hidden"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Sidebar toggle
+      const sidebarToggle = document.getElementById('sidebar-toggle');
+      const sidebar = document.getElementById('sidebar');
+      const mobileOverlay = document.getElementById('mobile-overlay');
+
+      sidebarToggle.addEventListener('click', function () {
+        sidebar.classList.toggle('-translate-x-full');
+        mobileOverlay.classList.toggle('hidden');
+      });
+
+      mobileOverlay.addEventListener('click', function () {
+        sidebar.classList.add('-translate-x-full');
+        mobileOverlay.classList.add('hidden');
+      });
+
+      // Initialize sidebar state based on screen size
+      function checkScreenSize() {
+        if (window.innerWidth < 1024) {
+          sidebar.classList.add('-translate-x-full');
+        } else {
+          sidebar.classList.remove('-translate-x-full');
+          mobileOverlay.classList.add('hidden');
+        }
+      }
+
+      window.addEventListener('resize', checkScreenSize);
+      checkScreenSize();
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+      // Profile dropdown toggle
+      const profileMenuButton = document.getElementById('profile-menu-button');
+      const profileDropdown = document.getElementById('profile-dropdown');
+
+      profileMenuButton.addEventListener('click', function () {
+        profileDropdown.classList.toggle('hidden');
+      });
+
+      // Close dropdown when clicking outside
+      document.addEventListener('click', function (event) {
+        if (!profileMenuButton.contains(event.target) && !profileDropdown.contains(event.target)) {
+          profileDropdown.classList.add('hidden');
+        }
+      });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+      // Toggle dropdowns
+      function setupDropdown(buttonId, dropdownId) {
+        const button = document.getElementById(buttonId);
+        const dropdown = document.getElementById(dropdownId);
+
+        if (button && dropdown) {
+          button.addEventListener('click', function (e) {
+            e.stopPropagation();
+            dropdown.classList.toggle('hidden');
+          });
+        }
+      }
+
+      setupDropdown('export-btn', 'export-dropdown');
+      setupDropdown('date-range-btn', 'date-range-dropdown');
+      setupDropdown('trend-period-btn', 'trend-period-dropdown');
+      setupDropdown('mod-actions-btn', 'mod-actions-dropdown');
+      setupDropdown('resolution-type-btn', 'resolution-type-dropdown');
+
+      // Close dropdowns when clicking outside
+      document.addEventListener('click', function (e) {
+        const dropdowns = [
+          'export-dropdown', 'date-range-dropdown', 'trend-period-dropdown',
+          'mod-actions-dropdown', 'resolution-type-dropdown'
+        ];
+
+        dropdowns.forEach(id => {
+          const dropdown = document.getElementById(id);
+          const button = document.getElementById(id.replace('dropdown', 'btn'));
+
+          if (dropdown && !dropdown.classList.contains('hidden') &&
+            button && !button.contains(e.target) && !dropdown.contains(e.target)) {
+            dropdown.classList.add('hidden');
+          }
+        });
+      });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+      // Sparkline charts for key metrics
+      function createSparkline(elementId, data, color) {
+        const chart = echarts.init(document.getElementById(elementId));
+        const option = {
+          animation: false,
+          grid: {
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0
+          },
+          xAxis: {
+            type: 'category',
+            show: false
+          },
+          yAxis: {
+            type: 'value',
+            show: false
+          },
+          series: [{
+            data: data,
+            type: 'line',
+            showSymbol: false,
+            lineStyle: {
+              color: color
+            },
+            areaStyle: {
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                { offset: 0, color: color + 'CC' },
+                { offset: 1, color: color + '10' }
+              ])
+            }
+          }]
+        };
+        chart.setOption(option);
+      }
+
+      createSparkline('total-conversations-sparkline', [120, 132, 101, 134, 90, 150, 160], 'rgba(87, 181, 231, 1)');
+      createSparkline('active-conversations-sparkline', [90, 110, 85, 120, 90, 100, 110], 'rgba(141, 211, 199, 1)');
+      createSparkline('flagged-content-sparkline', [10, 15, 12, 20, 18, 22, 25], 'rgba(252, 141, 98, 1)');
+      createSparkline('resolution-time-sparkline', [6, 5.8, 5.2, 4.8, 4.5, 4.3, 4.2], 'rgba(251, 191, 114, 1)');
+
+      // Conversation Trends Chart
+      const conversationTrendsChart = echarts.init(document.getElementById('conversation-trends-chart'));
+      const conversationTrendsOption = {
+        animation: false,
+        tooltip: {
+          trigger: 'axis',
+          backgroundColor: 'rgba(255, 255, 255, 0.9)',
+          borderColor: '#e5e7eb',
+          textStyle: {
+            color: '#1f2937'
+          }
+        },
+        legend: {
+          data: ['All', 'Active', 'Flagged', 'Resolved'],
+          bottom: 0
+        },
+        grid: {
+          left: '3%',
+          right: '3%',
+          top: '3%',
+          bottom: 30,
+          containLabel: true
+        },
+        xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          data: ['Apr 24', 'Apr 25', 'Apr 26', 'Apr 27', 'Apr 28', 'Apr 29', 'Apr 30'],
+          axisLine: {
+            lineStyle: {
+              color: '#e5e7eb'
+            }
+          },
+          axisLabel: {
+            color: '#6b7280'
+          }
+        },
+        yAxis: {
+          type: 'value',
+          axisLine: {
+            show: false
+          },
+          axisLabel: {
+            color: '#6b7280'
+          },
+          splitLine: {
+            lineStyle: {
+              color: '#f3f4f6'
+            }
+          }
+        },
+        series: [
+          {
+            name: 'All',
+            type: 'line',
+            smooth: true,
+            data: [120, 132, 101, 134, 90, 150, 160],
+            lineStyle: {
+              color: 'rgba(87, 181, 231, 1)'
+            },
+            areaStyle: {
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                { offset: 0, color: 'rgba(87, 181, 231, 0.2)' },
+                { offset: 1, color: 'rgba(87, 181, 231, 0.05)' }
+              ])
+            }
+          },
+          {
+            name: 'Active',
+            type: 'line',
+            smooth: true,
+            data: [90, 110, 85, 120, 90, 100, 110],
+            lineStyle: {
+              color: 'rgba(141, 211, 199, 1)'
+            },
+            areaStyle: {
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                { offset: 0, color: 'rgba(141, 211, 199, 0.2)' },
+                { offset: 1, color: 'rgba(141, 211, 199, 0.05)' }
+              ])
+            }
+          },
+          {
+            name: 'Flagged',
+            type: 'line',
+            smooth: true,
+            data: [10, 15, 12, 20, 18, 22, 25],
+            lineStyle: {
+              color: 'rgba(252, 141, 98, 1)'
+            },
+            areaStyle: {
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                { offset: 0, color: 'rgba(252, 141, 98, 0.2)' },
+                { offset: 1, color: 'rgba(252, 141, 98, 0.05)' }
+              ])
+            }
+          },
+          {
+            name: 'Resolved',
+            type: 'line',
+            smooth: true,
+            data: [20, 25, 30, 25, 35, 40, 45],
+            lineStyle: {
+              color: 'rgba(251, 191, 114, 1)'
+            },
+            areaStyle: {
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                { offset: 0, color: 'rgba(251, 191, 114, 0.2)' },
+                { offset: 1, color: 'rgba(251, 191, 114, 0.05)' }
+              ])
+            }
+          }
+        ]
+      };
+      conversationTrendsChart.setOption(conversationTrendsOption);
+
+      // Content Flags Distribution Chart
+      const flagsDistributionChart = echarts.init(document.getElementById('flags-distribution-chart'));
+      const flagsDistributionOption = {
+        animation: false,
+        tooltip: {
+          trigger: 'item',
+          backgroundColor: 'rgba(255, 255, 255, 0.9)',
+          borderColor: '#e5e7eb',
+          textStyle: {
+            color: '#1f2937'
+          }
+        },
+        legend: {
+          orient: 'vertical',
+          right: '5%',
+          top: 'center',
+          textStyle: {
+            color: '#1f2937'
+          }
+        },
+        series: [
+          {
+            name: 'Flag Reasons',
+            type: 'pie',
+            radius: ['40%', '70%'],
+            center: ['40%', '50%'],
+            avoidLabelOverlap: false,
+            itemStyle: {
+              borderRadius: 8,
+              borderColor: '#fff',
+              borderWidth: 2
+            },
+            label: {
+              show: false
+            },
+            emphasis: {
+              label: {
+                show: true,
+                fontWeight: 'bold'
+              }
+            },
+            labelLine: {
+              show: false
+            },
+            data: [
+              { value: 72, name: 'Pricing Disputes', itemStyle: { color: 'rgba(87, 181, 231, 1)' } },
+              { value: 48, name: 'Inappropriate Content', itemStyle: { color: 'rgba(141, 211, 199, 1)' } },
+              { value: 32, name: 'Harassment', itemStyle: { color: 'rgba(251, 191, 114, 1)' } },
+              { value: 24, name: 'Potential Scams', itemStyle: { color: 'rgba(252, 141, 98, 1)' } },
+              { value: 11, name: 'Other', itemStyle: { color: '#d1d5db' } }
+            ]
+          }
+        ]
+      };
+      flagsDistributionChart.setOption(flagsDistributionOption);
+
+      // Moderator Actions Chart
+      const moderatorActionsChart = echarts.init(document.getElementById('moderator-actions-chart'));
+      const moderatorActionsOption = {
+        animation: false,
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'shadow'
+          },
+          backgroundColor: 'rgba(255, 255, 255, 0.9)',
+          borderColor: '#e5e7eb',
+          textStyle: {
+            color: '#1f2937'
+          }
+        },
+        legend: {
+          data: ['Warnings', 'Blocks', 'Resolutions'],
+          bottom: 0,
+          textStyle: {
+            color: '#1f2937'
+          }
+        },
+        grid: {
+          left: '3%',
+          right: '3%',
+          top: '3%',
+          bottom: 30,
+          containLabel: true
+        },
+        xAxis: {
+          type: 'category',
+          data: ['Apr 24', 'Apr 25', 'Apr 26', 'Apr 27', 'Apr 28', 'Apr 29', 'Apr 30'],
+          axisLine: {
+            lineStyle: {
+              color: '#e5e7eb'
+            }
+          },
+          axisLabel: {
+            color: '#6b7280',
+            fontSize: 10,
+            interval: 0,
+            rotate: 30
+          }
+        },
+        yAxis: {
+          type: 'value',
+          axisLine: {
+            show: false
+          },
+          axisLabel: {
+            color: '#6b7280'
+          },
+          splitLine: {
+            lineStyle: {
+              color: '#f3f4f6'
+            }
+          }
+        },
+        series: [
+          {
+            name: 'Warnings',
+            type: 'bar',
+            stack: 'total',
+            itemStyle: {
+              color: 'rgba(251, 191, 114, 1)'
+            },
+            data: [8, 10, 6, 12, 9, 11, 14]
+          },
+          {
+            name: 'Blocks',
+            type: 'bar',
+            stack: 'total',
+            itemStyle: {
+              color: 'rgba(252, 141, 98, 1)'
+            },
+            data: [3, 2, 4, 5, 2, 3, 4]
+          },
+          {
+            name: 'Resolutions',
+            type: 'bar',
+            stack: 'total',
+            itemStyle: {
+              color: 'rgba(141, 211, 199, 1)'
+            },
+            data: [6, 8, 5, 10, 8, 9, 12]
+          }
+        ]
+      };
+      moderatorActionsChart.setOption(moderatorActionsOption);
+
+      // Resolution Time Chart
+      const resolutionTimeChart = echarts.init(document.getElementById('resolution-time-chart'));
+      const resolutionTimeOption = {
+        animation: false,
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'shadow'
+          },
+          backgroundColor: 'rgba(255, 255, 255, 0.9)',
+          borderColor: '#e5e7eb',
+          textStyle: {
+            color: '#1f2937'
+          },
+          formatter: function (params) {
+            return params[0].name + '<br/>' +
+              'Min: ' + params[0].data[1] + 'h<br/>' +
+              'Avg: ' + params[0].data[4] + 'h<br/>' +
+              'Max: ' + params[0].data[5] + 'h';
+          }
+        },
+        grid: {
+          left: '10%',
+          right: '10%',
+          top: '10%',
+          bottom: '15%'
+        },
+        xAxis: {
+          type: 'category',
+          data: ['Low', 'Medium', 'High', 'Critical'],
+          axisLine: {
+            lineStyle: {
+              color: '#e5e7eb'
+            }
+          },
+          axisLabel: {
+            color: '#6b7280'
+          }
+        },
+        yAxis: {
+          type: 'value',
+          name: 'Hours',
+          nameTextStyle: {
+            color: '#6b7280'
+          },
+          axisLine: {
+            show: false
+          },
+          axisLabel: {
+            color: '#6b7280'
+          },
+          splitLine: {
+            lineStyle: {
+              color: '#f3f4f6'
+            }
+          }
+        },
+        series: [
+          {
+            name: 'Resolution Time',
+            type: 'boxplot',
+            itemStyle: {
+              color: 'rgba(87, 181, 231, 0.7)',
+              borderColor: 'rgba(87, 181, 231, 1)'
+            },
+            data: [
+              [2, 4, 6, 8, 6, 12], // Low priority: min, Q1, median, Q3, avg, max
+              [1.5, 3, 4.5, 6, 4.2, 8], // Medium priority
+              [1, 2, 3, 4, 2.8, 6], // High priority
+              [0.5, 1, 1.5, 2, 1.4, 3]  // Critical priority
+            ]
+          }
+        ]
+      };
+      resolutionTimeChart.setOption(resolutionTimeOption);
+
+      // Keyword Monitoring Chart
+      const keywordMonitoringChart = echarts.init(document.getElementById('keyword-monitoring-chart'));
+      const keywordMonitoringOption = {
+        animation: false,
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'shadow'
+          },
+          backgroundColor: 'rgba(255, 255, 255, 0.9)',
+          borderColor: '#e5e7eb',
+          textStyle: {
+            color: '#1f2937'
+          }
+        },
+        grid: {
+          left: '3%',
+          right: '3%',
+          top: '3%',
+          bottom: '3%',
+          containLabel: true
+        },
+        xAxis: {
+          type: 'value',
+          axisLine: {
+            show: false
+          },
+          axisLabel: {
+            color: '#6b7280'
+          },
+          splitLine: {
+            lineStyle: {
+              color: '#f3f4f6'
+            }
+          }
+        },
+        yAxis: {
+          type: 'category',
+          data: ['scam', 'dispute', 'refund', 'complaint', 'fraud', 'fake', 'price'],
+          axisLine: {
+            lineStyle: {
+              color: '#e5e7eb'
+            }
+          },
+          axisLabel: {
+            color: '#6b7280'
+          }
+        },
+        series: [
+          {
+            name: 'Occurrences',
+            type: 'bar',
+            data: [32, 28, 24, 18, 15, 12, 10],
+            itemStyle: {
+              color: function (params) {
+                const colorList = [
+                  'rgba(252, 141, 98, 1)',
+                  'rgba(251, 191, 114, 1)',
+                  'rgba(141, 211, 199, 1)',
+                  'rgba(87, 181, 231, 1)',
+                  'rgba(252, 141, 98, 0.8)',
+                  'rgba(251, 191, 114, 0.8)',
+                  'rgba(141, 211, 199, 0.8)'
+                ];
+                return colorList[params.dataIndex];
+              },
+              borderRadius: [0, 4, 4, 0]
+            }
+          }
+        ]
+      };
+      keywordMonitoringChart.setOption(keywordMonitoringOption);
+
+      // Resize charts when window size changes
+      window.addEventListener('resize', function () {
+        conversationTrendsChart.resize();
+        flagsDistributionChart.resize();
+        moderatorActionsChart.resize();
+        resolutionTimeChart.resize();
+        keywordMonitoringChart.resize();
+      });
+    });
+  </script>
+</body>
+
+</html>

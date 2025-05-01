@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Krishi Setu Admin Panel</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config = { theme: { extend: { colors: { primary: '#2C5F2D', secondary: '#8B4513' }, borderRadius: { 'none': '0px', 'sm': '4px', DEFAULT: '8px', 'md': '12px', 'lg': '16px', 'xl': '20px', '2xl': '24px', '3xl': '32px', 'full': '9999px', 'button': '8px' } } } }</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+    <style>
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 8px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #a1a1a1;
+        }
+
+        .custom-checkbox {
+            position: relative;
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #d1d5db;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .custom-checkbox.checked {
+            background-color: #2C5F2D;
+            border-color: #2C5F2D;
+        }
+
+        .custom-checkbox.checked::after {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 2px;
+            width: 5px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        .custom-switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 22px;
+        }
+
+        .custom-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .switch-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #e5e7eb;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .switch-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 2px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.switch-slider {
+            background-color: #2C5F2D;
+        }
+
+        input:checked+.switch-slider:before {
+            transform: translateX(20px);
+        }
+
+        .custom-radio {
+            position: relative;
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #d1d5db;
+            border-radius: 50%;
+            transition: all 0.2s;
+        }
+
+        .custom-radio.checked {
+            border-color: #2C5F2D;
+        }
+
+        .custom-radio.checked::after {
+            content: '';
+            position: absolute;
+            left: 3px;
+            top: 3px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #2C5F2D;
+        }
+
+        .range-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            border-radius: 5px;
+            background: #e5e7eb;
+            outline: none;
+        }
+
+        .range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #2C5F2D;
+            cursor: pointer;
+        }
+
+        .range-slider::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #2C5F2D;
+            cursor: pointer;
+            border: none;
+        }
+
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .tab-active {
+            color: #2C5F2D;
+            border-bottom: 2px solid #2C5F2D;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <div id="sidebar"
+            class="bg-primary text-white w-64 flex-shrink-0 transition-all duration-300 z-20 h-full fixed lg:relative">
+            <div class="p-4 flex items-center border-b border-white/10">
+                <div class="w-10 h-10 flex items-center justify-center bg-white rounded-full mr-3">
+                    <span class="font-['Pacifico'] text-primary text-lg">logo</span>
+                </div>
+                <h1 class="text-xl font-semibold">Krishi Setu</h1>
+            </div>
+            <nav class="py-4 custom-scrollbar overflow-y-auto h-[calc(100%-64px)]">
+                <ul>
+                    <li class="mb-1">
+                        <a href="/krishi-setu"
+                            class="flex items-center py-2 px-4 text-white bg-white/10 rounded-md mx-2">
+                            <div class="w-6 h-6 flex items-center justify-center mr-3">
+                                <i class="ri-dashboard-line"></i>
+                            </div>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="mb-1">
+                        <a href="/krishi-setu/User-Management"
+                            class="flex items-center py-2 px-4 text-white/80 hover:bg-white/10 rounded-md mx-2 transition">
+                            <div class="w-6 h-6 flex items-center justify-center mr-3">
+                                <i class="ri-user-line"></i>
+                            </div>
+                            <span>User Management</span>
+                        </a>
+                    </li>
+                    <li class="mb-1">
+                        <a href="/krishi-setu/Product-Listing-Moderation"
+                            class="flex items-center py-2 px-4 text-white/80 hover:bg-white/10 rounded-md mx-2 transition">
+                            <div class="w-6 h-6 flex items-center justify-center mr-3">
+                                <i class="ri-store-line"></i>
+                            </div>
+                            <span>Listing Moderation</span>
+                        </a>
+                    </li>
+                    <li class="mb-1">
+                        <a href="/krishi-setu/Chat-Monitoring-Dashboard"
+                            class="flex items-center py-2 px-4 text-white/80 hover:bg-white/10 rounded-md mx-2 transition">
+                            <div class="w-6 h-6 flex items-center justify-center mr-3">
+                                <i class="ri-chat-3-line"></i>
+                            </div>
+                            <span>Chat Monitoring</span>
+                        </a>
+                    </li>
+                    <li class="mb-1">
+                        <a href="/krishi-setu/Reports"
+                            class="flex items-center py-2 px-4 text-white/80 hover:bg-white/10 rounded-md mx-2 transition">
+                            <div class="w-6 h-6 flex items-center justify-center mr-3">
+                                <i class="ri-bar-chart-line"></i>
+                            </div>
+                            <span>Analytics & Reports</span>
+                        </a>
+                    </li>
+                    <li class="mb-1">
+                        <a href="/krishi-setu/Settings-Configuration"
+                            class="flex items-center py-2 px-4 text-white/80 hover:bg-white/10 rounded-md mx-2 transition">
+                            <div class="w-6 h-6 flex items-center justify-center mr-3">
+                                <i class="ri-settings-line"></i>
+                            </div>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                </ul>
+                <div class="mt-8 px-4">
+                    <div class="bg-white/10 rounded-lg p-4">
+                        <h3 class="text-sm font-medium mb-2">System Status</h3>
+                        <div class="mb-2">
+                            <div class="flex justify-between text-xs mb-1">
+                                <span>API Uptime</span>
+                                <span>99.8%</span>
+                            </div>
+                            <div class="h-1.5 bg-white/20 rounded-full overflow-hidden">
+                                <div class="h-full bg-green-400 rounded-full" style="width: 99.8%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs mb-1">
+                                <span>Error Rate</span>
+                                <span>0.2%</span>
+                            </div>
+                            <div class="h-1.5 bg-white/20 rounded-full overflow-hidden">
+                                <div class="h-full bg-red-400 rounded-full" style="width: 0.2%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- Header -->
+            <header class="bg-white border-b border-gray-200 shadow-sm z-10">
+                <div class="flex items-center justify-between px-4 py-3">
+                    <div class="flex items-center lg:hidden">
+                        <button id="sidebar-toggle" class="text-gray-600 focus:outline-none !rounded-button">
+                            <div class="w-6 h-6 flex items-center justify-center">
+                                <i class="ri-menu-line"></i>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="flex-1 mx-4 lg:max-w-md">
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                    <i class="ri-search-line"></i>
+                                </div>
+                            </div>
+                            <input type="text"
+                                class="w-full bg-gray-100 border-none pl-10 pr-4 py-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+                                placeholder="Search...">
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="relative mr-4">
+                            <div id="notificationButton"
+                                class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center cursor-pointer">
+                                <div class="w-6 h-6 flex items-center justify-center relative">
+                                    <i class="ri-notification-3-line text-gray-600"></i>
+                                    <span id="notificationCount"
+                                        class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-white text-xs flex items-center justify-center">3</span>
+                                </div>
+                            </div>
+                            <div id="notificationPanel"
+                                class="hidden absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg z-50">
+                                <div class="p-4 border-b border-gray-100">
+                                    <div class="flex justify-between items-center">
+                                        <h3 class="font-medium">Notifications</h3>
+                                        <button id="markAllRead" class="text-sm text-primary hover:text-primary/80">Mark all as
+                                            read</button>
+                                    </div>
+                                </div>
+                                <div class="max-h-96 overflow-y-auto">
+                                    <div class="notification-item p-4 border-b border-gray-100 hover:bg-gray-50">
+                                        <div class="flex items-start">
+                                            <div class="w-2 h-2 mt-2 bg-red-500 rounded-full flex-shrink-0"></div>
+                                            <div class="ml-3 flex-grow">
+                                                <div class="flex justify-between items-start">
+                                                    <p class="text-sm text-gray-800">New seller registration request from Rajesh
+                                                        Kumar needs approval</p>
+                                                    <button
+                                                        class="mark-as-read ml-2 text-xs text-gray-400 hover:text-primary whitespace-nowrap">Mark
+                                                        as read</button>
+                                                </div>
+                                                <div class="flex items-center mt-1">
+                                                    <span class="text-xs text-red-500 font-medium">High Priority</span>
+                                                    <span class="text-xs text-gray-400 ml-3">2 mins ago</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="notification-item p-4 border-b border-gray-100 hover:bg-gray-50">
+                                        <div class="flex items-start">
+                                            <div class="w-2 h-2 mt-2 bg-yellow-500 rounded-full flex-shrink-0"></div>
+                                            <div class="ml-3 flex-grow">
+                                                <div class="flex justify-between items-start">
+                                                    <p class="text-sm text-gray-800">System detected unusual activity in
+                                                        transaction #4528</p>
+                                                    <button
+                                                        class="mark-as-read ml-2 text-xs text-gray-400 hover:text-primary whitespace-nowrap">Mark
+                                                        as read</button>
+                                                </div>
+                                                <div class="flex items-center mt-1">
+                                                    <span class="text-xs text-yellow-500 font-medium">Medium Priority</span>
+                                                    <span class="text-xs text-gray-400 ml-3">15 mins ago</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="notification-item p-4 border-b border-gray-100 hover:bg-gray-50">
+                                        <div class="flex items-start">
+                                            <div class="w-2 h-2 mt-2 bg-blue-500 rounded-full flex-shrink-0"></div>
+                                            <div class="ml-3 flex-grow">
+                                                <div class="flex justify-between items-start">
+                                                    <p class="text-sm text-gray-800">Daily system health report is now available
+                                                    </p>
+                                                    <button
+                                                        class="mark-as-read ml-2 text-xs text-gray-400 hover:text-primary whitespace-nowrap">Mark
+                                                        as read</button>
+                                                </div>
+                                                <div class="flex items-center mt-1">
+                                                    <span class="text-xs text-blue-500 font-medium">Low Priority</span>
+                                                    <span class="text-xs text-gray-400 ml-3">1 hour ago</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="p-4 text-center border-t border-gray-100">
+                                    <a href="#" class="text-sm text-primary hover:text-primary/80">View all notifications</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center cursor-pointer relative" id="adminUserDropdown">
+                            <div
+                                class="w-8 h-8 bg-primary rounded-full flex items-center justify-center mr-2 text-white text-sm">
+                                A</div>
+                            <span class="mr-1">Admin User</span>
+                            <div class="w-4 h-4 flex items-center justify-center">
+                                <i class="ri-arrow-down-s-line"></i>
+                            </div>
+                            <div id="adminDropdownMenu"
+                                class="absolute right-0 top-full mt-2 w-56 bg-white rounded-lg shadow-lg py-2 hidden z-50">
+                                <a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                                    <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                        <i class="ri-user-line"></i>
+                                    </div>
+                                    View Profile
+                                </a>
+                                <a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                                    <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                        <i class="ri-settings-4-line"></i>
+                                    </div>
+                                    Account Settings
+                                </a>
+                                <a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                                    <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                        <i class="ri-lock-password-line"></i>
+                                    </div>
+                                    Change Password
+                                </a>
+                                <a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                                    <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                        <i class="ri-notification-4-line"></i>
+                                    </div>
+                                    Notification Preferences
+                                </a>
+                                <div class="h-px bg-gray-200 my-2"></div>
+                                <a href="#" id="logoutButton"
+                                    class="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-50">
+                                    <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                        <i class="ri-logout-box-r-line"></i>
+                                    </div>
+                                    Logout
+                                </a>
+                                <div id="logoutDialog"
+                                    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+                                    <div class="bg-white rounded-lg p-6 w-[320px] shadow-xl">
+                                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Confirm Logout</h3>
+                                        <p class="text-gray-600 mb-6">Are you sure you want to log out?</p>
+                                        <div class="flex justify-end space-x-3">
+                                            <button id="cancelLogout"
+                                                class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-button whitespace-nowrap">Cancel</button>
+                                            <a href=""
+                                                data-readdy="true">
+                                                <button id="confirmLogout"
+                                                    class="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-button whitespace-nowrap">Logout</button>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <!-- Main Content Area -->
+            <main class="flex-1 overflow-y-auto custom-scrollbar bg-gray-50 p-4 lg:p-6">
+                <div class="max-w-7xl mx-auto">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between mb-6">
+                        <div>
+                            <h1 class="text-2xl font-bold text-gray-800">Dashboard</h1>
+                            <p class="text-gray-600 mt-1">Welcome back! Here's what's happening with your marketplace
+                                today.</p>
+                        </div>
+                        <div class="mt-4 md:mt-0 flex space-x-3">
+                            <button
+                                class="flex items-center px-4 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap">
+                                <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                    <i class="ri-download-line"></i>
+                                </div>
+                                Export Report
+                            </button>
+                            <button
+                                class="flex items-center px-4 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-primary/90 whitespace-nowrap">
+                                <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                    <i class="ri-refresh-line"></i>
+                                </div>
+                                Refresh Data
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Date Range Selector -->
+                    <div class="bg-white rounded-lg shadow-sm p-4 mb-6 flex flex-wrap items-center justify-between">
+                        <div class="flex items-center space-x-2 mb-3 sm:mb-0">
+                            <span class="text-sm font-medium text-gray-700">Date Range:</span>
+                            <button
+                                class="px-3 py-1.5 bg-primary/10 text-primary rounded-full text-sm font-medium whitespace-nowrap">Today</button>
+                            <button
+                                class="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full text-sm font-medium whitespace-nowrap">Week</button>
+                            <button
+                                class="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full text-sm font-medium whitespace-nowrap">Month</button>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                    <div class="w-4 h-4 flex items-center justify-center text-gray-400">
+                                        <i class="ri-calendar-line"></i>
+                                    </div>
+                                </div>
+                                <input type="text"
+                                    class="bg-gray-100 border-none pl-9 pr-4 py-1.5 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+                                    value="Apr 23, 2025 - Apr 30, 2025">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stats Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                        <div class="bg-white rounded-lg shadow-sm p-6 transition hover:shadow-md">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm font-medium text-gray-500">Total Users</p>
+                                    <h3 class="text-2xl font-bold mt-1 text-gray-800">12,487</h3>
+                                    <p class="text-xs text-green-600 mt-2 flex items-center">
+                                        <span class="w-3 h-3 flex items-center justify-center mr-1">
+                                            <i class="ri-arrow-up-line"></i>
+                                        </span>
+                                        <span>8.2% from last week</span>
+                                    </p>
+                                </div>
+                                <div
+                                    class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center text-primary">
+                                    <div class="w-6 h-6 flex items-center justify-center">
+                                        <i class="ri-user-line"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 flex items-center text-xs text-gray-500">
+                                <span class="mr-2">Buyers: 8,235</span>
+                                <span class="h-4 border-r border-gray-300"></span>
+                                <span class="ml-2">Sellers: 4,252</span>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-sm p-6 transition hover:shadow-md">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm font-medium text-gray-500">Active Listings</p>
+                                    <h3 class="text-2xl font-bold mt-1 text-gray-800">3,842</h3>
+                                    <p class="text-xs text-green-600 mt-2 flex items-center">
+                                        <span class="w-3 h-3 flex items-center justify-center mr-1">
+                                            <i class="ri-arrow-up-line"></i>
+                                        </span>
+                                        <span>12.5% from last week</span>
+                                    </p>
+                                </div>
+                                <div
+                                    class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+                                    <div class="w-6 h-6 flex items-center justify-center">
+                                        <i class="ri-store-2-line"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 flex items-center text-xs text-gray-500">
+                                <span class="mr-2">New today: 78</span>
+                                <span class="h-4 border-r border-gray-300"></span>
+                                <span class="ml-2">Pending: 43</span>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-sm p-6 transition hover:shadow-md">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm font-medium text-gray-500">Inquiries</p>
+                                    <h3 class="text-2xl font-bold mt-1 text-gray-800">1,254</h3>
+                                    <p class="text-xs text-red-600 mt-2 flex items-center">
+                                        <span class="w-3 h-3 flex items-center justify-center mr-1">
+                                            <i class="ri-arrow-down-line"></i>
+                                        </span>
+                                        <span>3.1% from last week</span>
+                                    </p>
+                                </div>
+                                <div
+                                    class="w-12 h-12 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-600">
+                                    <div class="w-6 h-6 flex items-center justify-center">
+                                        <i class="ri-message-3-line"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 flex items-center text-xs text-gray-500">
+                                <span class="mr-2">Responded: 1,087</span>
+                                <span class="h-4 border-r border-gray-300"></span>
+                                <span class="ml-2">Pending: 167</span>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-sm p-6 transition hover:shadow-md">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm font-medium text-gray-500">Revenue</p>
+                                    <h3 class="text-2xl font-bold mt-1 text-gray-800">₹324,582</h3>
+                                    <p class="text-xs text-green-600 mt-2 flex items-center">
+                                        <span class="w-3 h-3 flex items-center justify-center mr-1">
+                                            <i class="ri-arrow-up-line"></i>
+                                        </span>
+                                        <span>15.3% from last week</span>
+                                    </p>
+                                </div>
+                                <div
+                                    class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center text-purple-600">
+                                    <div class="w-6 h-6 flex items-center justify-center">
+                                        <i class="ri-currency-line"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 flex items-center text-xs text-gray-500">
+                                <span class="mr-2">Commission: ₹48,687</span>
+                                <span class="h-4 border-r border-gray-300"></span>
+                                <span class="ml-2">Fees: ₹12,954</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts Section -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                        <div class="bg-white rounded-lg shadow-sm p-4">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="font-semibold text-gray-800">User Growth</h3>
+                                <div class="flex space-x-2">
+                                    <button
+                                        class="px-2 py-1 text-xs font-medium bg-gray-100 text-gray-700 rounded whitespace-nowrap">Weekly</button>
+                                    <button
+                                        class="px-2 py-1 text-xs font-medium bg-primary/10 text-primary rounded whitespace-nowrap">Monthly</button>
+                                </div>
+                            </div>
+                            <div id="user-growth-chart" class="h-64"></div>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-sm p-4">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="font-semibold text-gray-800">Top Categories</h3>
+                                <button class="text-primary text-sm font-medium whitespace-nowrap">View All</button>
+                            </div>
+                            <div id="categories-chart" class="h-64"></div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity and Flagged Listings -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div class="lg:col-span-2 bg-white rounded-lg shadow-sm">
+                            <div class="p-4 border-b border-gray-100">
+                                <div class="flex items-center justify-between">
+                                    <h3 class="font-semibold text-gray-800">Recent Activity</h3>
+                                    <button class="text-primary text-sm font-medium whitespace-nowrap">View All</button>
+                                </div>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="w-full">
+                                    <thead>
+                                        <tr
+                                            class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            <th class="px-4 py-3">User</th>
+                                            <th class="px-4 py-3">Action</th>
+                                            <th class="px-4 py-3">Date</th>
+                                            <th class="px-4 py-3">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-100">
+                                        <tr class="hover:bg-gray-50">
+                                            <td class="px-4 py-3">
+                                                <div class="flex items-center">
+                                                    <div
+                                                        class="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center mr-3">
+                                                        <span class="text-orange-600 font-medium text-sm">RK</span>
+                                                    </div>
+                                                    <div>
+                                                        <p class="text-sm font-medium text-gray-800">Rajesh Kumar</p>
+                                                        <p class="text-xs text-gray-500">Seller</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="px-4 py-3 text-sm text-gray-700">Added new listing "Organic Wheat
+                                                (50kg)"</td>
+                                            <td class="px-4 py-3 text-sm text-gray-500">30 Apr, 10:23 AM</td>
+                                            <td class="px-4 py-3">
+                                                <span
+                                                    class="px-2 py-1 text-xs font-medium bg-yellow-100 text-yellow-800 rounded-full">Pending</span>
+                                            </td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50">
+                                            <td class="px-4 py-3">
+                                                <div class="flex items-center">
+                                                    <div
+                                                        class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-3">
+                                                        <span class="text-blue-600 font-medium text-sm">SP</span>
+                                                    </div>
+                                                    <div>
+                                                        <p class="text-sm font-medium text-gray-800">Sunita Patel</p>
+                                                        <p class="text-xs text-gray-500">Buyer</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="px-4 py-3 text-sm text-gray-700">Sent inquiry for "Tractor Rental
+                                                Service"</td>
+                                            <td class="px-4 py-3 text-sm text-gray-500">30 Apr, 09:45 AM</td>
+                                            <td class="px-4 py-3">
+                                                <span
+                                                    class="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">Completed</span>
+                                            </td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50">
+                                            <td class="px-4 py-3">
+                                                <div class="flex items-center">
+                                                    <div
+                                                        class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mr-3">
+                                                        <span class="text-green-600 font-medium text-sm">AS</span>
+                                                    </div>
+                                                    <div>
+                                                        <p class="text-sm font-medium text-gray-800">Amit Singh</p>
+                                                        <p class="text-xs text-gray-500">Admin</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="px-4 py-3 text-sm text-gray-700">Approved 12 new listings</td>
+                                            <td class="px-4 py-3 text-sm text-gray-500">30 Apr, 09:12 AM</td>
+                                            <td class="px-4 py-3">
+                                                <span
+                                                    class="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">Completed</span>
+                                            </td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50">
+                                            <td class="px-4 py-3">
+                                                <div class="flex items-center">
+                                                    <div
+                                                        class="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center mr-3">
+                                                        <span class="text-red-600 font-medium text-sm">MR</span>
+                                                    </div>
+                                                    <div>
+                                                        <p class="text-sm font-medium text-gray-800">Meera Reddy</p>
+                                                        <p class="text-xs text-gray-500">Seller</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="px-4 py-3 text-sm text-gray-700">Updated price for "Organic Rice
+                                                (25kg)"</td>
+                                            <td class="px-4 py-3 text-sm text-gray-500">30 Apr, 08:55 AM</td>
+                                            <td class="px-4 py-3">
+                                                <span
+                                                    class="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">Completed</span>
+                                            </td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50">
+                                            <td class="px-4 py-3">
+                                                <div class="flex items-center">
+                                                    <div
+                                                        class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center mr-3">
+                                                        <span class="text-purple-600 font-medium text-sm">VJ</span>
+                                                    </div>
+                                                    <div>
+                                                        <p class="text-sm font-medium text-gray-800">Vikram Joshi</p>
+                                                        <p class="text-xs text-gray-500">Buyer</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="px-4 py-3 text-sm text-gray-700">Reported chat with seller
+                                                "Ganesh Farms"</td>
+                                            <td class="px-4 py-3 text-sm text-gray-500">30 Apr, 08:30 AM</td>
+                                            <td class="px-4 py-3">
+                                                <span
+                                                    class="px-2 py-1 text-xs font-medium bg-red-100 text-red-800 rounded-full">Flagged</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-sm">
+                            <div class="p-4 border-b border-gray-100">
+                                <h3 class="font-semibold text-gray-800">Flagged Listings</h3>
+                            </div>
+                            <div class="p-4 space-y-4">
+                                <div class="border border-gray-200 rounded-lg p-3 hover:shadow-sm transition">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <h4 class="font-medium text-gray-800">Chemical Fertilizer Mix</h4>
+                                            <p class="text-xs text-gray-500 mt-1">Listed by: Prakash Agro Industries</p>
+                                        </div>
+                                        <span
+                                            class="px-2 py-1 text-xs font-medium bg-red-100 text-red-800 rounded-full">Flagged</span>
+                                    </div>
+                                    <p class="text-sm text-gray-600 mt-2">Flagged for: Prohibited item (Non-organic
+                                        chemicals)</p>
+                                    <div class="flex justify-between mt-3">
+                                        <span class="text-xs text-gray-500">Flagged on: 30 Apr, 07:45 AM</span>
+                                        <div class="flex space-x-2">
+                                            <button
+                                                class="px-2 py-1 text-xs font-medium text-red-600 border border-red-200 rounded !rounded-button whitespace-nowrap">Remove</button>
+                                            <button
+                                                class="px-2 py-1 text-xs font-medium text-green-600 border border-green-200 rounded !rounded-button whitespace-nowrap">Approve</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="border border-gray-200 rounded-lg p-3 hover:shadow-sm transition">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <h4 class="font-medium text-gray-800">Tractor (Used) - 2015 Model</h4>
+                                            <p class="text-xs text-gray-500 mt-1">Listed by: Ravi Machinery</p>
+                                        </div>
+                                        <span
+                                            class="px-2 py-1 text-xs font-medium bg-red-100 text-red-800 rounded-full">Flagged</span>
+                                    </div>
+                                    <p class="text-sm text-gray-600 mt-2">Flagged for: Misleading information
+                                        (Condition)</p>
+                                    <div class="flex justify-between mt-3">
+                                        <span class="text-xs text-gray-500">Flagged on: 29 Apr, 18:22 PM</span>
+                                        <div class="flex space-x-2">
+                                            <button
+                                                class="px-2 py-1 text-xs font-medium text-red-600 border border-red-200 rounded !rounded-button whitespace-nowrap">Remove</button>
+                                            <button
+                                                class="px-2 py-1 text-xs font-medium text-green-600 border border-green-200 rounded !rounded-button whitespace-nowrap">Approve</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="border border-gray-200 rounded-lg p-3 hover:shadow-sm transition">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <h4 class="font-medium text-gray-800">Premium Quality Seeds</h4>
+                                            <p class="text-xs text-gray-500 mt-1">Listed by: Green Future Ltd</p>
+                                        </div>
+                                        <span
+                                            class="px-2 py-1 text-xs font-medium bg-red-100 text-red-800 rounded-full">Flagged</span>
+                                    </div>
+                                    <p class="text-sm text-gray-600 mt-2">Flagged for: Price gouging (300% markup)</p>
+                                    <div class="flex justify-between mt-3">
+                                        <span class="text-xs text-gray-500">Flagged on: 29 Apr, 15:10 PM</span>
+                                        <div class="flex space-x-2">
+                                            <button
+                                                class="px-2 py-1 text-xs font-medium text-red-600 border border-red-200 rounded !rounded-button whitespace-nowrap">Remove</button>
+                                            <button
+                                                class="px-2 py-1 text-xs font-medium text-green-600 border border-green-200 rounded !rounded-button whitespace-nowrap">Approve</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-center mt-4">
+                                    <button class="text-primary text-sm font-medium whitespace-nowrap">View All Flagged
+                                        Listings</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Mobile Overlay -->
+    <div id="mobile-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-10 hidden"></div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Sidebar toggle
+            const sidebarToggle = document.getElementById('sidebar-toggle');
+            const sidebar = document.getElementById('sidebar');
+            const mobileOverlay = document.getElementById('mobile-overlay');
+            const notificationButton = document.getElementById('notificationButton');
+            const notificationPanel = document.getElementById('notificationPanel');
+            const adminUserDropdown = document.getElementById('adminUserDropdown');
+            const dropdownMenu = document.getElementById('adminDropdownMenu');
+            const logoutButton = document.getElementById('logoutButton');
+            const logoutDialog = document.getElementById('logoutDialog');
+            const cancelLogout = document.getElementById('cancelLogout');
+            const confirmLogout = document.getElementById('confirmLogout');
+            logoutButton.addEventListener('click', function (e) {
+                e.preventDefault();
+                logoutDialog.classList.remove('hidden');
+                dropdownMenu.classList.add('hidden');
+            });
+            cancelLogout.addEventListener('click', function () {
+                logoutDialog.classList.add('hidden');
+            });
+            confirmLogout.addEventListener('click', function () {
+                window.location.href = 'https://readdy.ai/home/6be06d49-0367-45b4-a145-f9a00824ed8a/8223c3b5-b687-4360-baf9-007c27a1761d';
+            });
+
+            adminUserDropdown.addEventListener('click', function (e) {
+                e.stopPropagation();
+                dropdownMenu.classList.toggle('hidden');
+            });
+            document.addEventListener('click', function (e) {
+                if (!adminUserDropdown.contains(e.target)) {
+                    dropdownMenu.classList.add('hidden');
+                }
+            });
+            dropdownMenu.addEventListener('click', function (e) {
+                if (e.target.tagName === 'A') {
+                    dropdownMenu.classList.add('hidden');
+                }
+            });
+
+            notificationButton.addEventListener('click', function (e) {
+                e.stopPropagation();
+                notificationPanel.classList.toggle('hidden');
+                dropdownMenu.classList.add('hidden');
+            });
+            document.addEventListener('click', function (e) {
+                if (!notificationPanel.contains(e.target) && e.target !== notificationButton) {
+                    notificationPanel.classList.add('hidden');
+                }
+            });
+
+            sidebarToggle.addEventListener('click', function () {
+                sidebar.classList.toggle('-translate-x-full');
+                mobileOverlay.classList.toggle('hidden');
+            });
+
+            mobileOverlay.addEventListener('click', function () {
+                sidebar.classList.add('-translate-x-full');
+                mobileOverlay.classList.add('hidden');
+            });
+
+            // Initialize sidebar state based on screen size
+            function checkScreenSize() {
+                if (window.innerWidth < 1024) {
+                    sidebar.classList.add('-translate-x-full');
+                } else {
+                    sidebar.classList.remove('-translate-x-full');
+                    mobileOverlay.classList.add('hidden');
+                }
+            }
+
+            window.addEventListener('resize', checkScreenSize);
+            checkScreenSize();
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Profile dropdown toggle
+            const profileMenuButton = document.getElementById('profile-menu-button');
+            const profileDropdown = document.getElementById('profile-dropdown');
+
+            profileMenuButton.addEventListener('click', function () {
+                profileDropdown.classList.toggle('hidden');
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function (event) {
+                if (!profileMenuButton.contains(event.target) && !profileDropdown.contains(event.target)) {
+                    profileDropdown.classList.add('hidden');
+                }
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // User Growth Chart
+            const userGrowthChart = echarts.init(document.getElementById('user-growth-chart'));
+
+            const userGrowthOption = {
+                animation: false,
+                tooltip: {
+                    trigger: 'axis',
+                    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                    borderColor: '#e5e7eb',
+                    textStyle: {
+                        color: '#1f2937'
+                    }
+                },
+                legend: {
+                    data: ['Buyers', 'Sellers'],
+                    bottom: 0
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '15%',
+                    top: '3%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [
+                    {
+                        name: 'Buyers',
+                        type: 'line',
+                        smooth: true,
+                        lineStyle: {
+                            width: 3,
+                            color: 'rgba(87, 181, 231, 1)'
+                        },
+                        areaStyle: {
+                            color: {
+                                type: 'linear',
+                                x: 0,
+                                y: 0,
+                                x2: 0,
+                                y2: 1,
+                                colorStops: [{
+                                    offset: 0, color: 'rgba(87, 181, 231, 0.1)'
+                                }, {
+                                    offset: 1, color: 'rgba(87, 181, 231, 0.01)'
+                                }]
+                            }
+                        },
+                        data: [5200, 5800, 6300, 7100, 7800, 8235]
+                    },
+                    {
+                        name: 'Sellers',
+                        type: 'line',
+                        smooth: true,
+                        lineStyle: {
+                            width: 3,
+                            color: 'rgba(141, 211, 199, 1)'
+                        },
+                        areaStyle: {
+                            color: {
+                                type: 'linear',
+                                x: 0,
+                                y: 0,
+                                x2: 0,
+                                y2: 1,
+                                colorStops: [{
+                                    offset: 0, color: 'rgba(141, 211, 199, 0.1)'
+                                }, {
+                                    offset: 1, color: 'rgba(141, 211, 199, 0.01)'
+                                }]
+                            }
+                        },
+                        data: [2100, 2500, 3000, 3400, 3900, 4252]
+                    }
+                ]
+            };
+
+            userGrowthChart.setOption(userGrowthOption);
+
+            // Categories Chart
+            const categoriesChart = echarts.init(document.getElementById('categories-chart'));
+
+            const categoriesOption = {
+                animation: false,
+                tooltip: {
+                    trigger: 'item',
+                    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                    borderColor: '#e5e7eb',
+                    textStyle: {
+                        color: '#1f2937'
+                    }
+                },
+                legend: {
+                    orient: 'vertical',
+                    right: 10,
+                    top: 'center',
+                    data: ['Grains', 'Vegetables', 'Fruits', 'Equipment', 'Services']
+                },
+                series: [
+                    {
+                        type: 'pie',
+                        radius: ['40%', '70%'],
+                        center: ['40%', '50%'],
+                        avoidLabelOverlap: false,
+                        itemStyle: {
+                            borderRadius: 8,
+                            borderColor: '#fff',
+                            borderWidth: 2
+                        },
+                        label: {
+                            show: false
+                        },
+                        emphasis: {
+                            label: {
+                                show: false
+                            }
+                        },
+                        labelLine: {
+                            show: false
+                        },
+                        data: [
+                            { value: 1048, name: 'Grains', itemStyle: { color: 'rgba(87, 181, 231, 1)' } },
+                            { value: 735, name: 'Vegetables', itemStyle: { color: 'rgba(141, 211, 199, 1)' } },
+                            { value: 580, name: 'Fruits', itemStyle: { color: 'rgba(251, 191, 114, 1)' } },
+                            { value: 484, name: 'Equipment', itemStyle: { color: 'rgba(252, 141, 98, 1)' } },
+                            { value: 300, name: 'Services', itemStyle: { color: '#a3a3a3' } }
+                        ]
+                    }
+                ]
+            };
+
+            categoriesChart.setOption(categoriesOption);
+
+            // Resize charts when window is resized
+            window.addEventListener('resize', function () {
+                userGrowthChart.resize();
+                categoriesChart.resize();
+            });
+        });
+    </script>
+</body>
+
+</html>
