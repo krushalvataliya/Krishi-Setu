@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Notifications - Krishi Setu</title>
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script>tailwind.config={theme:{extend:{colors:{primary:'#2c6e31',secondary:'#f0f4e8'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+<style>
+:where([class^="ri-"])::before { content: "\f3c2"; }
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f8f9fa;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.sidebar {
+    background-color: #2c6e31;
+    color: white;
+    width: 240px;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 10;
+}
+.content {
+    margin-left: 240px;
+    padding: 1.5rem;
+}
+.nav-item {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    transition: all 0.3s;
+    border-radius: 0.5rem;
+    margin: 0.25rem 0.75rem;
+}
+.nav-item:hover, .nav-item.active {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+.system-status {
+    position: absolute;
+    bottom: 1rem;
+    left: 0;
+    right: 0;
+    padding: 0 1.5rem;
+}
+.status-bar {
+    height: 6px;
+    border-radius: 3px;
+    background-color: rgba(255, 255, 255, 0.2);
+    margin-top: 0.25rem;
+}
+.status-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+}
+.status-good {
+    background-color: #10b981;
+}
+.status-warning {
+    background-color: #f59e0b;
+}
+.priority-high {
+    background-color: #ef4444;
+}
+.priority-medium {
+    background-color: #f59e0b;
+}
+.priority-low {
+    background-color: #3b82f6;
+}
+.custom-checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 2px solid #d1d5db;
+    border-radius: 4px;
+    background-color: white;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s;
+}
+.custom-checkbox:checked {
+    background-color: #2c6e31;
+    border-color: #2c6e31;
+}
+.custom-checkbox:checked::after {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+.date-picker {
+    position: relative;
+}
+.date-picker-input {
+    padding-right: 2.5rem;
+}
+.date-picker-icon {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+</style>
+</head>
+<body>
+<!-- Sidebar -->
+<div class="sidebar">
+    <div class="py-6 px-4 flex items-center">
+        <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center mr-3">
+            <span class="font-['Pacifico'] text-primary text-lg">logo</span>
+        </div>
+        <h1 class="text-xl font-semibold text-white">Krishi Setu</h1>
+    </div>
+    <div class="mt-6">
+        <a href="https://readdy.ai/home/6be06d49-0367-45b4-a145-f9a00824ed8a/b17fac50-6c73-4de6-806b-67ea8986e3ae" data-readdy="true" class="nav-item">
+            <div class="w-6 h-6 flex items-center justify-center mr-3">
+                <i class="ri-dashboard-line text-white"></i>
+            </div>
+            <span>Dashboard</span>
+        </a>
+        <div class="nav-item">
+            <div class="w-6 h-6 flex items-center justify-center mr-3">
+                <i class="ri-user-line text-white"></i>
+            </div>
+            <span>User Management</span>
+        </div>
+        <div class="nav-item">
+            <div class="w-6 h-6 flex items-center justify-center mr-3">
+                <i class="ri-list-check-2 text-white"></i>
+            </div>
+            <span>Listing Moderation</span>
+        </div>
+        <div class="nav-item">
+            <div class="w-6 h-6 flex items-center justify-center mr-3">
+                <i class="ri-chat-3-line text-white"></i>
+            </div>
+            <span>Chat Monitoring</span>
+        </div>
+        <div class="nav-item">
+            <div class="w-6 h-6 flex items-center justify-center mr-3">
+                <i class="ri-bar-chart-line text-white"></i>
+            </div>
+            <span>Analytics & Reports</span>
+        </div>
+        <div class="nav-item active">
+            <div class="w-6 h-6 flex items-center justify-center mr-3">
+                <i class="ri-notification-3-line text-white"></i>
+            </div>
+            <span>Notifications</span>
+        </div>
+        <div class="nav-item">
+            <div class="w-6 h-6 flex items-center justify-center mr-3">
+                <i class="ri-settings-3-line text-white"></i>
+            </div>
+            <span>Settings</span>
+        </div>
+    </div>
+    <div class="system-status">
+        <h3 class="text-sm font-medium mb-3">System Status</h3>
+        <div class="mb-2">
+            <div class="flex justify-between text-xs mb-1">
+                <span>API Uptime</span>
+                <span>99.8%</span>
+            </div>
+            <div class="status-bar">
+                <div class="status-bar-fill status-good" style="width: 99.8%"></div>
+            </div>
+        </div>
+        <div>
+            <div class="flex justify-between text-xs mb-1">
+                <span>Error Rate</span>
+                <span>0.2%</span>
+            </div>
+            <div class="status-bar">
+                <div class="status-bar-fill status-warning" style="width: 0.2%"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="content">
+    <!-- Top Bar -->
+    <div class="flex justify-between items-center mb-6">
+        <div class="flex items-center">
+            <a href="https://readdy.ai/home/6be06d49-0367-45b4-a145-f9a00824ed8a/b17fac50-6c73-4de6-806b-67ea8986e3ae" data-readdy="true" class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center mr-4 hover:bg-gray-200 transition-colors">
+                <div class="w-5 h-5 flex items-center justify-center">
+                    <i class="ri-arrow-left-s-line text-gray-600"></i>
+                </div>
+            </a>
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800">Notifications</h1>
+                <p class="text-gray-600 mt-1">Manage and track all system notifications</p>
+            </div>
+        </div>
+        <div class="flex items-center">
+            <div class="flex items-center cursor-pointer relative" id="adminUserDropdown">
+                <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center mr-2 text-white text-sm">A</div>
+                <span class="mr-1">Admin User</span>
+                <div class="w-4 h-4 flex items-center justify-center">
+                    <i class="ri-arrow-down-s-line"></i>
+                </div>
+                <div id="adminDropdownMenu" class="absolute right-0 top-full mt-2 w-56 bg-white rounded-lg shadow-lg py-2 hidden z-50">
+                    <a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                        <div class="w-4 h-4 flex items-center justify-center mr-2">
+                            <i class="ri-user-line"></i>
+                        </div>
+                        View Profile
+                    </a>
+                    <a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                        <div class="w-4 h-4 flex items-center justify-center mr-2">
+                            <i class="ri-settings-4-line"></i>
+                        </div>
+                        Account Settings
+                    </a>
+                    <a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                        <div class="w-4 h-4 flex items-center justify-center mr-2">
+                            <i class="ri-lock-password-line"></i>
+                        </div>
+                        Change Password
+                    </a>
+                    <a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                        <div class="w-4 h-4 flex items-center justify-center mr-2">
+                            <i class="ri-notification-4-line"></i>
+                        </div>
+                        Notification Preferences
+                    </a>
+                    <div class="h-px bg-gray-200 my-2"></div>
+                    <a href="#" id="logoutButton" class="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-50">
+                        <div class="w-4 h-4 flex items-center justify-center mr-2">
+                            <i class="ri-logout-box-r-line"></i>
+                        </div>
+                        Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filter Controls -->
+    <div class="bg-white rounded-lg shadow-sm p-5 mb-6">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+            <div class="flex flex-wrap items-center gap-4">
+                <!-- Priority Filter -->
+                <div class="relative" id="priorityFilterContainer">
+                    <button id="priorityFilterButton" class="flex items-center bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-button text-sm font-medium whitespace-nowrap">
+                        <div class="w-5 h-5 flex items-center justify-center mr-2">
+                            <i class="ri-flag-line"></i>
+                        </div>
+                        Priority
+                        <div class="w-5 h-5 flex items-center justify-center ml-2">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <div id="priorityFilterDropdown" class="absolute left-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 hidden z-50">
+                        <div class="px-3 py-2">
+                            <label class="flex items-center mb-2 cursor-pointer">
+                                <input type="checkbox" class="custom-checkbox mr-2" value="high" checked>
+                                <span class="text-sm">High Priority</span>
+                            </label>
+                            <label class="flex items-center mb-2 cursor-pointer">
+                                <input type="checkbox" class="custom-checkbox mr-2" value="medium" checked>
+                                <span class="text-sm">Medium Priority</span>
+                            </label>
+                            <label class="flex items-center cursor-pointer">
+                                <input type="checkbox" class="custom-checkbox mr-2" value="low" checked>
+                                <span class="text-sm">Low Priority</span>
+                            </label>
+                        </div>
+                        <div class="border-t border-gray-100 mt-2 pt-2 px-3">
+                            <button id="applyPriorityFilter" class="w-full bg-primary text-white px-3 py-1.5 rounded-button text-sm font-medium whitespace-nowrap">Apply</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Status Filter -->
+                <div class="flex bg-gray-100 rounded-full p-1">
+                    <button id="allStatusBtn" class="px-4 py-1.5 text-xs font-medium rounded-full bg-white shadow-sm whitespace-nowrap">All</button>
+                    <button id="unreadStatusBtn" class="px-4 py-1.5 text-xs font-medium text-gray-600 whitespace-nowrap">Unread</button>
+                    <button id="readStatusBtn" class="px-4 py-1.5 text-xs font-medium text-gray-600 whitespace-nowrap">Read</button>
+                </div>
+
+                <!-- Date Range Picker -->
+                <div class="flex items-center">
+                    <div class="date-picker">
+                        <input type="text" class="date-picker-input border border-gray-300 rounded-l-button px-4 py-2 text-sm focus:outline-none focus:border-primary" placeholder="Start date" readonly value="Apr 23, 2025">
+                        <div class="date-picker-icon w-4 h-4 flex items-center justify-center">
+                            <i class="ri-calendar-line text-gray-400"></i>
+                        </div>
+                    </div>
+                    <span class="mx-2 text-gray-400">-</span>
+                    <div class="date-picker">
+                        <input type="text" class="date-picker-input border border-gray-300 rounded-r-button px-4 py-2 text-sm focus:outline-none focus:border-primary" placeholder="End date" readonly value="May 1, 2025">
+                        <div class="date-picker-icon w-4 h-4 flex items-center justify-center">
+                            <i class="ri-calendar-line text-gray-400"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="relative flex-grow max-w-md">
+                <input type="text" placeholder="Search notifications..." class="w-full border border-gray-300 rounded-button px-4 py-2 pl-10 text-sm focus:outline-none focus:border-primary">
+                <div class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 flex items-center justify-center">
+                    <i class="ri-search-line text-gray-400"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bulk Actions Bar -->
+    <div class="bg-white rounded-lg shadow-sm p-4 mb-6 flex items-center justify-between">
+        <div class="flex items-center">
+            <label class="flex items-center mr-6 cursor-pointer">
+                <input type="checkbox" id="selectAllCheckbox" class="custom-checkbox mr-2">
+                <span class="text-sm font-medium">Select All</span>
+            </label>
+            <button id="markAsReadBtn" class="flex items-center bg-gray-100 text-gray-700 px-4 py-2 rounded-button text-sm font-medium mr-3 whitespace-nowrap hover:bg-gray-200 transition-colors">
+                <div class="w-5 h-5 flex items-center justify-center mr-2">
+                    <i class="ri-check-double-line"></i>
+                </div>
+                Mark as Read
+            </button>
+            <button id="deleteSelectedBtn" class="flex items-center bg-gray-100 text-gray-700 px-4 py-2 rounded-button text-sm font-medium whitespace-nowrap hover:bg-gray-200 transition-colors">
+                <div class="w-5 h-5 flex items-center justify-center mr-2">
+                    <i class="ri-delete-bin-line"></i>
+                </div>
+                Delete Selected
+            </button>
+        </div>
+        <div class="flex items-center">
+            <div class="mr-4 text-sm text-gray-500">
+                <span id="selectedCount">0</span> of <span id="totalCount">18</span> selected
+            </div>
+            <button id="refreshBtn" class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors">
+                <div class="w-5 h-5 flex items-center justify-center">
+                    <i class="ri-refresh-line text-gray-600"></i>
+                </div>
+            </button>
+        </div>
+    </div>
+
+    <!-- Sort Controls -->
+    <div class="flex justify-end mb-4">
+        <div class="relative" id="sortContainer">
+            <button id="sortButton" class="flex items-center bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-button text-sm font-medium whitespace-nowrap">
+                <div class="w-5 h-5 flex items-center justify-center mr-2">
+                    <i class="ri-sort-desc"></i>
+                </div>
+                Sort by: Newest
+                <div class="w-5 h-5 flex items-center justify-center ml-2">
+                    <i class="ri-arrow-down-s-line"></i>
+                </div>
+            </button>
+            <div id="sortDropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 hidden z-50">
+                <button class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center">
+                    <div class="w-5 h-5 flex items-center justify-center mr-2">
+                        <i class="ri-time-line"></i>
+                    </div>
+                    Newest First
+                </button>
+                <button class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center">
+                    <div class="w-5 h-5 flex items-center justify-center mr-2">
+                        <i class="ri-time-line"></i>
+                    </div>
+                    Oldest First
+                </button>
+                <button class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center">
+                    <div class="w-5 h-5 flex items-center justify-center mr-2">
+                        <i class="ri-flag-line"></i>
+                    </div>
+                    Priority (High to Low)
+                </button>
+                <button class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center">
+                    <div class="w-5 h-5 flex items-center justify-center mr-2">
+                        <i class="ri-flag-line"></i>
+                    </div>
+                    Priority (Low to High)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notifications Table -->
+    <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-6">
+        <table class="w-full">
+            <thead>
+                <tr class="bg-gray-50 border-b border-gray-200">
+                    <th class="py-3 px-4 text-left w-12">
+                        <span class="sr-only">Select</span>
+                    </th>
+                    <th class="py-3 px-4 text-left w-16">
+                        <span class="text-xs font-medium text-gray-500 uppercase tracking-wider">Priority</span>
+                    </th>
+                    <th class="py-3 px-4 text-left">
+                        <span class="text-xs font-medium text-gray-500 uppercase tracking-wider">Message</span>
+                    </th>
+                    <th class="py-3 px-4 text-left w-32">
+                        <span class="text-xs font-medium text-gray-500 uppercase tracking-wider">Category</span>
+                    </th>
+                    <th class="py-3 px-4 text-left w-40">
+                        <span class="text-xs font-medium text-gray-500 uppercase tracking-wider">Date & Time</span>
+                    </th>
+                    <th class="py-3 px-4 text-left w-24">
+                        <span class="text-xs font-medium text-gray-500 uppercase tracking-wider">Status</span>
+                    </th>
+                    <th class="py-3 px-4 text-right w-28">
+                        <span class="text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Notification 1 -->
+                <tr class="border-b border-gray-100 hover:bg-gray-50">
+                    <td class="py-4 px-4">
+                        <input type="checkbox" class="row-checkbox custom-checkbox">
+                    </td>
+                    <td class="py-4 px-4">
+                        <div class="w-2 h-2 rounded-full priority-high"></div>
+                    </td>
+                    <td class="py-4 px-4">
+                        <p class="text-sm text-gray-800 font-medium">New seller registration request from Rajesh Kumar needs approval</p>
+                    </td>
+                    <td class="py-4 px-4">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                            User Request
+                        </span>
+                    </td>
+                    <td class="py-4 px-4">
+                        <span class="text-sm text-gray-500">May 1, 2025 • 09:45 AM</span>
+                    </td>
+                    <td class="py-4 px-4">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                            Unread
+                        </span>
+                    </td>
+                    <td class="py-4 px-4 text-right">
+                        <div class="flex justify-end">
+                            <button class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary transition-colors">
+                                <i class="ri-check-line"></i>
+                            </button>
+                            <button class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-red-500 transition-colors">
+                                <i class="ri-delete-bin-line"></i>
+                            </button>
+                            <button class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary transition-colors">
+                                <i class="ri-more-2-fill"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                
+                <!-- Notification 2 -->
+                <tr class="border-b border-gray-100 hover:bg-gray-50">
+                    <td class="py-4 px-4">
+                        <input type="checkbox" class="row-checkbox custom-checkbox">
+                    </td>
+                    <td class="py-4 px-4">
+                        <div class="w-2 h-2 rounded-full priority-high"></div>
+                    </td>
+                    <td class="py-4 px-4">
+                        <p class="text-sm text-gray-800 font-medium">Security alert: Multiple failed login attempts detected for admin account</p>
+                    </td>
+                    <td class="py-4 px-4">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                            Security
+                        </span>
+                    </td>
+                    <td class="py-4 px-4">
+                        <span class="text-sm text-gray-500">May 1, 2025 • 08:32 AM</span>
+                    </td>
+                    <td class="py-4 px-4">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                            Unread
+                        </span>
+                    </td>
+                    <td class="py-4 px-4 text-right">
+                        <div class="flex justify-end">
+                            <button class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary transition-colors">
+                                <i class="ri-check-line"></i>
+                            </button>
+                            <button class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-red-500 transition-colors">
+                                <i class="ri-delete-bin-line"></i>
+                            </button>
+                            <button class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary transition-colors">
+                                <i class="ri-more-2-fill"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                
+                <!-- Notification 3 -->
+                <tr class="border-b border-gray-100 hover:bg-gray-50">
+                    <td class="py-4 px-4">
+                        <input type="checkbox" class="row-checkbox custom-checkbox">
+                    </td>
+                    <td class="py-4 px-4">
+                        <div class="w-2 h-2 rounded-full priority-medium"></div>
+                    </td>
+                    <td class="py-4 px-4">
+                        <p class="text-sm text-gray-800 font-medium">System detected unusual activity in transaction #4528</p>
+                    </td>
+                    <td class="py-4 px-4">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                            Transaction
+                        </span>
+                    </td>
+                    <td class="py-4 px-4">
+                        <span class="text-sm text-gray-500">May 1, 2025 • 07:15 AM</span>
+                    </td>
+                    <td class="py-4 px-4">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                            Unread
+                        </span>
+                    </td>
+                    <td class="py-4 px-4 text-right">
+                        <div class="flex justify-end">
+                            <button class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary transition-colors">
+                                <i class="ri-check-line"></i>
+                            </button>
+                            <button class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-red-500 transition-colors">
+                                <i class="ri-delete-bin-line"></i>
+                            </button>
+                            <button class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary transition-colors">
+                                <i class="ri-more-2-fill"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                
+                <!-- Notification 4 -->
+                <tr class="border-b border-gray-100 hover:bg-gray-50">
+                    <td class="py-4 px-4">
+                        <input type="checkbox" class="row-checkbox custom-checkbox">
+                    </td>
+                    <td class="py-4 px-4">
+                        <div class="w-2 h-2 rounded-full priority-low"></div>
+                    </td>
+                    <td class="py-4 px-4">
+                        <p class="text-sm text-gray-800 font-medium">Daily system health report is now available</p>
+                    </td>
+                    <td class="py-4 px-4">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                            System
+                        </span>
+                    </td>
+                    <td class="py-4 px-4">
+                        <span class="text-sm text-gray-500">Apr 30, 2025 • 11:00 PM</span>
+                    </td>
+                    <td class="py-4 px-4">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                            Read
+                        </span>
+                    </td>
+                    <td class="py-4 px-4 text-right">
+                        <div class="flex justify-end">
+                            <button class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary transition-colors">
+                                <i class="ri-check-line"></i>
+                            </button>
+                            <button class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-red-500 transition-colors">
+                                <i class="ri-delete-bin-line"></i>
+                            </button>
+                            <button class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary transition-colors">
+                                <i class="ri-more-2-fill"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                
+                <!-- Notification 5 -->
+                <tr class="border-b border-gray-100 hover:bg-gray-50">
+                    <td class="py-4 px-4">
+                        <input type="checkbox" class="row-checkbox custom-checkbox">
+                    </td>
+                    <td class="py-4 px-4">
+                        <div class="w-2 h-2 rounded-full priority-medium"></div>
+                    </td>
+                    <td class="py-4 px-4">
+                        <p class="text-sm text-gray-800 font-medium">10 new product listings require moderation</p>
+                    </td>
+                    <td class="py-4 px-4">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                            Moderation
+                        </span>
+                    </td>
+                    <td class="py-4 px-4">
+                        <span class="text-sm text-gray-500">Apr 30, 2025 • 04:23 PM</span>
+                    </td>
+                    <td class="py-4 px-4">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                            Read
+                        </span>
+                    </td>
+                    <td class="py-4 px-4 text-right">
+                        <div class="flex justify-end">
+                            <button class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary transition-colors">
+                                <i class="ri-check-line"></i>
+                            </button>
+                            <button class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-red-500 transition-colors">
+                                <i class="ri-delete-bin-line"></i>
+                            </button>
+                            <button class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary transition-colors">
+                                <i class="ri-more-2-fill"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                
+                <!-- Notification 6 -->
+                <tr class="border-b border-gray-100 hover:bg-gray-50">
+                    <td class="py-4 px-4">
+                        <input type="checkbox" class="row-checkbox custom-checkbox">
+                    </td>
+                    <td class="py-4 px-4">
+                        <div class="w-2 h-2 rounded-full priority-high"></div>
+                    </td>
+                    <td class="py-4 px-4">
+                        <p class="text-sm text-gray-800 font-medium">Payment gateway integration error detected - urgent attention required</p>
+                    </td>
+                    <td class="py-4 px-4">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                            Payment
+                        </span>
+                    </td>
+                    <td class="py-4 px-4">
+                        <span class="text-sm text-gray-500">Apr 30, 2025 • 02:17 PM</span>
+                    </td>
+                    <td class="py-4 px-4">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                            Read
+                        </span>
+                    </td>
+                    <td class="py-4 px-4 text-right">
+                        <div class="flex justify-end">
+                            <button class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary transition-colors">
+                                <i class="ri-check-line"></i>
+                            </button>
+                            <button class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-red-500 transition-colors">
+                                <i class="ri-delete-bin-line"></i>
+                            </button>
+                            <button class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary transition-colors">
+                                <i class="ri-more-2-fill"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                
+                <!-- Notification 7 -->
+                <tr class="border-b border-gray-100 hover:bg-gray-50">
+                    <td class="py-4 px-4">
+                        <input type="checkbox" class="row-checkbox custom-checkbox">
+                    </td>
+                    <td class="py-4 px-4">
+                        <div class="w-2 h-2 rounded-full priority-low"></div>
+                    </td>
+                    <td class="py-4 px-4">
+                        <p class="text-sm text-gray-800 font-medium">Weekly analytics report is ready for review</p>
+                    </td>
+                    <td class="py-4 px-4">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                            Analytics
+                        </span>
+                    </td>
+                    <td class="py-4 px-4">
+                        <span class="text-sm text-gray-500">Apr 30, 2025 • 10:00 AM</span>
+                    </td>
+                    <td class="py-4 px-4">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                            Read
+                        </span>
+                    </td>
+                    <td class="py-4 px-4 text-right">
+                        <div class="flex justify-end">
+                            <button class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary transition-colors">
+                                <i class="ri-check-line"></i>
+                            </button>
+                            <button class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-red-500 transition-colors">
+                                <i class="ri-delete-bin-line"></i>
+                            </button>
+                            <button class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary transition-colors">
+                                <i class="ri-more-2-fill"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                
+                <!-- Notification 8 -->
+                <tr class="border-b border-gray-100 hover:bg-gray-50">
+                    <td class="py-4 px-4">
+                        <input type="checkbox" class="row-checkbox custom-checkbox">
+                    </td>
+                    <td class="py-4 px-4">
+                        <div class="w-2 h-2 rounded-full priority-medium"></div>
+                    </td>
+                    <td class="py-4 px-4">
+                        <p class="text-sm text-gray-800 font-medium">User Amit Sharma reported inappropriate content in listing #7823</p>
+                    </td>
+                    <td class="py-4 px-4">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
+                            Report
+                        </span>
+                    </td>
+                    <td class="py-4 px-4">
+                        <span class="text-sm text-gray-500">Apr 29, 2025 • 05:42 PM</span>
+                    </td>
+                    <td class="py-4 px-4">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                            Read
+                        </span>
+                    </td>
+                    <td class="py-4 px-4 text-right">
+                        <div class="flex justify-end">
+                            <button class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary transition-colors">
+                                <i class="ri-check-line"></i>
+                            </button>
+                            <button class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-red-500 transition-colors">
+                                <i class="ri-delete-bin-line"></i>
+                            </button>
+                            <button class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary transition-colors">
+                                <i class="ri-more-2-fill"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination Controls -->
+    <div class="flex items-center justify-between">
+        <div class="flex items-center text-sm text-gray-500">
+            <span>Showing 1-8 of 18 notifications</span>
+            <div class="ml-4 flex items-center">
+                <span class="mr-2">Show:</span>
+                <div class="relative" id="pageSizeContainer">
+                    <button id="pageSizeButton" class="flex items-center bg-white border border-gray-300 text-gray-700 px-3 py-1 rounded-button text-sm whitespace-nowrap">
+                        10 per page
+                        <div class="w-4 h-4 flex items-center justify-center ml-1">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <div id="pageSizeDropdown" class="absolute left-0 mt-1 w-36 bg-white rounded-lg shadow-lg py-1 hidden z-50">
+                        <button class="w-full text-left px-3 py-1 text-sm text-gray-700 hover:bg-gray-50">10 per page</button>
+                        <button class="w-full text-left px-3 py-1 text-sm text-gray-700 hover:bg-gray-50">20 per page</button>
+                        <button class="w-full text-left px-3 py-1 text-sm text-gray-700 hover:bg-gray-50">50 per page</button>
+                        <button class="w-full text-left px-3 py-1 text-sm text-gray-700 hover:bg-gray-50">100 per page</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="flex items-center">
+            <button class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 text-gray-400 mr-1">
+                <i class="ri-arrow-left-s-line"></i>
+            </button>
+            <button class="w-8 h-8 flex items-center justify-center rounded-full bg-primary text-white mr-1">1</button>
+            <button class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-700 mr-1">2</button>
+            <button class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-400">
+                <i class="ri-arrow-right-s-line"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Empty State (Hidden by default) -->
+    <div id="emptyState" class="hidden bg-white rounded-lg shadow-sm p-10 text-center mb-6">
+        <div class="w-20 h-20 mx-auto mb-6 bg-gray-100 rounded-full flex items-center justify-center">
+            <div class="w-10 h-10 flex items-center justify-center">
+                <i class="ri-notification-off-line text-gray-400 text-3xl"></i>
+            </div>
+        </div>
+        <h3 class="text-lg font-medium text-gray-800 mb-2">No notifications found</h3>
+        <p class="text-gray-500 mb-6">There are no notifications matching your current filters.</p>
+        <button id="clearFiltersBtn" class="bg-primary text-white px-4 py-2 rounded-button text-sm font-medium whitespace-nowrap">
+            Clear Filters
+        </button>
+    </div>
+
+    <!-- Delete Confirmation Modal (Hidden by default) -->
+    <div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-lg p-6 w-[320px] shadow-xl">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Delete Notifications</h3>
+            <p class="text-gray-600 mb-6">Are you sure you want to delete the selected notifications? This action cannot be undone.</p>
+            <div class="flex justify-end space-x-3">
+                <button id="cancelDelete" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-button whitespace-nowrap">Cancel</button>
+                <button id="confirmDelete" class="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-button whitespace-nowrap">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Logout Dialog (Hidden by default) -->
+<div id="logoutDialog" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+    <div class="bg-white rounded-lg p-6 w-[320px] shadow-xl">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">Confirm Logout</h3>
+        <p class="text-gray-600 mb-6">Are you sure you want to log out?</p>
+        <div class="flex justify-end space-x-3">
+            <button id="cancelLogout" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-button whitespace-nowrap">Cancel</button>
+            <a href="https://readdy.ai/home/6be06d49-0367-45b4-a145-f9a00824ed8a/8223c3b5-b687-4360-baf9-007c27a1761d" data-readdy="true">
+                <button id="confirmLogout" class="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-button whitespace-nowrap">Logout</button>
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Admin User Dropdown
+    const adminUserDropdown = document.getElementById('adminUserDropdown');
+    const dropdownMenu = document.getElementById('adminDropdownMenu');
+    adminUserDropdown.addEventListener('click', function(e) {
+        e.stopPropagation();
+        dropdownMenu.classList.toggle('hidden');
+    });
+
+    document.addEventListener('click', function(e) {
+        if (!adminUserDropdown.contains(e.target)) {
+            dropdownMenu.classList.add('hidden');
+        }
+    });
+
+    // Priority Filter Dropdown
+    const priorityFilterButton = document.getElementById('priorityFilterButton');
+    const priorityFilterDropdown = document.getElementById('priorityFilterDropdown');
+
+    priorityFilterButton.addEventListener('click', function(e) {
+        e.stopPropagation();
+        priorityFilterDropdown.classList.toggle('hidden');
+    });
+
+    document.addEventListener('click', function(e) {
+        if (!priorityFilterButton.contains(e.target) && !priorityFilterDropdown.contains(e.target)) {
+            priorityFilterDropdown.classList.add('hidden');
+        }
+    });
+
+    // Sort Dropdown
+    const sortButton = document.getElementById('sortButton');
+    const sortDropdown = document.getElementById('sortDropdown');
+    sortButton.addEventListener('click', function(e) {
+        e.stopPropagation();
+        sortDropdown.classList.toggle('hidden');
+    });
+
+    document.addEventListener('click', function(e) {
+        if (!sortButton.contains(e.target) && !sortDropdown.contains(e.target)) {
+            sortDropdown.classList.add('hidden');
+        }
+    });
+
+    // Page Size Dropdown
+    const pageSizeButton = document.getElementById('pageSizeButton');
+    const pageSizeDropdown = document.getElementById('pageSizeDropdown');
+
+    pageSizeButton.addEventListener('click', function(e) {
+        e.stopPropagation();
+        pageSizeDropdown.classList.toggle('hidden');
+    });
+
+    document.addEventListener('click', function(e) {
+        if (!pageSizeButton.contains(e.target) && !pageSizeDropdown.contains(e.target)) {
+            pageSizeDropdown.classList.add('hidden');
+        }
+    });
+
+    // Status Filter Buttons
+    const allStatusBtn = document.getElementById('allStatusBtn');
+    const unreadStatusBtn = document.getElementById('unreadStatusBtn');
+    const readStatusBtn = document.getElementById('readStatusBtn');
+
+    allStatusBtn.addEventListener('click', function() {
+        allStatusBtn.classList.add('bg-white', 'shadow-sm');
+        allStatusBtn.classList.remove('text-gray-600');
+        unreadStatusBtn.classList.remove('bg-white', 'shadow-sm');
+        unreadStatusBtn.classList.add('text-gray-600');
+        readStatusBtn.classList.remove('bg-white', 'shadow-sm');
+        readStatusBtn.classList.add('text-gray-600');
+    });
+
+    unreadStatusBtn.addEventListener('click', function() {
+        unreadStatusBtn.classList.add('bg-white', 'shadow-sm');
+        unreadStatusBtn.classList.remove('text-gray-600');
+        allStatusBtn.classList.remove('bg-white', 'shadow-sm');
+        allStatusBtn.classList.add('text-gray-600');
+        readStatusBtn.classList.remove('bg-white', 'shadow-sm');
+        readStatusBtn.classList.add('text-gray-600');
+    });
+
+    readStatusBtn.addEventListener('click', function() {
+        readStatusBtn.classList.add('bg-white', 'shadow-sm');
+        readStatusBtn.classList.remove('text-gray-600');
+        allStatusBtn.classList.remove('bg-white', 'shadow-sm');
+        allStatusBtn.classList.add('text-gray-600');
+        unreadStatusBtn.classList.remove('bg-white', 'shadow-sm');
+        unreadStatusBtn.classList.add('text-gray-600');
+    });
+
+    // Select All Checkbox
+    const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+    const rowCheckboxes = document.querySelectorAll('.row-checkbox');
+    const selectedCountElement = document.getElementById('selectedCount');
+    selectAllCheckbox.addEventListener('change', function() {
+        const isChecked = this.checked;
+        rowCheckboxes.forEach(checkbox => {
+            checkbox.checked = isChecked;
+        });
+        updateSelectedCount();
+    });
+
+    rowCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            updateSelectedCount();
+            checkSelectAllStatus();
+        });
+    });
+
+    function updateSelectedCount() {
+        const checkedCount = document.querySelectorAll('.row-checkbox:checked').length;
+        selectedCountElement.textContent = checkedCount;
+    }
+
+    function checkSelectAllStatus() {
+        const totalCheckboxes = rowCheckboxes.length;
+        const checkedCheckboxes = document.querySelectorAll('.row-checkbox:checked').length;
+        
+        selectAllCheckbox.checked = checkedCheckboxes > 0 && checkedCheckboxes === totalCheckboxes;
+        selectAllCheckbox.indeterminate = checkedCheckboxes > 0 && checkedCheckboxes < totalCheckboxes;
+    }
+
+    // Delete Modal
+    const deleteSelectedBtn = document.getElementById('deleteSelectedBtn');
+    const deleteModal = document.getElementById('deleteModal');
+    const cancelDelete = document.getElementById('cancelDelete');
+    const confirmDelete = document.getElementById('confirmDelete');
+    deleteSelectedBtn.addEventListener('click', function() {
+        const hasSelectedItems = document.querySelectorAll('.row-checkbox:checked').length > 0;
+        if (hasSelectedItems) {
+            deleteModal.classList.remove('hidden');
+        }
+    });
+
+    cancelDelete.addEventListener('click', function() {
+        deleteModal.classList.add('hidden');
+    });
+
+    confirmDelete.addEventListener('click', function() {
+        // Remove selected rows
+        document.querySelectorAll('.row-checkbox:checked').forEach(checkbox => {
+            const row = checkbox.closest('tr');
+            row.remove();
+        });
+        
+        deleteModal.classList.add('hidden');
+        selectAllCheckbox.checked = false;
+        updateSelectedCount();
+        
+        // Check if table is empty
+        const remainingRows = document.querySelectorAll('tbody tr').length;
+        if (remainingRows === 0) {
+            document.getElementById('emptyState').classList.remove('hidden');
+            document.querySelector('table').closest('.bg-white').classList.add('hidden');
+        }
+    });
+
+    // Mark as Read Button
+    const markAsReadBtn = document.getElementById('markAsReadBtn');
+    
+    markAsReadBtn.addEventListener('click', function() {
+        document.querySelectorAll('.row-checkbox:checked').forEach(checkbox => {
+            const row = checkbox.closest('tr');
+            const statusCell = row.querySelector('td:nth-child(6) span');
+            
+            if (statusCell.classList.contains('bg-red-100')) {
+                statusCell.classList.remove('bg-red-100', 'text-red-800');
+                statusCell.classList.add('bg-green-100', 'text-green-800');
+                statusCell.textContent = 'Read';
+            }
+        });
+    });
+
+    // Clear Filters Button
+    const clearFiltersBtn = document.getElementById('clearFiltersBtn');
+    
+    clearFiltersBtn.addEventListener('click', function() {
+        document.getElementById('emptyState').classList.add('hidden');
+        document.querySelector('table').closest('.bg-white').classList.remove('hidden');
+        
+        // Reset filters
+        allStatusBtn.click();
+        document.querySelectorAll('#priorityFilterDropdown input[type="checkbox"]').forEach(checkbox => {
+            checkbox.checked = true;
+        });
+    });
+
+    // Refresh Button
+    const refreshBtn = document.getElementById('refreshBtn');
+    
+    refreshBtn.addEventListener('click', function() {
+        this.classList.add('animate-spin');
+        setTimeout(() => {
+            this.classList.remove('animate-spin');
+        }, 500);
+    });
+
+    // Logout Button
+    const logoutButton = document.getElementById('logoutButton');
+    const logoutDialog = document.getElementById('logoutDialog');
+    const cancelLogout = document.getElementById('cancelLogout');
+
+    logoutButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        logoutDialog.classList.remove('hidden');
+        dropdownMenu.classList.add('hidden');
+    });
+
+    cancelLogout.addEventListener('click', function() {
+        logoutDialog.classList.add('hidden');
+    });
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            if (!logoutDialog.classList.contains('hidden')) {
+                logoutDialog.classList.add('hidden');
+            }
+            if (!deleteModal.classList.contains('hidden')) {
+                deleteModal.classList.add('hidden');
+            }
+        }
+    });
+
+    // Close modals when clicking outside
+    logoutDialog.addEventListener('click', function(e) {
+        if (e.target === logoutDialog) {
+            logoutDialog.classList.add('hidden');
+        }
+    });
+
+    deleteModal.addEventListener('click', function(e) {
+        if (e.target === deleteModal) {
+            deleteModal.classList.add('hidden');
+        }
+    });
+});
+</script>
+</body>
+</html>
