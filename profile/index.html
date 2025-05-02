@@ -100,82 +100,96 @@
   </head>
   <body>
     <!-- Sidebar -->
-    <div class="sidebar">
-      <div class="py-6 px-4 flex items-center">
-        <div
-          class="w-10 h-10 rounded-full bg-white flex items-center justify-center mr-3"
-        >
-          <span class="font-['Pacifico'] text-primary text-lg">logo</span>
+    <div id="sidebar" class="sidebar"
+            class="bg-primary text-white w-64 flex-shrink-0 transition-all duration-300 z-20 h-full fixed lg:relative">
+            <div class="p-4 flex items-center border-b border-white/10">
+                <div class="w-10 h-10 flex items-center justify-center bg-white rounded-full mr-3">
+                    <span class="font-['Pacifico'] text-primary text-lg">logo</span>
+                </div>
+                <h1 class="text-xl font-semibold">Krishi Setu</h1>
+            </div>
+            <nav class="py-4 custom-scrollbar overflow-y-auto h-[calc(100%-64px)]">
+                <ul>
+                    <li class="mb-1">
+                        <a href="/krishi-setu"
+                            class="flex items-center py-2 px-4 text-white bg-white/10 rounded-md mx-2">
+                            <div class="w-6 h-6 flex items-center justify-center mr-3">
+                                <i class="ri-dashboard-line"></i>
+                            </div>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="mb-1">
+                        <a href="/krishi-setu/User-Management"
+                            class="flex items-center py-2 px-4 text-white/80 hover:bg-white/10 rounded-md mx-2 transition">
+                            <div class="w-6 h-6 flex items-center justify-center mr-3">
+                                <i class="ri-user-line"></i>
+                            </div>
+                            <span>User Management</span>
+                        </a>
+                    </li>
+                    <li class="mb-1">
+                        <a href="/krishi-setu/Product-Listing-Moderation"
+                            class="flex items-center py-2 px-4 text-white/80 hover:bg-white/10 rounded-md mx-2 transition">
+                            <div class="w-6 h-6 flex items-center justify-center mr-3">
+                                <i class="ri-store-line"></i>
+                            </div>
+                            <span>Listing Moderation</span>
+                        </a>
+                    </li>
+                    <li class="mb-1">
+                        <a href="/krishi-setu/Chat-Monitoring-Dashboard"
+                            class="flex items-center py-2 px-4 text-white/80 hover:bg-white/10 rounded-md mx-2 transition">
+                            <div class="w-6 h-6 flex items-center justify-center mr-3">
+                                <i class="ri-chat-3-line"></i>
+                            </div>
+                            <span>Chat Monitoring</span>
+                        </a>
+                    </li>
+                    <li class="mb-1">
+                        <a href="/krishi-setu/Reports"
+                            class="flex items-center py-2 px-4 text-white/80 hover:bg-white/10 rounded-md mx-2 transition">
+                            <div class="w-6 h-6 flex items-center justify-center mr-3">
+                                <i class="ri-bar-chart-line"></i>
+                            </div>
+                            <span>Analytics & Reports</span>
+                        </a>
+                    </li>
+                    <li class="mb-1">
+                        <a href="/krishi-setu/Settings-Configuration"
+                            class="flex items-center py-2 px-4 text-white/80 hover:bg-white/10 rounded-md mx-2 transition">
+                            <div class="w-6 h-6 flex items-center justify-center mr-3">
+                                <i class="ri-settings-line"></i>
+                            </div>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                </ul>
+                <div class="mt-8 px-4">
+                    <div class="bg-white/10 rounded-lg p-4">
+                        <h3 class="text-sm font-medium mb-2">System Status</h3>
+                        <div class="mb-2">
+                            <div class="flex justify-between text-xs mb-1">
+                                <span>API Uptime</span>
+                                <span>99.8%</span>
+                            </div>
+                            <div class="h-1.5 bg-white/20 rounded-full overflow-hidden">
+                                <div class="h-full bg-green-400 rounded-full" style="width: 99.8%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs mb-1">
+                                <span>Error Rate</span>
+                                <span>0.2%</span>
+                            </div>
+                            <div class="h-1.5 bg-white/20 rounded-full overflow-hidden">
+                                <div class="h-full bg-red-400 rounded-full" style="width: 0.2%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
         </div>
-        <h1 class="text-xl font-semibold text-white">Krishi Setu</h1>
-      </div>
-      <div class="mt-6">
-        <a
-          href="https://readdy.ai/home/6be06d49-0367-45b4-a145-f9a00824ed8a/b17fac50-6c73-4de6-806b-67ea8986e3ae"
-          data-readdy="true"
-          class="nav-item"
-        >
-          <div class="w-6 h-6 flex items-center justify-center mr-3">
-            <i class="ri-dashboard-line text-white"></i>
-          </div>
-          <span>Dashboard</span>
-        </a>
-        <div class="nav-item">
-          <div class="w-6 h-6 flex items-center justify-center mr-3">
-            <i class="ri-user-line text-white"></i>
-          </div>
-          <span>User Management</span>
-        </div>
-        <div class="nav-item">
-          <div class="w-6 h-6 flex items-center justify-center mr-3">
-            <i class="ri-list-check-2 text-white"></i>
-          </div>
-          <span>Listing Moderation</span>
-        </div>
-        <div class="nav-item">
-          <div class="w-6 h-6 flex items-center justify-center mr-3">
-            <i class="ri-chat-3-line text-white"></i>
-          </div>
-          <span>Chat Monitoring</span>
-        </div>
-        <div class="nav-item">
-          <div class="w-6 h-6 flex items-center justify-center mr-3">
-            <i class="ri-bar-chart-line text-white"></i>
-          </div>
-          <span>Analytics & Reports</span>
-        </div>
-        <div class="nav-item">
-          <div class="w-6 h-6 flex items-center justify-center mr-3">
-            <i class="ri-settings-3-line text-white"></i>
-          </div>
-          <span>Settings</span>
-        </div>
-      </div>
-      <div class="system-status">
-        <h3 class="text-sm font-medium mb-3">System Status</h3>
-        <div class="mb-2">
-          <div class="flex justify-between text-xs mb-1">
-            <span>API Uptime</span>
-            <span>99.8%</span>
-          </div>
-          <div class="status-bar">
-            <div class="status-bar-fill status-good" style="width: 99.8%"></div>
-          </div>
-        </div>
-        <div>
-          <div class="flex justify-between text-xs mb-1">
-            <span>Error Rate</span>
-            <span>0.2%</span>
-          </div>
-          <div class="status-bar">
-            <div
-              class="status-bar-fill status-warning"
-              style="width: 0.2%"
-            ></div>
-          </div>
-        </div>
-      </div>
-    </div>
 
     <!-- Main Content -->
     <div class="content">
@@ -439,7 +453,7 @@
               </div>
             </div>
             <div class="mt-4 md:mt-0">
-              <button
+              <button id="editProfileBtn"
                 class="flex items-center bg-primary text-white px-4 py-2 rounded-button text-sm font-medium whitespace-nowrap"
               >
                 <div class="w-4 h-4 flex items-center justify-center mr-2">
@@ -447,6 +461,228 @@
                 </div>
                 Edit Profile
               </button>
+              <div
+                      id="editProfileModal"
+                      class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50"
+                    >
+                      <div
+                        class="bg-white rounded-lg w-full max-w-3xl max-h-[90vh] overflow-y-auto mx-4"
+                      >
+                        <div class="p-6 border-b border-gray-200">
+                          <div class="flex items-center justify-between">
+                            <h2 class="text-xl font-semibold text-gray-800">
+                              Edit Profile Information
+                            </h2>
+                            <button
+                              id="closeEditProfileModal"
+                              class="text-gray-400 hover:text-gray-500"
+                            >
+                              <div
+                                class="w-6 h-6 flex items-center justify-center"
+                              >
+                                <i class="ri-close-line"></i>
+                              </div>
+                            </button>
+                          </div>
+                        </div>
+                        <form id="editProfileForm" class="p-6">
+                          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-4">
+                              <h3 class="text-sm font-medium text-gray-700">
+                                Basic Details
+                              </h3>
+                              <div>
+                                <label
+                                  class="block text-sm font-medium text-gray-700 mb-1"
+                                  >Full Name</label
+                                >
+                                <input
+                                  type="text"
+                                  name="fullName"
+                                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30"
+                                  value="Krushal Vataliya"
+                                  required
+                                />
+                              </div>
+                              <div>
+                                <label
+                                  class="block text-sm font-medium text-gray-700 mb-1"
+                                  >Email Address</label
+                                >
+                                <input
+                                  type="email"
+                                  name="email"
+                                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30"
+                                  value="krushal.vataliya@krishisetu.com"
+                                  required
+                                />
+                              </div>
+                              <div>
+                                <label
+                                  class="block text-sm font-medium text-gray-700 mb-1"
+                                  >Phone Number</label
+                                >
+                                <input
+                                  type="tel"
+                                  name="phone"
+                                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30"
+                                  value="+91 65765 42310"
+                                  required
+                                />
+                              </div>
+                              <div>
+                                <label
+                                  class="block text-sm font-medium text-gray-700 mb-1"
+                                  >Date of Birth</label
+                                >
+                                <input
+                                  type="date"
+                                  name="dateOfBirth"
+                                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30"
+                                  value="1988-03-12"
+                                  required
+                                />
+                              </div>
+                            </div>
+                            <div class="space-y-4">
+                              <h3 class="text-sm font-medium text-gray-700">
+                                Work Information
+                              </h3>
+                              <div>
+                                <label
+                                  class="block text-sm font-medium text-gray-700 mb-1"
+                                  >Department</label
+                                >
+                                <input
+                                  type="text"
+                                  name="department"
+                                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30"
+                                  value="Platform Administration"
+                                  required
+                                />
+                              </div>
+                              <div>
+                                <label
+                                  class="block text-sm font-medium text-gray-700 mb-1"
+                                  >Position</label
+                                >
+                                <input
+                                  type="text"
+                                  name="position"
+                                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30"
+                                  value="Senior Administrator"
+                                  required
+                                />
+                              </div>
+                              <div>
+                                <label
+                                  class="block text-sm font-medium text-gray-700 mb-1"
+                                  >Employee ID</label
+                                >
+                                <input
+                                  type="text"
+                                  name="employeeId"
+                                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30"
+                                  value="KS-ADM-2024-0042"
+                                  readonly
+                                />
+                              </div>
+                              <div>
+                                <label
+                                  class="block text-sm font-medium text-gray-700 mb-1"
+                                  >Joining Date</label
+                                >
+                                <input
+                                  type="date"
+                                  name="joiningDate"
+                                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30"
+                                  value="2025-01-15"
+                                  readonly
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div class="mt-6 pt-6 border-t border-gray-200">
+                            <h3 class="text-sm font-medium text-gray-700 mb-4">
+                              Address Information
+                            </h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                              <div class="space-y-4">
+                                <label
+                                  class="block text-sm font-medium text-gray-700"
+                                  >Current Address</label
+                                >
+                                <input
+                                  type="text"
+                                  name="currentAddressLine1"
+                                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30"
+                                  value="742, Sector 14, Dwarka"
+                                  required
+                                />
+                                <input
+                                  type="text"
+                                  name="currentAddressLine2"
+                                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30"
+                                  value="New Delhi, 110078"
+                                  required
+                                />
+                                <input
+                                  type="text"
+                                  name="currentCountry"
+                                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30"
+                                  value="India"
+                                  required
+                                />
+                              </div>
+                              <div class="space-y-4">
+                                <label
+                                  class="block text-sm font-medium text-gray-700"
+                                  >Permanent Address</label
+                                >
+                                <input
+                                  type="text"
+                                  name="permanentAddressLine1"
+                                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30"
+                                  value="56, Patel Colony"
+                                  required
+                                />
+                                <input
+                                  type="text"
+                                  name="permanentAddressLine2"
+                                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30"
+                                  value="Rajkot, Gujarat 360001"
+                                  required
+                                />
+                                <input
+                                  type="text"
+                                  name="permanentCountry"
+                                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30"
+                                  value="India"
+                                  required
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            class="mt-6 pt-6 border-t border-gray-200 flex justify-end gap-3"
+                          >
+                            <button
+                              type="button"
+                              id="cancelEditProfile"
+                              class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 !rounded-button whitespace-nowrap"
+                            >
+                              Cancel
+                            </button>
+                            <button
+                              type="submit"
+                              class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 !rounded-button whitespace-nowrap"
+                            >
+                              Save Changes
+                            </button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
             </div>
           </div>
           <div class="flex flex-wrap mt-4 text-sm text-gray-600">
@@ -935,6 +1171,23 @@
         const logoutButton = document.getElementById("logoutButton");
         const logoutDialog = document.getElementById("logoutDialog");
         const cancelLogout = document.getElementById("cancelLogout");
+        const openModalBtn = document.getElementById("editProfileBtn");
+        openModalBtn.addEventListener("click", openModal);
+        const closeModalBtn = document.getElementById("closeEditProfileModal"); 
+        const cancelbtn = document.getElementById("cancelEditProfile"); 
+        closeModalBtn.addEventListener("click", closeModal);
+        cancelbtn.addEventListener("click", closeModal);
+        const modal = document.getElementById("editProfileModal");
+        function openModal() {
+          modal.classList.remove("hidden");
+          modal.classList.add("flex");
+          document.body.style.overflow = "hidden";
+        }
+        function closeModal() {
+          modal.classList.add("hidden");
+          modal.classList.remove("flex");
+          document.body.style.overflow = "";
+        }
 
         let unreadCount = 3;
 

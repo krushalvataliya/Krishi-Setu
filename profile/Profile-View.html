@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Krishi Setu - User Profile</title>
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script>tailwind.config={theme:{extend:{colors:{primary:'#2d5e35',secondary:'#f0f4f1'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+<style>
+:where([class^="ri-"])::before { content: "\f3c2"; }
+body {
+font-family: 'Inter', sans-serif;
+}
+.sidebar-link.active {
+background-color: rgba(255, 255, 255, 0.1);
+border-left: 3px solid white;
+}
+.dropdown-menu {
+display: none;
+}
+.dropdown-menu.show {
+display: block;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+-webkit-appearance: none;
+margin: 0;
+}
+.activity-line {
+position: absolute;
+left: 16px;
+top: 24px;
+bottom: 0;
+width: 2px;
+background-color: #e5e7eb;
+z-index: 0;
+}
+.activity-item:last-child .activity-line {
+display: none;
+}
+</style>
+</head>
+<body class="bg-gray-50">
+<div class="flex h-screen">
+<!-- Sidebar -->
+<div class="w-64 bg-primary text-white flex flex-col h-full">
+<div class="p-4 flex items-center">
+<div class="w-10 h-10 bg-white rounded-full flex items-center justify-center mr-3">
+<span class="text-primary font-['Pacifico'] text-xl">K</span>
+</div>
+<h1 class="text-xl font-semibold">Krishi Setu</h1>
+</div>
+<nav class="flex-1 overflow-y-auto">
+<div class="px-2 space-y-1">
+<a href="https://readdy.ai/home/638f6839-7168-4286-853b-d1dc09859ab7/d937ab0a-9656-4e12-a82d-a67f848da217" data-readdy="true" class="sidebar-link flex items-center px-4 py-3 text-white rounded hover:bg-white/10 transition-colors">
+<div class="w-6 h-6 flex items-center justify-center mr-3">
+<i class="ri-dashboard-line"></i>
+</div>
+<span>Dashboard</span>
+</a>
+<a href="#" class="sidebar-link flex items-center px-4 py-3 text-white rounded hover:bg-white/10 transition-colors">
+<div class="w-6 h-6 flex items-center justify-center mr-3">
+<i class="ri-user-line"></i>
+</div>
+<span>User Management</span>
+</a>
+<a href="#" class="sidebar-link flex items-center px-4 py-3 text-white rounded hover:bg-white/10 transition-colors">
+<div class="w-6 h-6 flex items-center justify-center mr-3">
+<i class="ri-list-check"></i>
+</div>
+<span>Listing Moderation</span>
+</a>
+<a href="#" class="sidebar-link flex items-center px-4 py-3 text-white rounded hover:bg-white/10 transition-colors">
+<div class="w-6 h-6 flex items-center justify-center mr-3">
+<i class="ri-message-2-line"></i>
+</div>
+<span>Chat Monitoring</span>
+</a>
+<a href="#" class="sidebar-link flex items-center px-4 py-3 text-white rounded hover:bg-white/10 transition-colors">
+<div class="w-6 h-6 flex items-center justify-center mr-3">
+<i class="ri-bar-chart-line"></i>
+</div>
+<span>Analytics & Reports</span>
+</a>
+<a href="#" class="sidebar-link active flex items-center px-4 py-3 text-white rounded hover:bg-white/10 transition-colors">
+<div class="w-6 h-6 flex items-center justify-center mr-3">
+<i class="ri-settings-line"></i>
+</div>
+<span>Settings</span>
+</a>
+</div>
+</nav>
+<div class="p-4 border-t border-white/10">
+<div class="mb-2 text-sm font-medium text-white/80">System Status</div>
+<div class="space-y-2">
+<div class="flex justify-between items-center text-sm">
+<span>API Uptime</span>
+<span class="text-green-300">99.8%</span>
+</div>
+<div class="w-full bg-white/20 rounded-full h-1.5">
+<div class="bg-green-300 h-1.5 rounded-full" style="width: 99.8%"></div>
+</div>
+<div class="flex justify-between items-center text-sm mt-3">
+<span>Error Rate</span>
+<span class="text-green-300">0.2%</span>
+</div>
+<div class="w-full bg-white/20 rounded-full h-1.5">
+<div class="bg-green-300 h-1.5 rounded-full" style="width: 0.2%"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Main Content -->
+<div class="flex-1 flex flex-col overflow-hidden">
+<!-- Top Header -->
+<header class="bg-white border-b border-gray-200 flex items-center justify-between px-6 py-3">
+<div class="flex items-center flex-1">
+<div class="relative w-64">
+<input type="text" placeholder="Search..." class="w-full pl-10 pr-4 py-2 rounded-lg border-none bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary/30 text-sm">
+<div class="absolute left-3 top-2.5 text-gray-400 w-4 h-4 flex items-center justify-center">
+<i class="ri-search-line"></i>
+</div>
+</div>
+</div>
+<div class="flex items-center">
+<div class="relative mr-3">
+<button class="relative p-1 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 !rounded-button">
+<div class="w-6 h-6 flex items-center justify-center">
+<i class="ri-notification-3-line"></i>
+</div>
+<span class="absolute top-0 right-0 h-4 w-4 bg-red-500 rounded-full text-xs text-white flex items-center justify-center">3</span>
+</button>
+</div>
+<div class="relative">
+<button id="userMenuButton" class="flex items-center space-x-2 focus:outline-none !rounded-button" onclick="toggleDropdown()">
+<div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white">
+<span>K</span>
+</div>
+<span class="text-sm font-medium text-gray-700">Krushal Vataliya</span>
+<div class="w-4 h-4 flex items-center justify-center text-gray-400">
+<i class="ri-arrow-down-s-line"></i>
+</div>
+</button>
+<div id="userMenu" class="dropdown-menu absolute right-0 mt-2 w-48 bg-white rounded shadow-lg py-1 z-10">
+<a href="https://readdy.ai/home/638f6839-7168-4286-853b-d1dc09859ab7/5a2aada4-f2db-4e1f-bb32-0b9ff9790a7d" data-readdy="true" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 bg-gray-100">
+<div class="flex items-center">
+<div class="w-4 h-4 flex items-center justify-center mr-2 text-primary">
+<i class="ri-user-line"></i>
+</div>
+<span class="text-primary font-medium">View Profile</span>
+</div>
+</a>
+<a href="https://readdy.ai/home/638f6839-7168-4286-853b-d1dc09859ab7/0e5c4bf9-e2be-4e1a-a185-d2ece16f9d20" data-readdy="true" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+<div class="flex items-center">
+<div class="w-4 h-4 flex items-center justify-center mr-2 text-gray-500">
+<i class="ri-settings-line"></i>
+</div>
+<span>Account Settings</span>
+</div>
+</a>
+<a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+<div class="flex items-center">
+<div class="w-4 h-4 flex items-center justify-center mr-2 text-gray-500">
+<i class="ri-lock-line"></i>
+</div>
+<span>Change Password</span>
+</div>
+</a>
+<a href="#" id="notificationPrefsBtn" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+<div class="flex items-center">
+<div class="w-4 h-4 flex items-center justify-center mr-2 text-gray-500">
+<i class="ri-notification-line"></i>
+</div>
+<span>Notification Preferences</span>
+</div>
+</a>
+<div id="notificationPrefsModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+<div class="bg-white rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto mx-4">
+<div class="p-6 border-b border-gray-200">
+<div class="flex items-center justify-between">
+<h2 class="text-xl font-semibold text-gray-800">Notification Preferences</h2>
+<button id="closeNotificationPrefsModal" class="text-gray-400 hover:text-gray-500">
+<div class="w-6 h-6 flex items-center justify-center">
+<i class="ri-close-line"></i>
+</div>
+</button>
+</div>
+</div>
+<form id="notificationPrefsForm" class="p-6">
+<div class="space-y-6">
+<div class="space-y-4">
+<h3 class="text-sm font-medium text-gray-700">System Alerts</h3>
+<div class="bg-gray-50 p-4 rounded-lg space-y-4">
+<div class="flex items-center justify-between">
+<label class="flex items-center">
+<input type="checkbox" class="sr-only" name="system_alerts_email">
+<div class="w-10 h-6 bg-gray-200 rounded-full relative cursor-pointer transition-colors duration-200 ease-in-out">
+<div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-200 ease-in-out"></div>
+</div>
+<span class="ml-3 text-sm text-gray-700">Email Notifications</span>
+</label>
+<select name="system_alerts_frequency" class="text-sm border-none bg-white rounded-lg">
+<option value="realtime">Real-time</option>
+<option value="daily">Daily Digest</option>
+<option value="weekly">Weekly Summary</option>
+</select>
+</div>
+<div class="flex items-center justify-between">
+<label class="flex items-center">
+<input type="checkbox" class="sr-only" name="system_alerts_sms">
+<div class="w-10 h-6 bg-gray-200 rounded-full relative cursor-pointer transition-colors duration-200 ease-in-out">
+<div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-200 ease-in-out"></div>
+</div>
+<span class="ml-3 text-sm text-gray-700">SMS Notifications</span>
+</label>
+</div>
+<div class="flex items-center justify-between">
+<label class="flex items-center">
+<input type="checkbox" class="sr-only" name="system_alerts_inapp">
+<div class="w-10 h-6 bg-gray-200 rounded-full relative cursor-pointer transition-colors duration-200 ease-in-out">
+<div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-200 ease-in-out"></div>
+</div>
+<span class="ml-3 text-sm text-gray-700">In-App Notifications</span>
+</label>
+</div>
+</div>
+</div>
+<div class="space-y-4">
+<h3 class="text-sm font-medium text-gray-700">User Management</h3>
+<div class="bg-gray-50 p-4 rounded-lg space-y-4">
+<div class="flex items-center justify-between">
+<label class="flex items-center">
+<input type="checkbox" class="sr-only" name="user_mgmt_email">
+<div class="w-10 h-6 bg-gray-200 rounded-full relative cursor-pointer transition-colors duration-200 ease-in-out">
+<div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-200 ease-in-out"></div>
+</div>
+<span class="ml-3 text-sm text-gray-700">Email Notifications</span>
+</label>
+<select name="user_mgmt_frequency" class="text-sm border-none bg-white rounded-lg">
+<option value="realtime">Real-time</option>
+<option value="daily">Daily Digest</option>
+<option value="weekly">Weekly Summary</option>
+</select>
+</div>
+<div class="flex items-center justify-between">
+<label class="flex items-center">
+<input type="checkbox" class="sr-only" name="user_mgmt_inapp">
+<div class="w-10 h-6 bg-gray-200 rounded-full relative cursor-pointer transition-colors duration-200 ease-in-out">
+<div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-200 ease-in-out"></div>
+</div>
+<span class="ml-3 text-sm text-gray-700">In-App Notifications</span>
+</label>
+</div>
+</div>
+</div>
+<div class="space-y-4">
+<h3 class="text-sm font-medium text-gray-700">Content Moderation</h3>
+<div class="bg-gray-50 p-4 rounded-lg space-y-4">
+<div class="flex items-center justify-between">
+<label class="flex items-center">
+<input type="checkbox" class="sr-only" name="content_mod_email">
+<div class="w-10 h-6 bg-gray-200 rounded-full relative cursor-pointer transition-colors duration-200 ease-in-out">
+<div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-200 ease-in-out"></div>
+</div>
+<span class="ml-3 text-sm text-gray-700">Email Notifications</span>
+</label>
+<select name="content_mod_frequency" class="text-sm border-none bg-white rounded-lg">
+<option value="realtime">Real-time</option>
+<option value="daily">Daily Digest</option>
+<option value="weekly">Weekly Summary</option>
+</select>
+</div>
+<div class="flex items-center justify-between">
+<label class="flex items-center">
+<input type="checkbox" class="sr-only" name="content_mod_inapp">
+<div class="w-10 h-6 bg-gray-200 rounded-full relative cursor-pointer transition-colors duration-200 ease-in-out">
+<div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-200 ease-in-out"></div>
+</div>
+<span class="ml-3 text-sm text-gray-700">In-App Notifications</span>
+</label>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-6 pt-6 border-t border-gray-200 flex justify-end gap-3">
+<button type="button" id="cancelNotificationPrefs" class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 !rounded-button whitespace-nowrap">Cancel</button>
+<button type="submit" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 !rounded-button whitespace-nowrap">Save Preferences</button>
+</div>
+</form>
+</div>
+</div>
+<div class="border-t border-gray-100 my-1"></div>
+<a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
+<div class="flex items-center">
+<div class="w-4 h-4 flex items-center justify-center mr-2 text-red-600">
+<i class="ri-logout-box-line"></i>
+</div>
+<span>Logout</span>
+</div>
+</a>
+</div>
+</div>
+</div>
+</header>
+<!-- Content Area -->
+<main class="flex-1 overflow-y-auto p-6">
+<!-- Breadcrumb -->
+<nav class="flex mb-6" aria-label="Breadcrumb">
+<ol class="inline-flex items-center space-x-1 md:space-x-3">
+<li class="inline-flex items-center">
+<a href="https://readdy.ai/home/638f6839-7168-4286-853b-d1dc09859ab7/d937ab0a-9656-4e12-a82d-a67f848da217" data-readdy="true" class="inline-flex items-center text-sm font-medium text-gray-500 hover:text-primary">
+<div class="w-4 h-4 flex items-center justify-center mr-2">
+<i class="ri-dashboard-line"></i>
+</div>
+Dashboard
+</a>
+</li>
+<li>
+<div class="flex items-center">
+<div class="w-4 h-4 flex items-center justify-center text-gray-400 mx-1">
+<i class="ri-arrow-right-s-line"></i>
+</div>
+<a href="https://readdy.ai/home/638f6839-7168-4286-853b-d1dc09859ab7/0e5c4bf9-e2be-4e1a-a185-d2ece16f9d20" data-readdy="true" class="text-sm font-medium text-gray-500 hover:text-primary">Account Settings</a>
+</div>
+</li>
+<li>
+<div class="flex items-center">
+<div class="w-4 h-4 flex items-center justify-center text-gray-400 mx-1">
+<i class="ri-arrow-right-s-line"></i>
+</div>
+<span class="text-sm font-medium text-primary">Profile View</span>
+</div>
+</li>
+</ol>
+</nav>
+<div class="flex justify-between items-center mb-6">
+<div>
+<h1 class="text-2xl font-semibold text-gray-800">Profile View</h1>
+<p class="text-gray-600 mt-1">View and manage your personal profile information and account details</p>
+</div>
+<a href="https://readdy.ai/home/638f6839-7168-4286-853b-d1dc09859ab7/0e5c4bf9-e2be-4e1a-a185-d2ece16f9d20" data-readdy="true" class="flex items-center px-4 py-2 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 !rounded-button whitespace-nowrap">
+<div class="w-4 h-4 flex items-center justify-center mr-2 text-gray-500">
+<i class="ri-arrow-left-line"></i>
+</div>
+<span class="text-sm font-medium text-gray-700">Back to Settings</span>
+</a>
+</div>
+<!-- Profile Header -->
+<div class="bg-white rounded-lg shadow-sm overflow-hidden mb-6">
+<div class="bg-primary/5 p-6 md:p-8">
+<div class="flex flex-col md:flex-row items-center md:items-start gap-6">
+<div class="relative">
+<div class="w-24 h-24 md:w-28 md:h-28 rounded-full bg-white border-4 border-white shadow-md overflow-hidden">
+<img src="https://readdy.ai/api/search-image?query=professional%2520headshot%2520of%2520an%2520Indian%2520man%2520in%2520his%252030s%2520with%2520a%2520warm%2520smile%2520wearing%2520business%2520casual%2520attire%252C%2520clean%2520background%252C%2520high%2520quality%2520portrait&width=112&height=112&seq=1&orientation=squarish" alt="Krushal Vataliya" class="w-full h-full object-cover object-top">
+</div>
+<div class="absolute bottom-1 right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
+</div>
+<div class="flex-1 text-center md:text-left">
+<div class="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
+<h2 class="text-2xl font-bold text-gray-800">Krushal Vataliya</h2>
+<div class="px-3 py-1 bg-primary/10 text-primary text-sm font-medium rounded-full inline-flex items-center">
+<div class="w-4 h-4 flex items-center justify-center mr-1">
+<i class="ri-shield-star-line"></i>
+</div>
+Senior Administrator
+</div>
+</div>
+<div class="flex flex-col md:flex-row items-center gap-2 md:gap-6 mt-2">
+<div class="flex items-center gap-1 text-gray-600">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-mail-line"></i>
+</div>
+<span>krushal.vataliya@krishisetu.com</span>
+</div>
+<div class="flex items-center gap-1 text-gray-600">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-phone-line"></i>
+</div>
+<span>+91 65765 42310</span>
+</div>
+<div class="flex items-center gap-1 text-gray-600">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-map-pin-line"></i>
+</div>
+<span>New Delhi, India</span>
+</div>
+</div>
+<div class="mt-4 flex flex-wrap justify-center md:justify-start gap-3">
+<button id="editProfileBtn" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 !rounded-button whitespace-nowrap">
+<div class="flex items-center">
+<div class="w-4 h-4 flex items-center justify-center mr-2">
+<i class="ri-edit-line"></i>
+</div>
+<span>Edit Profile</span>
+</div>
+</button>
+<div id="editProfileModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+<div class="bg-white rounded-lg w-full max-w-3xl max-h-[90vh] overflow-y-auto mx-4">
+<div class="p-6 border-b border-gray-200">
+<div class="flex items-center justify-between">
+<h2 class="text-xl font-semibold text-gray-800">Edit Profile Information</h2>
+<button id="closeEditProfileModal" class="text-gray-400 hover:text-gray-500">
+<div class="w-6 h-6 flex items-center justify-center">
+<i class="ri-close-line"></i>
+</div>
+</button>
+</div>
+</div>
+<form id="editProfileForm" class="p-6">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-4">
+<h3 class="text-sm font-medium text-gray-700">Basic Details</h3>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+<input type="text" name="fullName" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30" value="Krushal Vataliya" required>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+<input type="email" name="email" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30" value="krushal.vataliya@krishisetu.com" required>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+<input type="tel" name="phone" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30" value="+91 65765 42310" required>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
+<input type="date" name="dateOfBirth" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30" value="1988-03-12" required>
+</div>
+</div>
+<div class="space-y-4">
+<h3 class="text-sm font-medium text-gray-700">Work Information</h3>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Department</label>
+<input type="text" name="department" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30" value="Platform Administration" required>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Position</label>
+<input type="text" name="position" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30" value="Senior Administrator" required>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Employee ID</label>
+<input type="text" name="employeeId" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30" value="KS-ADM-2024-0042" readonly>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Joining Date</label>
+<input type="date" name="joiningDate" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30" value="2025-01-15" readonly>
+</div>
+</div>
+</div>
+<div class="mt-6 pt-6 border-t border-gray-200">
+<h3 class="text-sm font-medium text-gray-700 mb-4">Address Information</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-4">
+<label class="block text-sm font-medium text-gray-700">Current Address</label>
+<input type="text" name="currentAddressLine1" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30" value="742, Sector 14, Dwarka" required>
+<input type="text" name="currentAddressLine2" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30" value="New Delhi, 110078" required>
+<input type="text" name="currentCountry" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30" value="India" required>
+</div>
+<div class="space-y-4">
+<label class="block text-sm font-medium text-gray-700">Permanent Address</label>
+<input type="text" name="permanentAddressLine1" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30" value="56, Patel Colony" required>
+<input type="text" name="permanentAddressLine2" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30" value="Rajkot, Gujarat 360001" required>
+<input type="text" name="permanentCountry" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30" value="India" required>
+</div>
+</div>
+</div>
+<div class="mt-6 pt-6 border-t border-gray-200 flex justify-end gap-3">
+<button type="button" id="cancelEditProfile" class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 !rounded-button whitespace-nowrap">Cancel</button>
+<button type="submit" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 !rounded-button whitespace-nowrap">Save Changes</button>
+</div>
+</form>
+</div>
+</div>
+<button class="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 !rounded-button whitespace-nowrap">
+<div class="flex items-center">
+<div class="w-4 h-4 flex items-center justify-center mr-2">
+<i class="ri-download-line"></i>
+</div>
+<span>Export Data</span>
+</div>
+</button>
+<button class="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 !rounded-button whitespace-nowrap">
+<div class="flex items-center">
+<div class="w-4 h-4 flex items-center justify-center mr-2">
+<i class="ri-share-line"></i>
+</div>
+<span>Share Profile</span>
+</div>
+</button>
+</div>
+</div>
+<div class="hidden md:block">
+<div class="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm">
+<div class="text-2xl font-bold text-primary">98%</div>
+<div class="text-sm text-gray-600">Profile Completion</div>
+<div class="w-full bg-gray-200 rounded-full h-2 mt-2">
+<div class="bg-primary h-2 rounded-full" style="width: 98%"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Main Content Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Left Column -->
+<div class="lg:col-span-2 space-y-6">
+<!-- Personal Information -->
+<div class="bg-white rounded-lg shadow-sm overflow-hidden">
+<div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+<div class="flex items-center">
+<div class="w-5 h-5 flex items-center justify-center mr-2 text-primary">
+<i class="ri-user-3-line"></i>
+</div>
+<h2 class="text-lg font-medium text-gray-800">Personal Information</h2>
+</div>
+<button class="text-primary hover:text-primary/80 !rounded-button whitespace-nowrap">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-edit-line"></i>
+</div>
+</button>
+</div>
+<div class="p-6">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div>
+<h3 class="text-sm font-medium text-gray-500 mb-4">Basic Details</h3>
+<div class="space-y-4">
+<div>
+<label class="block text-xs text-gray-500">Full Name</label>
+<p class="text-sm font-medium text-gray-800">Krushal Vataliya</p>
+</div>
+<div>
+<label class="block text-xs text-gray-500">Email Address</label>
+<p class="text-sm font-medium text-gray-800">krushal.vataliya@krishisetu.com</p>
+</div>
+<div>
+<label class="block text-xs text-gray-500">Phone Number</label>
+<p class="text-sm font-medium text-gray-800">+91 65765 42310</p>
+</div>
+<div>
+<label class="block text-xs text-gray-500">Date of Birth</label>
+<p class="text-sm font-medium text-gray-800">March 12, 1988</p>
+</div>
+</div>
+</div>
+<div>
+<h3 class="text-sm font-medium text-gray-500 mb-4">Work Information</h3>
+<div class="space-y-4">
+<div>
+<label class="block text-xs text-gray-500">Department</label>
+<p class="text-sm font-medium text-gray-800">Platform Administration</p>
+</div>
+<div>
+<label class="block text-xs text-gray-500">Position</label>
+<p class="text-sm font-medium text-gray-800">Senior Administrator</p>
+</div>
+<div>
+<label class="block text-xs text-gray-500">Employee ID</label>
+<p class="text-sm font-medium text-gray-800">KS-ADM-2024-0042</p>
+</div>
+<div>
+<label class="block text-xs text-gray-500">Joining Date</label>
+<p class="text-sm font-medium text-gray-800">January 15, 2025</p>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-6 pt-6 border-t border-gray-100">
+<h3 class="text-sm font-medium text-gray-500 mb-4">Address Information</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div>
+<label class="block text-xs text-gray-500">Current Address</label>
+<p class="text-sm font-medium text-gray-800">742, Sector 14, Dwarka</p>
+<p class="text-sm font-medium text-gray-800">New Delhi, 110078</p>
+<p class="text-sm font-medium text-gray-800">India</p>
+</div>
+<div>
+<label class="block text-xs text-gray-500">Permanent Address</label>
+<p class="text-sm font-medium text-gray-800">56, Patel Colony</p>
+<p class="text-sm font-medium text-gray-800">Rajkot, Gujarat 360001</p>
+<p class="text-sm font-medium text-gray-800">India</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Role & Permissions -->
+<div class="bg-white rounded-lg shadow-sm overflow-hidden">
+<div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+<div class="flex items-center">
+<div class="w-5 h-5 flex items-center justify-center mr-2 text-primary">
+<i class="ri-shield-keyhole-line"></i>
+</div>
+<h2 class="text-lg font-medium text-gray-800">Role & Permissions</h2>
+</div>
+<button class="text-primary hover:text-primary/80 !rounded-button whitespace-nowrap">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-information-line"></i>
+</div>
+</button>
+</div>
+<div class="p-6">
+<div class="flex flex-col md:flex-row gap-6">
+<div class="flex-1">
+<div class="p-4 bg-primary/5 rounded-lg mb-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<i class="ri-shield-star-line ri-lg"></i>
+</div>
+<div>
+<h3 class="font-medium text-gray-800">Senior Administrator</h3>
+<p class="text-xs text-gray-500">High-level access with system-wide permissions</p>
+</div>
+</div>
+</div>
+<div class="space-y-4">
+<div>
+<label class="block text-xs text-gray-500">Permission Level</label>
+<div class="flex items-center gap-2 mt-1">
+<div class="w-4 h-4 flex items-center justify-center text-primary">
+<i class="ri-shield-star-line"></i>
+</div>
+<p class="text-sm font-medium text-gray-800">Level 3 (High)</p>
+</div>
+</div>
+<div>
+<label class="block text-xs text-gray-500">Role Assigned Date</label>
+<p class="text-sm font-medium text-gray-800">January 15, 2025</p>
+</div>
+<div>
+<label class="block text-xs text-gray-500">Last Permission Update</label>
+<p class="text-sm font-medium text-gray-800">April 10, 2025</p>
+</div>
+<div>
+<label class="block text-xs text-gray-500">Assigned By</label>
+<p class="text-sm font-medium text-gray-800">Rajesh Sharma (System Administrator)</p>
+</div>
+</div>
+</div>
+<div class="flex-1">
+<h3 class="text-sm font-medium text-gray-700 mb-3">Permission Access</h3>
+<div class="space-y-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-4 h-4 flex items-center justify-center text-green-500">
+<i class="ri-check-line"></i>
+</div>
+<span class="text-sm text-gray-700">User Management</span>
+</div>
+<span class="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded">Full Access</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-4 h-4 flex items-center justify-center text-green-500">
+<i class="ri-check-line"></i>
+</div>
+<span class="text-sm text-gray-700">Content Moderation</span>
+</div>
+<span class="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded">Full Access</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-4 h-4 flex items-center justify-center text-green-500">
+<i class="ri-check-line"></i>
+</div>
+<span class="text-sm text-gray-700">System Configuration</span>
+</div>
+<span class="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded">Full Access</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-4 h-4 flex items-center justify-center text-green-500">
+<i class="ri-check-line"></i>
+</div>
+<span class="text-sm text-gray-700">Analytics & Reports</span>
+</div>
+<span class="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded">Full Access</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-4 h-4 flex items-center justify-center text-green-500">
+<i class="ri-check-line"></i>
+</div>
+<span class="text-sm text-gray-700">Financial Operations</span>
+</div>
+<span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded">View Only</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-4 h-4 flex items-center justify-center text-red-500">
+<i class="ri-close-line"></i>
+</div>
+<span class="text-sm text-gray-700">System Backup</span>
+</div>
+<span class="text-xs bg-red-100 text-red-800 px-2 py-0.5 rounded">No Access</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Activity Timeline -->
+<div class="bg-white rounded-lg shadow-sm overflow-hidden">
+<div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+<div class="flex items-center">
+<div class="w-5 h-5 flex items-center justify-center mr-2 text-primary">
+<i class="ri-history-line"></i>
+</div>
+<h2 class="text-lg font-medium text-gray-800">Activity Timeline</h2>
+</div>
+<div class="flex items-center gap-2">
+<button class="text-sm text-primary hover:text-primary/80">View All</button>
+</div>
+</div>
+<div class="p-6">
+<div class="relative">
+<!-- Timeline Line -->
+<div class="activity-line"></div>
+<!-- Timeline Items -->
+<div class="space-y-6">
+<div class="activity-item relative pl-10">
+<div class="absolute left-0 top-0 w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center z-10">
+<i class="ri-login-circle-line text-blue-600"></i>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<h4 class="text-sm font-medium text-gray-800">System Login</h4>
+<span class="text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full">Authentication</span>
+</div>
+<p class="text-xs text-gray-500 mt-1">Today at 09:45 AM</p>
+<p class="text-sm text-gray-600 mt-1">Logged in to the system from New Delhi, India (IP: 103.42.xx.xx)</p>
+</div>
+</div>
+<div class="activity-item relative pl-10">
+<div class="absolute left-0 top-0 w-8 h-8 rounded-full bg-green-100 flex items-center justify-center z-10">
+<i class="ri-check-line text-green-600"></i>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<h4 class="text-sm font-medium text-gray-800">Seller Verification</h4>
+<span class="text-xs bg-green-50 text-green-700 px-2 py-0.5 rounded-full">Approval</span>
+</div>
+<p class="text-xs text-gray-500 mt-1">Today at 09:52 AM</p>
+<p class="text-sm text-gray-600 mt-1">Approved seller verification for Anand Patel (ID: KS-SEL-2025-0187)</p>
+</div>
+</div>
+<div class="activity-item relative pl-10">
+<div class="absolute left-0 top-0 w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center z-10">
+<i class="ri-file-list-3-line text-yellow-600"></i>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<h4 class="text-sm font-medium text-gray-800">Report Generation</h4>
+<span class="text-xs bg-yellow-50 text-yellow-700 px-2 py-0.5 rounded-full">Analytics</span>
+</div>
+<p class="text-xs text-gray-500 mt-1">Yesterday at 04:30 PM</p>
+<p class="text-sm text-gray-600 mt-1">Generated monthly transaction report for April 2025</p>
+</div>
+</div>
+<div class="activity-item relative pl-10">
+<div class="absolute left-0 top-0 w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center z-10">
+<i class="ri-settings-4-line text-purple-600"></i>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<h4 class="text-sm font-medium text-gray-800">System Configuration</h4>
+<span class="text-xs bg-purple-50 text-purple-700 px-2 py-0.5 rounded-full">Settings</span>
+</div>
+<p class="text-xs text-gray-500 mt-1">Yesterday at 02:15 PM</p>
+<p class="text-sm text-gray-600 mt-1">Updated notification settings for all administrators</p>
+</div>
+</div>
+<div class="activity-item relative pl-10">
+<div class="absolute left-0 top-0 w-8 h-8 rounded-full bg-red-100 flex items-center justify-center z-10">
+<i class="ri-delete-bin-line text-red-600"></i>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<h4 class="text-sm font-medium text-gray-800">Content Removal</h4>
+<span class="text-xs bg-red-50 text-red-700 px-2 py-0.5 rounded-full">Moderation</span>
+</div>
+<p class="text-xs text-gray-500 mt-1">May 1, 2025 at 11:20 AM</p>
+<p class="text-sm text-gray-600 mt-1">Removed 3 listings that violated platform guidelines</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column -->
+<div class="space-y-6">
+<!-- Account Statistics -->
+<div class="bg-white rounded-lg shadow-sm overflow-hidden">
+<div class="px-6 py-4 border-b border-gray-200">
+<div class="flex items-center">
+<div class="w-5 h-5 flex items-center justify-center mr-2 text-primary">
+<i class="ri-bar-chart-line"></i>
+</div>
+<h2 class="text-lg font-medium text-gray-800">Account Statistics</h2>
+</div>
+</div>
+<div class="p-6">
+<div class="space-y-6">
+<div>
+<div class="flex justify-between items-center mb-2">
+<h3 class="text-sm font-medium text-gray-700">Activity Level</h3>
+<span class="text-xs text-green-600 bg-green-50 px-2 py-0.5 rounded-full">High</span>
+</div>
+<div class="w-full bg-gray-200 rounded-full h-2">
+<div class="bg-primary h-2 rounded-full" style="width: 92%"></div>
+</div>
+<p class="text-xs text-gray-500 mt-1">92% active compared to other administrators</p>
+</div>
+<div>
+<h3 class="text-sm font-medium text-gray-700 mb-3">Monthly Activity</h3>
+<div id="monthlyActivityChart" class="w-full h-48"></div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-gray-50 rounded-lg p-4">
+<div class="flex items-center gap-2 mb-2">
+<div class="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+<i class="ri-check-line"></i>
+</div>
+<h4 class="text-sm font-medium text-gray-700">Tasks Completed</h4>
+</div>
+<div class="flex items-end gap-2">
+<span class="text-2xl font-bold text-gray-800">247</span>
+<span class="text-xs text-green-600">+12% ↑</span>
+</div>
+<p class="text-xs text-gray-500 mt-1">Last 30 days</p>
+</div>
+<div class="bg-gray-50 rounded-lg p-4">
+<div class="flex items-center gap-2 mb-2">
+<div class="w-6 h-6 rounded-full bg-purple-100 flex items-center justify-center text-purple-600">
+<i class="ri-time-line"></i>
+</div>
+<h4 class="text-sm font-medium text-gray-700">Response Time</h4>
+</div>
+<div class="flex items-end gap-2">
+<span class="text-2xl font-bold text-gray-800">1.2h</span>
+<span class="text-xs text-green-600">-15% ↓</span>
+</div>
+<p class="text-xs text-gray-500 mt-1">Average time</p>
+</div>
+<div class="bg-gray-50 rounded-lg p-4">
+<div class="flex items-center gap-2 mb-2">
+<div class="w-6 h-6 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-600">
+<i class="ri-user-star-line"></i>
+</div>
+<h4 class="text-sm font-medium text-gray-700">User Approvals</h4>
+</div>
+<div class="flex items-end gap-2">
+<span class="text-2xl font-bold text-gray-800">89</span>
+<span class="text-xs text-green-600">+8% ↑</span>
+</div>
+<p class="text-xs text-gray-500 mt-1">Last 30 days</p>
+</div>
+<div class="bg-gray-50 rounded-lg p-4">
+<div class="flex items-center gap-2 mb-2">
+<div class="w-6 h-6 rounded-full bg-red-100 flex items-center justify-center text-red-600">
+<i class="ri-error-warning-line"></i>
+</div>
+<h4 class="text-sm font-medium text-gray-700">Issues Resolved</h4>
+</div>
+<div class="flex items-end gap-2">
+<span class="text-2xl font-bold text-gray-800">56</span>
+<span class="text-xs text-red-600">-3% ↓</span>
+</div>
+<p class="text-xs text-gray-500 mt-1">Last 30 days</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Account Security -->
+<div class="bg-white rounded-lg shadow-sm overflow-hidden">
+<div class="px-6 py-4 border-b border-gray-200">
+<div class="flex items-center">
+<div class="w-5 h-5 flex items-center justify-center mr-2 text-primary">
+<i class="ri-lock-line"></i>
+</div>
+<h2 class="text-lg font-medium text-gray-800">Account Security</h2>
+</div>
+</div>
+<div class="p-6">
+<div class="space-y-4">
+<div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center">
+<i class="ri-lock-password-line text-blue-500"></i>
+</div>
+<div>
+<p class="text-sm font-medium text-gray-800">Password Last Changed</p>
+<p class="text-xs text-gray-500">April 19, 2025 (13 days ago)</p>
+</div>
+</div>
+<button class="text-sm text-primary hover:text-primary/80 !rounded-button whitespace-nowrap">Change</button>
+</div>
+<div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-green-50 flex items-center justify-center">
+<i class="ri-shield-keyhole-line text-green-500"></i>
+</div>
+<div>
+<p class="text-sm font-medium text-gray-800">Two-Factor Authentication</p>
+<p class="text-xs text-gray-500">Enabled (Google Authenticator)</p>
+</div>
+</div>
+<button class="text-sm text-primary hover:text-primary/80 !rounded-button whitespace-nowrap">Manage</button>
+</div>
+<div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-purple-50 flex items-center justify-center">
+<i class="ri-device-line text-purple-500"></i>
+</div>
+<div>
+<p class="text-sm font-medium text-gray-800">Active Sessions</p>
+<div class="flex flex-wrap items-center gap-2 mt-0.5">
+<div class="flex items-center gap-1">
+<i class="ri-computer-line text-xs text-gray-400"></i>
+<span class="text-xs text-gray-500">Chrome on Windows</span>
+</div>
+<span class="text-gray-400">•</span>
+<div class="flex items-center gap-1">
+<i class="ri-smartphone-line text-xs text-gray-400"></i>
+<span class="text-xs text-gray-500">Safari on iPhone</span>
+</div>
+</div>
+</div>
+</div>
+<button class="text-sm text-primary hover:text-primary/80 !rounded-button whitespace-nowrap">Manage</button>
+</div>
+<div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-yellow-50 flex items-center justify-center">
+<i class="ri-notification-3-line text-yellow-500"></i>
+</div>
+<div>
+<p class="text-sm font-medium text-gray-800">Security Alerts</p>
+<p class="text-xs text-gray-500">Enabled for all activities</p>
+</div>
+</div>
+<button class="text-sm text-primary hover:text-primary/80 !rounded-button whitespace-nowrap">Configure</button>
+</div>
+</div>
+<div class="mt-6">
+<h3 class="text-sm font-medium text-gray-700 mb-3">Security Recommendations</h3>
+<div class="space-y-3">
+<div class="flex items-start gap-3 p-3 bg-green-50 rounded-lg">
+<div class="w-5 h-5 flex items-center justify-center text-green-500 mt-0.5">
+<i class="ri-check-line"></i>
+</div>
+<div>
+<p class="text-sm font-medium text-gray-800">Strong Password</p>
+<p class="text-xs text-gray-600">Your password meets all security requirements</p>
+</div>
+</div>
+<div class="flex items-start gap-3 p-3 bg-green-50 rounded-lg">
+<div class="w-5 h-5 flex items-center justify-center text-green-500 mt-0.5">
+<i class="ri-check-line"></i>
+</div>
+<div>
+<p class="text-sm font-medium text-gray-800">Two-Factor Authentication</p>
+<p class="text-xs text-gray-600">Your account is protected with 2FA</p>
+</div>
+</div>
+<div class="flex items-start gap-3 p-3 bg-yellow-50 rounded-lg">
+<div class="w-5 h-5 flex items-center justify-center text-yellow-500 mt-0.5">
+<i class="ri-alert-line"></i>
+</div>
+<div>
+<p class="text-sm font-medium text-gray-800">Recovery Email</p>
+<p class="text-xs text-gray-600">Add a secondary recovery email address</p>
+<button class="text-xs text-primary mt-1 hover:text-primary/80">Add Now</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- System Access -->
+<div class="bg-white rounded-lg shadow-sm overflow-hidden">
+<div class="px-6 py-4 border-b border-gray-200">
+<div class="flex items-center">
+<div class="w-5 h-5 flex items-center justify-center mr-2 text-primary">
+<i class="ri-door-lock-line"></i>
+</div>
+<h2 class="text-lg font-medium text-gray-800">System Access</h2>
+</div>
+</div>
+<div class="p-6">
+<div class="space-y-4">
+<div class="flex items-center justify-between">
+<div>
+<p class="text-sm font-medium text-gray-800">User Management Module</p>
+<p class="text-xs text-gray-500">Manage all platform users</p>
+</div>
+<span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">Full Access</span>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<p class="text-sm font-medium text-gray-800">Content Moderation</p>
+<p class="text-xs text-gray-500">Review and moderate content</p>
+</div>
+<span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">Full Access</span>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<p class="text-sm font-medium text-gray-800">Financial Operations</p>
+<p class="text-xs text-gray-500">Manage financial transactions</p>
+</div>
+<span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">View Only</span>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<p class="text-sm font-medium text-gray-800">System Configuration</p>
+<p class="text-xs text-gray-500">Configure system settings</p>
+</div>
+<span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">Full Access</span>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<p class="text-sm font-medium text-gray-800">Analytics & Reports</p>
+<p class="text-xs text-gray-500">Generate and view reports</p>
+</div>
+<span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">Full Access</span>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<p class="text-sm font-medium text-gray-800">API Access</p>
+<p class="text-xs text-gray-500">Access system APIs</p>
+</div>
+<span class="px-2 py-1 bg-red-100 text-red-800 text-xs rounded-full">No Access</span>
+</div>
+</div>
+<div class="mt-6 flex justify-end">
+<button class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 !rounded-button whitespace-nowrap">
+Request Access Change
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+<script>
+function toggleDropdown() {
+document.getElementById('userMenu').classList.toggle('show');
+}
+document.addEventListener('DOMContentLoaded', function() {
+const modal = document.getElementById('editProfileModal');
+const openModalBtn = document.getElementById('editProfileBtn');
+const closeModalBtn = document.getElementById('closeEditProfileModal');
+const cancelBtn = document.getElementById('cancelEditProfile');
+const form = document.getElementById('editProfileForm');
+const notificationModal = document.getElementById('notificationPrefsModal');
+const openNotificationModalBtn = document.getElementById('notificationPrefsBtn');
+const closeNotificationModalBtn = document.getElementById('closeNotificationPrefsModal');
+const cancelNotificationBtn = document.getElementById('cancelNotificationPrefs');
+const notificationForm = document.getElementById('notificationPrefsForm');
+function openNotificationModal() {
+notificationModal.classList.remove('hidden');
+notificationModal.classList.add('flex');
+document.body.style.overflow = 'hidden';
+}
+function closeNotificationModal() {
+notificationModal.classList.add('hidden');
+notificationModal.classList.remove('flex');
+document.body.style.overflow = '';
+}
+openNotificationModalBtn.addEventListener('click', function(e) {
+e.preventDefault();
+openNotificationModal();
+});
+closeNotificationModalBtn.addEventListener('click', closeNotificationModal);
+cancelNotificationBtn.addEventListener('click', closeNotificationModal);
+notificationModal.addEventListener('click', function(e) {
+if (e.target === notificationModal) {
+closeNotificationModal();
+}
+});
+document.querySelectorAll('#notificationPrefsForm input[type="checkbox"]').forEach(checkbox => {
+checkbox.addEventListener('change', function() {
+const switchBg = this.nextElementSibling;
+if (this.checked) {
+switchBg.classList.remove('bg-gray-200');
+switchBg.classList.add('bg-primary');
+switchBg.querySelector('div').classList.add('translate-x-4');
+} else {
+switchBg.classList.add('bg-gray-200');
+switchBg.classList.remove('bg-primary');
+switchBg.querySelector('div').classList.remove('translate-x-4');
+}
+});
+});
+notificationForm.addEventListener('submit', function(e) {
+e.preventDefault();
+const formData = new FormData(notificationForm);
+const data = Object.fromEntries(formData.entries());
+const successMessage = document.createElement('div');
+successMessage.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 flex items-center';
+successMessage.innerHTML = `
+<div class="w-6 h-6 flex items-center justify-center mr-2">
+<i class="ri-check-line"></i>
+</div>
+<span>Notification preferences updated successfully!</span>
+`;
+document.body.appendChild(successMessage);
+closeNotificationModal();
+setTimeout(() => {
+successMessage.remove();
+}, 3000);
+});
+function openModal() {
+modal.classList.remove('hidden');
+modal.classList.add('flex');
+document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+modal.classList.add('hidden');
+modal.classList.remove('flex');
+document.body.style.overflow = '';
+}
+openModalBtn.addEventListener('click', openModal);
+closeModalBtn.addEventListener('click', closeModal);
+cancelBtn.addEventListener('click', closeModal);
+modal.addEventListener('click', function(e) {
+if (e.target === modal) {
+closeModal();
+}
+});
+form.addEventListener('submit', function(e) {
+e.preventDefault();
+const formData = new FormData(form);
+const data = Object.fromEntries(formData.entries());
+const successMessage = document.createElement('div');
+successMessage.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 flex items-center';
+successMessage.innerHTML = `
+<div class="w-6 h-6 flex items-center justify-center mr-2">
+<i class="ri-check-line"></i>
+</div>
+<span>Profile updated successfully!</span>
+`;
+document.body.appendChild(successMessage);
+closeModal();
+setTimeout(() => {
+successMessage.remove();
+}, 3000);
+});
+});
+// Close the dropdown when clicking outside
+window.addEventListener('click', function(event) {
+if (!event.target.closest('#userMenuButton')) {
+const dropdown = document.getElementById('userMenu');
+if (dropdown.classList.contains('show')) {
+dropdown.classList.remove('show');
+}
+}
+});
+document.addEventListener('DOMContentLoaded', function() {
+// Initialize the activity chart
+const activityChart = echarts.init(document.getElementById('monthlyActivityChart'));
+const option = {
+animation: false,
+grid: {
+top: 10,
+right: 10,
+bottom: 20,
+left: 40
+},
+xAxis: {
+type: 'category',
+data: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+axisLine: {
+lineStyle: {
+color: '#d1d5db'
+}
+},
+axisLabel: {
+color: '#1f2937'
+}
+},
+yAxis: {
+type: 'value',
+axisLine: {
+show: false
+},
+axisLabel: {
+color: '#1f2937'
+},
+splitLine: {
+lineStyle: {
+color: '#e5e7eb'
+}
+}
+},
+tooltip: {
+trigger: 'axis',
+backgroundColor: 'rgba(255, 255, 255, 0.9)',
+borderColor: '#e5e7eb',
+textStyle: {
+color: '#1f2937'
+}
+},
+series: [
+{
+name: 'Tasks',
+type: 'line',
+data: [120, 132, 101, 134, 90],
+smooth: true,
+symbol: 'none',
+lineStyle: {
+color: 'rgba(87, 181, 231, 1)'
+},
+areaStyle: {
+color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+{
+offset: 0,
+color: 'rgba(87, 181, 231, 0.3)'
+},
+{
+offset: 1,
+color: 'rgba(87, 181, 231, 0.1)'
+}
+])
+}
+},
+{
+name: 'Logins',
+type: 'line',
+data: [220, 182, 191, 234, 290],
+smooth: true,
+symbol: 'none',
+lineStyle: {
+color: 'rgba(141, 211, 199, 1)'
+},
+areaStyle: {
+color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+{
+offset: 0,
+color: 'rgba(141, 211, 199, 0.3)'
+},
+{
+offset: 1,
+color: 'rgba(141, 211, 199, 0.1)'
+}
+])
+}
+}
+]
+};
+activityChart.setOption(option);
+// Handle window resize
+window.addEventListener('resize', function() {
+activityChart.resize();
+});
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,1635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Krishi Setu - Blog Management</title>
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script>tailwind.config={theme:{extend:{colors:{primary:'#2d5e35',secondary:'#f0f4f1'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+<style>
+:where([class^="ri-"])::before { content: "\f3c2"; }
+body {
+font-family: 'Inter', sans-serif;
+}
+.sidebar-link.active {
+background-color: rgba(255, 255, 255, 0.1);
+border-left: 3px solid white;
+}
+.dropdown-menu {
+display: none;
+}
+.dropdown-menu.show {
+display: block;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+-webkit-appearance: none;
+margin: 0;
+}
+.filter-dropdown {
+display: none;
+}
+.filter-dropdown.show {
+display: block;
+}
+.custom-checkbox {
+position: relative;
+display: inline-block;
+width: 18px;
+height: 18px;
+border-radius: 4px;
+border: 2px solid #d1d5db;
+background-color: white;
+transition: all 0.2s;
+}
+.custom-checkbox.checked {
+background-color: #2d5e35;
+border-color: #2d5e35;
+}
+.custom-checkbox.checked::after {
+content: '';
+position: absolute;
+top: 2px;
+left: 5px;
+width: 5px;
+height: 10px;
+border: solid white;
+border-width: 0 2px 2px 0;
+transform: rotate(45deg);
+}
+</style>
+</head>
+<body class="bg-gray-50">
+<div class="flex h-screen">
+<!-- Sidebar -->
+<div class="w-64 bg-primary text-white flex flex-col h-full">
+<div class="p-4 flex items-center">
+<div class="w-10 h-10 bg-white rounded-full flex items-center justify-center mr-3">
+<span class="text-primary font-['Pacifico'] text-xl">K</span>
+</div>
+<h1 class="text-xl font-semibold">Krishi Setu</h1>
+</div>
+<nav class="flex-1 overflow-y-auto">
+<div class="px-2 space-y-1">
+<div class="py-2">
+<div class="text-xs uppercase text-white/50 px-4 mb-2">Main</div>
+<a href="https://readdy.ai/home/638f6839-7168-4286-853b-d1dc09859ab7/d937ab0a-9656-4e12-a82d-a67f848da217" data-readdy="true" class="sidebar-link flex items-center px-4 py-3 text-white rounded hover:bg-white/10 transition-colors">
+<div class="w-6 h-6 flex items-center justify-center mr-3">
+<i class="ri-dashboard-line"></i>
+</div>
+<span>Dashboard</span>
+</a>
+</div>
+<div class="py-2">
+<div class="text-xs uppercase text-white/50 px-4 mb-2">Management</div>
+<a href="#" class="sidebar-link flex items-center px-4 py-3 text-white rounded hover:bg-white/10 transition-colors">
+<div class="w-6 h-6 flex items-center justify-center mr-3">
+<i class="ri-user-line"></i>
+</div>
+<span>User Management</span>
+</a>
+<a href="#" class="sidebar-link flex items-center px-4 py-3 text-white rounded hover:bg-white/10 transition-colors">
+<div class="w-6 h-6 flex items-center justify-center mr-3">
+<i class="ri-team-line"></i>
+</div>
+<span>Team Management</span>
+</a>
+<a href="#" class="sidebar-link flex items-center px-4 py-3 text-white rounded hover:bg-white/10 transition-colors">
+<div class="w-6 h-6 flex items-center justify-center mr-3">
+<i class="ri-list-check"></i>
+</div>
+<span>Listing Moderation</span>
+</a>
+<a href="#" class="sidebar-link flex items-center px-4 py-3 text-white rounded hover:bg-white/10 transition-colors">
+<div class="w-6 h-6 flex items-center justify-center mr-3">
+<i class="ri-message-2-line"></i>
+</div>
+<span>Chat Monitoring</span>
+</a>
+</div>
+<div class="py-2">
+<div class="text-xs uppercase text-white/50 px-4 mb-2">Analytics</div>
+<a href="#" class="sidebar-link flex items-center px-4 py-3 text-white rounded hover:bg-white/10 transition-colors">
+<div class="w-6 h-6 flex items-center justify-center mr-3">
+<i class="ri-bar-chart-line"></i>
+</div>
+<span>Analytics & Reports</span>
+</a>
+<a href="#" class="sidebar-link flex items-center px-4 py-3 text-white rounded hover:bg-white/10 transition-colors">
+<div class="w-6 h-6 flex items-center justify-center mr-3">
+<i class="ri-line-chart-line"></i>
+</div>
+<span>Performance Metrics</span>
+</a>
+<a href="#" class="sidebar-link flex items-center px-4 py-3 text-white rounded hover:bg-white/10 transition-colors">
+<div class="w-6 h-6 flex items-center justify-center mr-3">
+<i class="ri-funds-line"></i>
+</div>
+<span>Financial Reports</span>
+</a>
+</div>
+<div class="py-2">
+<div class="text-xs uppercase text-white/50 px-4 mb-2">Content</div>
+<a href="https://readdy.ai/home/638f6839-7168-4286-853b-d1dc09859ab7/0e5c4bf9-e2be-4e1a-a185-d2ece16f9d20" data-readdy="true" class="sidebar-link active flex items-center px-4 py-3 text-white rounded hover:bg-white/10 transition-colors">
+<div class="w-6 h-6 flex items-center justify-center mr-3">
+<i class="ri-article-line"></i>
+</div>
+<span>Blog Management</span>
+</a>
+<a href="#" class="sidebar-link flex items-center px-4 py-3 text-white rounded hover:bg-white/10 transition-colors">
+<div class="w-6 h-6 flex items-center justify-center mr-3">
+<i class="ri-file-text-line"></i>
+</div>
+<span>Documentation</span>
+</a>
+<a href="#" class="sidebar-link flex items-center px-4 py-3 text-white rounded hover:bg-white/10 transition-colors">
+<div class="w-6 h-6 flex items-center justify-center mr-3">
+<i class="ri-notification-2-line"></i>
+</div>
+<span>Announcements</span>
+</a>
+</div>
+<div class="py-2">
+<div class="text-xs uppercase text-white/50 px-4 mb-2">System</div>
+<a href="#" class="sidebar-link flex items-center px-4 py-3 text-white rounded hover:bg-white/10 transition-colors">
+<div class="w-6 h-6 flex items-center justify-center mr-3">
+<i class="ri-settings-line"></i>
+</div>
+<span>Settings</span>
+</a>
+<a href="#" class="sidebar-link flex items-center px-4 py-3 text-white rounded hover:bg-white/10 transition-colors">
+<div class="w-6 h-6 flex items-center justify-center mr-3">
+<i class="ri-shield-keyhole-line"></i>
+</div>
+<span>Security</span>
+</a>
+<a href="#" class="sidebar-link flex items-center px-4 py-3 text-white rounded hover:bg-white/10 transition-colors">
+<div class="w-6 h-6 flex items-center justify-center mr-3">
+<i class="ri-database-2-line"></i>
+</div>
+<span>Backup & Restore</span>
+</a>
+</div>
+</div>
+</nav>
+<div class="p-4 border-t border-white/10">
+<div class="mb-2 text-sm font-medium text-white/80">System Status</div>
+<div class="space-y-2">
+<div class="flex justify-between items-center text-sm">
+<span>API Uptime</span>
+<span class="text-green-300">99.8%</span>
+</div>
+<div class="w-full bg-white/20 rounded-full h-1.5">
+<div class="bg-green-300 h-1.5 rounded-full" style="width: 99.8%"></div>
+</div>
+<div class="flex justify-between items-center text-sm mt-3">
+<span>Error Rate</span>
+<span class="text-green-300">0.2%</span>
+</div>
+<div class="w-full bg-white/20 rounded-full h-1.5">
+<div class="bg-green-300 h-1.5 rounded-full" style="width: 0.2%"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Main Content -->
+<div class="flex-1 flex flex-col overflow-hidden">
+<!-- Top Header -->
+<header class="bg-white border-b border-gray-200 flex items-center justify-between px-6 py-3">
+<div class="flex items-center flex-1">
+<div class="relative w-64">
+<input type="text" placeholder="Search blogs..." class="w-full pl-10 pr-4 py-2 rounded-lg border-none bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary/30 text-sm">
+<div class="absolute left-3 top-2.5 text-gray-400 w-4 h-4 flex items-center justify-center">
+<i class="ri-search-line"></i>
+</div>
+</div>
+</div>
+<div class="flex items-center">
+<div class="relative mr-3">
+<button class="relative p-1 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 !rounded-button">
+<div class="w-6 h-6 flex items-center justify-center">
+<i class="ri-notification-3-line"></i>
+</div>
+<span class="absolute top-0 right-0 h-4 w-4 bg-red-500 rounded-full text-xs text-white flex items-center justify-center">3</span>
+</button>
+</div>
+<div class="relative">
+<button id="userMenuButton" class="flex items-center space-x-2 focus:outline-none !rounded-button" onclick="toggleDropdown()">
+<div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white">
+<span>K</span>
+</div>
+<span class="text-sm font-medium text-gray-700">Krushal Vataliya</span>
+<div class="w-4 h-4 flex items-center justify-center text-gray-400">
+<i class="ri-arrow-down-s-line"></i>
+</div>
+</button>
+<div id="userMenu" class="dropdown-menu absolute right-0 mt-2 w-48 bg-white rounded shadow-lg py-1 z-10">
+<a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+<div class="flex items-center">
+<div class="w-4 h-4 flex items-center justify-center mr-2 text-gray-500">
+<i class="ri-user-line"></i>
+</div>
+<span>View Profile</span>
+</div>
+</a>
+<a href="https://readdy.ai/home/638f6839-7168-4286-853b-d1dc09859ab7/0e5c4bf9-e2be-4e1a-a185-d2ece16f9d20" data-readdy="true" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+<div class="flex items-center">
+<div class="w-4 h-4 flex items-center justify-center mr-2 text-gray-500">
+<i class="ri-settings-line"></i>
+</div>
+<span>Account Settings</span>
+</div>
+</a>
+<a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+<div class="flex items-center">
+<div class="w-4 h-4 flex items-center justify-center mr-2 text-gray-500">
+<i class="ri-lock-line"></i>
+</div>
+<span>Change Password</span>
+</div>
+</a>
+<a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+<div class="flex items-center">
+<div class="w-4 h-4 flex items-center justify-center mr-2 text-gray-500">
+<i class="ri-notification-line"></i>
+</div>
+<span>Notification Preferences</span>
+</div>
+</a>
+<div class="border-t border-gray-100 my-1"></div>
+<a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
+<div class="flex items-center">
+<div class="w-4 h-4 flex items-center justify-center mr-2 text-red-600">
+<i class="ri-logout-box-line"></i>
+</div>
+<span>Logout</span>
+</div>
+</a>
+</div>
+</div>
+</div>
+</header>
+<!-- Content Area -->
+<main class="flex-1 overflow-y-auto p-6">
+<!-- Breadcrumb -->
+<nav class="flex mb-6" aria-label="Breadcrumb">
+<ol class="inline-flex items-center space-x-1 md:space-x-3">
+<li class="inline-flex items-center">
+<a href="https://readdy.ai/home/638f6839-7168-4286-853b-d1dc09859ab7/d937ab0a-9656-4e12-a82d-a67f848da217" data-readdy="true" class="inline-flex items-center text-sm font-medium text-gray-500 hover:text-primary">
+<div class="w-4 h-4 flex items-center justify-center mr-2">
+<i class="ri-dashboard-line"></i>
+</div>
+Dashboard
+</a>
+</li>
+<li>
+<div class="flex items-center">
+<div class="w-4 h-4 flex items-center justify-center text-gray-400 mx-1">
+<i class="ri-arrow-right-s-line"></i>
+</div>
+<span class="text-sm font-medium text-primary">Blog Management</span>
+</div>
+</li>
+</ol>
+</nav>
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+<div>
+<h1 class="text-2xl font-semibold text-gray-800">Blog Management</h1>
+<p class="text-gray-600 mt-1">Create, edit and manage blog posts for the Krishi Setu platform</p>
+</div>
+<div class="flex flex-wrap gap-3">
+<button id="createPostBtn" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 !rounded-button whitespace-nowrap">
+<div class="flex items-center">
+<div class="w-4 h-4 flex items-center justify-center mr-2">
+<i class="ri-add-line"></i>
+</div>
+<span>Create New Post</span>
+</div>
+</button>
+<button id="manageCategoriesBtn" class="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 !rounded-button whitespace-nowrap">
+<div class="flex items-center">
+<div class="w-4 h-4 flex items-center justify-center mr-2">
+<i class="ri-price-tag-3-line"></i>
+</div>
+<span>Manage Categories</span>
+</div>
+</button>
+<button id="manageTagsBtn" class="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 !rounded-button whitespace-nowrap">
+<div class="flex items-center">
+<div class="w-4 h-4 flex items-center justify-center mr-2">
+<i class="ri-hashtag"></i>
+</div>
+<span>Manage Tags</span>
+</div>
+</button>
+</div>
+</div>
+<!-- Filter Section -->
+<div class="bg-white rounded-lg shadow-sm mb-6 overflow-hidden">
+<div class="p-4 border-b border-gray-200">
+<div class="flex items-center justify-between">
+<h2 class="text-lg font-medium text-gray-800">Filters</h2>
+<button id="toggleFiltersBtn" class="text-sm text-primary hover:text-primary/80 flex items-center">
+<span>Toggle Filters</span>
+<div class="w-4 h-4 flex items-center justify-center ml-1">
+<i class="ri-arrow-down-s-line"></i>
+</div>
+</button>
+</div>
+</div>
+<div id="filtersContainer" class="p-4 border-b border-gray-200">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+<div class="relative">
+<button id="statusFilterBtn" class="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-left text-sm flex items-center justify-between !rounded-button">
+<span>All Status</span>
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-arrow-down-s-line"></i>
+</div>
+</button>
+<div id="statusFilterDropdown" class="filter-dropdown absolute left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+<div class="p-2">
+<div class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+<div class="custom-checkbox mr-2" data-value="all"></div>
+<span class="text-sm">All Status</span>
+</div>
+<div class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+<div class="custom-checkbox mr-2" data-value="published"></div>
+<span class="text-sm">Published</span>
+</div>
+<div class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+<div class="custom-checkbox mr-2" data-value="draft"></div>
+<span class="text-sm">Draft</span>
+</div>
+<div class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+<div class="custom-checkbox mr-2" data-value="scheduled"></div>
+<span class="text-sm">Scheduled</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+<div class="relative">
+<button id="categoryFilterBtn" class="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-left text-sm flex items-center justify-between !rounded-button">
+<span>All Categories</span>
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-arrow-down-s-line"></i>
+</div>
+</button>
+<div id="categoryFilterDropdown" class="filter-dropdown absolute left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+<div class="p-2">
+<div class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+<div class="custom-checkbox mr-2" data-value="all"></div>
+<span class="text-sm">All Categories</span>
+</div>
+<div class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+<div class="custom-checkbox mr-2" data-value="farming-tips"></div>
+<span class="text-sm">Farming Tips</span>
+</div>
+<div class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+<div class="custom-checkbox mr-2" data-value="market-trends"></div>
+<span class="text-sm">Market Trends</span>
+</div>
+<div class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+<div class="custom-checkbox mr-2" data-value="success-stories"></div>
+<span class="text-sm">Success Stories</span>
+</div>
+<div class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+<div class="custom-checkbox mr-2" data-value="technology"></div>
+<span class="text-sm">Agricultural Technology</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Date Range</label>
+<div class="flex items-center gap-2">
+<input type="date" class="flex-1 px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm">
+<span class="text-gray-500">to</span>
+<input type="date" class="flex-1 px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm">
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Author</label>
+<div class="relative">
+<button id="authorFilterBtn" class="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-left text-sm flex items-center justify-between !rounded-button">
+<span>All Authors</span>
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-arrow-down-s-line"></i>
+</div>
+</button>
+<div id="authorFilterDropdown" class="filter-dropdown absolute left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+<div class="p-2">
+<div class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+<div class="custom-checkbox mr-2" data-value="all"></div>
+<span class="text-sm">All Authors</span>
+</div>
+<div class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+<div class="custom-checkbox mr-2" data-value="krushal"></div>
+<span class="text-sm">Krushal Vataliya</span>
+</div>
+<div class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+<div class="custom-checkbox mr-2" data-value="priya"></div>
+<span class="text-sm">Priya Sharma</span>
+</div>
+<div class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+<div class="custom-checkbox mr-2" data-value="rajesh"></div>
+<span class="text-sm">Rajesh Kumar</span>
+</div>
+<div class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+<div class="custom-checkbox mr-2" data-value="anita"></div>
+<span class="text-sm">Anita Desai</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-end gap-3 mt-4 md:col-span-4">
+<button class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 !rounded-button whitespace-nowrap">
+Clear Filters
+</button>
+<button class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 !rounded-button whitespace-nowrap">
+Apply Filters
+</button>
+</div>
+</div>
+<!-- Blog Posts Table -->
+<div class="bg-white rounded-lg shadow-sm overflow-hidden">
+<div class="p-4 border-b border-gray-200 flex justify-between items-center">
+<div class="flex items-center">
+<div class="w-5 h-5 flex items-center justify-center mr-2 text-primary">
+<i class="ri-article-line"></i>
+</div>
+<h2 class="text-lg font-medium text-gray-800">Blog Posts</h2>
+</div>
+<div class="flex items-center gap-3">
+<div class="relative">
+<button id="sortByBtn" class="flex items-center px-3 py-1.5 bg-white border border-gray-300 rounded-lg text-sm hover:bg-gray-50 !rounded-button whitespace-nowrap">
+<span>Sort By</span>
+<div class="w-4 h-4 flex items-center justify-center ml-1">
+<i class="ri-arrow-down-s-line"></i>
+</div>
+</button>
+<div id="sortByDropdown" class="filter-dropdown absolute right-0 mt-1 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+<div class="p-2">
+<div class="p-2 hover:bg-gray-50 rounded cursor-pointer text-sm">Newest First</div>
+<div class="p-2 hover:bg-gray-50 rounded cursor-pointer text-sm">Oldest First</div>
+<div class="p-2 hover:bg-gray-50 rounded cursor-pointer text-sm">Most Views</div>
+<div class="p-2 hover:bg-gray-50 rounded cursor-pointer text-sm">Most Comments</div>
+<div class="p-2 hover:bg-gray-50 rounded cursor-pointer text-sm">Alphabetical (A-Z)</div>
+</div>
+</div>
+</div>
+<button class="flex items-center px-3 py-1.5 bg-white border border-gray-300 rounded-lg text-sm hover:bg-gray-50 !rounded-button whitespace-nowrap">
+<div class="w-4 h-4 flex items-center justify-center mr-1">
+<i class="ri-download-line"></i>
+</div>
+<span>Export</span>
+</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="min-w-full divide-y divide-gray-200">
+<thead class="bg-gray-50">
+<tr>
+<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+<div class="flex items-center">
+<div class="custom-checkbox mr-2" id="selectAllCheckbox"></div>
+<span>Title</span>
+</div>
+</th>
+<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+Category
+</th>
+<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+Author
+</th>
+<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+Date
+</th>
+<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+Status
+</th>
+<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+Stats
+</th>
+<th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+Actions
+</th>
+</tr>
+</thead>
+<tbody class="bg-white divide-y divide-gray-200">
+<tr>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<div class="custom-checkbox mr-3" data-row-id="1"></div>
+<div>
+<div class="text-sm font-medium text-gray-900">Sustainable Farming Practices for Small-Scale Farmers</div>
+<div class="text-sm text-gray-500 flex items-center gap-2 mt-1">
+<span class="bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full text-xs">Farming Tips</span>
+<span class="bg-green-50 text-green-700 px-2 py-0.5 rounded-full text-xs">Organic</span>
+</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm text-gray-900">Farming Tips</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<div class="w-7 h-7 bg-primary rounded-full flex items-center justify-center text-white text-xs mr-2">
+KV
+</div>
+<div class="text-sm text-gray-900">Krushal Vataliya</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm text-gray-900">May 1, 2025</div>
+<div class="text-xs text-gray-500">Published</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+Published
+</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3">
+<div class="flex items-center text-sm text-gray-500">
+<div class="w-4 h-4 flex items-center justify-center mr-1">
+<i class="ri-eye-line"></i>
+</div>
+<span>1,245</span>
+</div>
+<div class="flex items-center text-sm text-gray-500">
+<div class="w-4 h-4 flex items-center justify-center mr-1">
+<i class="ri-message-2-line"></i>
+</div>
+<span>32</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+<div class="flex justify-end gap-2">
+<button class="p-1 text-gray-500 hover:text-primary !rounded-button">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-eye-line"></i>
+</div>
+</button>
+<button class="p-1 text-gray-500 hover:text-primary !rounded-button">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-edit-line"></i>
+</div>
+</button>
+<button class="p-1 text-gray-500 hover:text-red-500 !rounded-button">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-delete-bin-line"></i>
+</div>
+</button>
+</div>
+</td>
+</tr>
+<tr>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<div class="custom-checkbox mr-3" data-row-id="2"></div>
+<div>
+<div class="text-sm font-medium text-gray-900">Agricultural Market Trends: Q2 2025 Analysis</div>
+<div class="text-sm text-gray-500 flex items-center gap-2 mt-1">
+<span class="bg-yellow-50 text-yellow-700 px-2 py-0.5 rounded-full text-xs">Market Trends</span>
+<span class="bg-purple-50 text-purple-700 px-2 py-0.5 rounded-full text-xs">Analysis</span>
+</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm text-gray-900">Market Trends</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<div class="w-7 h-7 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs mr-2">
+PS
+</div>
+<div class="text-sm text-gray-900">Priya Sharma</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm text-gray-900">April 28, 2025</div>
+<div class="text-xs text-gray-500">Published</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+Published
+</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3">
+<div class="flex items-center text-sm text-gray-500">
+<div class="w-4 h-4 flex items-center justify-center mr-1">
+<i class="ri-eye-line"></i>
+</div>
+<span>876</span>
+</div>
+<div class="flex items-center text-sm text-gray-500">
+<div class="w-4 h-4 flex items-center justify-center mr-1">
+<i class="ri-message-2-line"></i>
+</div>
+<span>18</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+<div class="flex justify-end gap-2">
+<button class="p-1 text-gray-500 hover:text-primary !rounded-button">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-eye-line"></i>
+</div>
+</button>
+<button class="p-1 text-gray-500 hover:text-primary !rounded-button">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-edit-line"></i>
+</div>
+</button>
+<button class="p-1 text-gray-500 hover:text-red-500 !rounded-button">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-delete-bin-line"></i>
+</div>
+</button>
+</div>
+</td>
+</tr>
+<tr>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<div class="custom-checkbox mr-3" data-row-id="3"></div>
+<div>
+<div class="text-sm font-medium text-gray-900">From Struggle to Success: The Story of Ramesh Patel</div>
+<div class="text-sm text-gray-500 flex items-center gap-2 mt-1">
+<span class="bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded-full text-xs">Success Stories</span>
+</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm text-gray-900">Success Stories</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<div class="w-7 h-7 bg-green-500 rounded-full flex items-center justify-center text-white text-xs mr-2">
+RK
+</div>
+<div class="text-sm text-gray-900">Rajesh Kumar</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm text-gray-900">April 25, 2025</div>
+<div class="text-xs text-gray-500">Published</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+Published
+</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3">
+<div class="flex items-center text-sm text-gray-500">
+<div class="w-4 h-4 flex items-center justify-center mr-1">
+<i class="ri-eye-line"></i>
+</div>
+<span>2,341</span>
+</div>
+<div class="flex items-center text-sm text-gray-500">
+<div class="w-4 h-4 flex items-center justify-center mr-1">
+<i class="ri-message-2-line"></i>
+</div>
+<span>64</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+<div class="flex justify-end gap-2">
+<button class="p-1 text-gray-500 hover:text-primary !rounded-button">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-eye-line"></i>
+</div>
+</button>
+<button class="p-1 text-gray-500 hover:text-primary !rounded-button">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-edit-line"></i>
+</div>
+</button>
+<button class="p-1 text-gray-500 hover:text-red-500 !rounded-button">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-delete-bin-line"></i>
+</div>
+</button>
+</div>
+</td>
+</tr>
+<tr>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<div class="custom-checkbox mr-3" data-row-id="4"></div>
+<div>
+<div class="text-sm font-medium text-gray-900">Drone Technology: Revolutionizing Indian Agriculture</div>
+<div class="text-sm text-gray-500 flex items-center gap-2 mt-1">
+<span class="bg-red-50 text-red-700 px-2 py-0.5 rounded-full text-xs">Technology</span>
+<span class="bg-gray-50 text-gray-700 px-2 py-0.5 rounded-full text-xs">Innovation</span>
+</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm text-gray-900">Agricultural Technology</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<div class="w-7 h-7 bg-purple-500 rounded-full flex items-center justify-center text-white text-xs mr-2">
+AD
+</div>
+<div class="text-sm text-gray-900">Anita Desai</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm text-gray-900">May 5, 2025</div>
+<div class="text-xs text-gray-500">Scheduled</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">
+Scheduled
+</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3">
+<div class="flex items-center text-sm text-gray-500">
+<div class="w-4 h-4 flex items-center justify-center mr-1">
+<i class="ri-eye-line"></i>
+</div>
+<span>-</span>
+</div>
+<div class="flex items-center text-sm text-gray-500">
+<div class="w-4 h-4 flex items-center justify-center mr-1">
+<i class="ri-message-2-line"></i>
+</div>
+<span>-</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+<div class="flex justify-end gap-2">
+<button class="p-1 text-gray-500 hover:text-primary !rounded-button">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-eye-line"></i>
+</div>
+</button>
+<button class="p-1 text-gray-500 hover:text-primary !rounded-button">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-edit-line"></i>
+</div>
+</button>
+<button class="p-1 text-gray-500 hover:text-red-500 !rounded-button">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-delete-bin-line"></i>
+</div>
+</button>
+</div>
+</td>
+</tr>
+<tr>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<div class="custom-checkbox mr-3" data-row-id="5"></div>
+<div>
+<div class="text-sm font-medium text-gray-900">Monsoon 2025: Preparing Your Farm for the Rainy Season</div>
+<div class="text-sm text-gray-500 flex items-center gap-2 mt-1">
+<span class="bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full text-xs">Farming Tips</span>
+<span class="bg-teal-50 text-teal-700 px-2 py-0.5 rounded-full text-xs">Seasonal</span>
+</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm text-gray-900">Farming Tips</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<div class="w-7 h-7 bg-primary rounded-full flex items-center justify-center text-white text-xs mr-2">
+KV
+</div>
+<div class="text-sm text-gray-900">Krushal Vataliya</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm text-gray-900">April 20, 2025</div>
+<div class="text-xs text-gray-500">Draft</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+Draft
+</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3">
+<div class="flex items-center text-sm text-gray-500">
+<div class="w-4 h-4 flex items-center justify-center mr-1">
+<i class="ri-eye-line"></i>
+</div>
+<span>-</span>
+</div>
+<div class="flex items-center text-sm text-gray-500">
+<div class="w-4 h-4 flex items-center justify-center mr-1">
+<i class="ri-message-2-line"></i>
+</div>
+<span>-</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+<div class="flex justify-end gap-2">
+<button class="p-1 text-gray-500 hover:text-primary !rounded-button">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-eye-line"></i>
+</div>
+</button>
+<button class="p-1 text-gray-500 hover:text-primary !rounded-button">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-edit-line"></i>
+</div>
+</button>
+<button class="p-1 text-gray-500 hover:text-red-500 !rounded-button">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-delete-bin-line"></i>
+</div>
+</button>
+</div>
+</td>
+</tr>
+<tr>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<div class="custom-checkbox mr-3" data-row-id="6"></div>
+<div>
+<div class="text-sm font-medium text-gray-900">Government Subsidies for Farmers: Complete Guide 2025</div>
+<div class="text-sm text-gray-500 flex items-center gap-2 mt-1">
+<span class="bg-orange-50 text-orange-700 px-2 py-0.5 rounded-full text-xs">Policy</span>
+<span class="bg-green-50 text-green-700 px-2 py-0.5 rounded-full text-xs">Guide</span>
+</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm text-gray-900">Policy & Regulation</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<div class="w-7 h-7 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs mr-2">
+PS
+</div>
+<div class="text-sm text-gray-900">Priya Sharma</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm text-gray-900">April 15, 2025</div>
+<div class="text-xs text-gray-500">Published</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+Published
+</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3">
+<div class="flex items-center text-sm text-gray-500">
+<div class="w-4 h-4 flex items-center justify-center mr-1">
+<i class="ri-eye-line"></i>
+</div>
+<span>3,126</span>
+</div>
+<div class="flex items-center text-sm text-gray-500">
+<div class="w-4 h-4 flex items-center justify-center mr-1">
+<i class="ri-message-2-line"></i>
+</div>
+<span>87</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+<div class="flex justify-end gap-2">
+<button class="p-1 text-gray-500 hover:text-primary !rounded-button">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-eye-line"></i>
+</div>
+</button>
+<button class="p-1 text-gray-500 hover:text-primary !rounded-button">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-edit-line"></i>
+</div>
+</button>
+<button class="p-1 text-gray-500 hover:text-red-500 !rounded-button">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-delete-bin-line"></i>
+</div>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-6 py-4 flex items-center justify-between border-t border-gray-200">
+<div class="flex items-center">
+<span class="text-sm text-gray-700">
+Showing <span class="font-medium">1</span> to <span class="font-medium">6</span> of <span class="font-medium">24</span> results
+</span>
+</div>
+<div class="flex items-center space-x-2">
+<button class="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-500 hover:bg-gray-50 !rounded-button whitespace-nowrap">Previous</button>
+<button class="px-3 py-1 bg-primary text-white rounded-md text-sm hover:bg-primary/90 !rounded-button whitespace-nowrap">1</button>
+<button class="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-500 hover:bg-gray-50 !rounded-button whitespace-nowrap">2</button>
+<button class="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-500 hover:bg-gray-50 !rounded-button whitespace-nowrap">3</button>
+<button class="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-500 hover:bg-gray-50 !rounded-button whitespace-nowrap">Next</button>
+</div>
+</div>
+</div>
+<!-- Create Post Modal -->
+<div id="createPostModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+<div class="bg-white rounded-lg w-full max-w-4xl max-h-[90vh] overflow-y-auto mx-4">
+<div class="p-6 border-b border-gray-200">
+<div class="flex items-center justify-between">
+<h2 class="text-xl font-semibold text-gray-800">Create New Blog Post</h2>
+<button id="closeCreatePostModal" class="text-gray-400 hover:text-gray-500">
+<div class="w-6 h-6 flex items-center justify-center">
+<i class="ri-close-line"></i>
+</div>
+</button>
+</div>
+</div>
+<form id="createPostForm" class="p-6">
+<div class="space-y-6">
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Post Title</label>
+<input type="text" name="title" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30" placeholder="Enter post title" required>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+<div class="relative">
+<select name="category" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30 pr-8 appearance-none">
+<option value="">Select Category</option>
+<option value="farming-tips">Farming Tips</option>
+<option value="market-trends">Market Trends</option>
+<option value="success-stories">Success Stories</option>
+<option value="technology">Agricultural Technology</option>
+<option value="policy">Policy & Regulation</option>
+</select>
+<div class="absolute right-3 top-2.5 pointer-events-none">
+<i class="ri-arrow-down-s-line"></i>
+</div>
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Tags</label>
+<input type="text" name="tags" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30" placeholder="Enter tags separated by commas">
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Featured Image</label>
+<div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+<div class="w-12 h-12 mx-auto mb-3 flex items-center justify-center rounded-full bg-gray-100 text-gray-400">
+<i class="ri-image-add-line ri-xl"></i>
+</div>
+<p class="text-sm text-gray-500 mb-2">Drag and drop an image here, or click to select a file</p>
+<p class="text-xs text-gray-400">PNG, JPG, GIF up to 5MB</p>
+<input type="file" name="featured_image" class="hidden" accept="image/*">
+<button type="button" class="mt-4 px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-50 !rounded-button whitespace-nowrap">Select Image</button>
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Content</label>
+<div class="border border-gray-300 rounded-lg overflow-hidden">
+<div class="bg-gray-50 border-b border-gray-300 p-2 flex flex-wrap gap-2">
+<button type="button" class="p-1.5 text-gray-500 hover:bg-gray-200 rounded !rounded-button">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-bold"></i>
+</div>
+</button>
+<button type="button" class="p-1.5 text-gray-500 hover:bg-gray-200 rounded !rounded-button">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-italic"></i>
+</div>
+</button>
+<button type="button" class="p-1.5 text-gray-500 hover:bg-gray-200 rounded !rounded-button">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-underline"></i>
+</div>
+</button>
+<button type="button" class="p-1.5 text-gray-500 hover:bg-gray-200 rounded !rounded-button">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-link"></i>
+</div>
+</button>
+<button type="button" class="p-1.5 text-gray-500 hover:bg-gray-200 rounded !rounded-button">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-list-unordered"></i>
+</div>
+</button>
+<button type="button" class="p-1.5 text-gray-500 hover:bg-gray-200 rounded !rounded-button">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-list-ordered"></i>
+</div>
+</button>
+<button type="button" class="p-1.5 text-gray-500 hover:bg-gray-200 rounded !rounded-button">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-image-line"></i>
+</div>
+</button>
+<button type="button" class="p-1.5 text-gray-500 hover:bg-gray-200 rounded !rounded-button">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-video-line"></i>
+</div>
+</button>
+<button type="button" class="p-1.5 text-gray-500 hover:bg-gray-200 rounded !rounded-button">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-code-line"></i>
+</div>
+</button>
+</div>
+<textarea name="content" rows="12" class="w-full p-3 border-none focus:outline-none focus:ring-0" placeholder="Write your post content here..."></textarea>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Meta Description</label>
+<textarea name="meta_description" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30" placeholder="Enter meta description for SEO"></textarea>
+<p class="text-xs text-gray-500 mt-1">Recommended: 150-160 characters</p>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Post Status</label>
+<div class="space-y-3">
+<div class="flex items-center">
+<input type="radio" id="status_draft" name="status" value="draft" class="h-4 w-4 text-primary focus:ring-primary border-gray-300" checked>
+<label for="status_draft" class="ml-2 block text-sm text-gray-700">Save as Draft</label>
+</div>
+<div class="flex items-center">
+<input type="radio" id="status_publish" name="status" value="publish" class="h-4 w-4 text-primary focus:ring-primary border-gray-300">
+<label for="status_publish" class="ml-2 block text-sm text-gray-700">Publish Immediately</label>
+</div>
+<div class="flex items-center">
+<input type="radio" id="status_schedule" name="status" value="schedule" class="h-4 w-4 text-primary focus:ring-primary border-gray-300">
+<label for="status_schedule" class="ml-2 block text-sm text-gray-700">Schedule for Later</label>
+</div>
+<div id="scheduleContainer" class="pl-6 hidden">
+<label class="block text-sm font-medium text-gray-700 mb-1">Publication Date & Time</label>
+<div class="flex gap-2">
+<input type="date" name="schedule_date" class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30">
+<input type="time" name="schedule_time" class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30">
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-6 pt-6 border-t border-gray-200 flex justify-end gap-3">
+<button type="button" id="cancelCreatePost" class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 !rounded-button whitespace-nowrap">Cancel</button>
+<button type="submit" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 !rounded-button whitespace-nowrap">Create Post</button>
+</div>
+</form>
+</div>
+</div>
+<!-- Manage Categories Modal -->
+<div id="manageCategoriesModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+<div class="bg-white rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto mx-4">
+<div class="p-6 border-b border-gray-200">
+<div class="flex items-center justify-between">
+<h2 class="text-xl font-semibold text-gray-800">Manage Categories</h2>
+<button id="closeManageCategoriesModal" class="text-gray-400 hover:text-gray-500">
+<div class="w-6 h-6 flex items-center justify-center">
+<i class="ri-close-line"></i>
+</div>
+</button>
+</div>
+</div>
+<div class="p-6">
+<div class="mb-6">
+<div class="flex items-center gap-3">
+<input type="text" placeholder="Add new category" class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30">
+<button class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 !rounded-button whitespace-nowrap">
+Add Category
+</button>
+</div>
+</div>
+<div class="space-y-4">
+<div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+<i class="ri-plant-line"></i>
+</div>
+<div>
+<p class="text-sm font-medium text-gray-800">Farming Tips</p>
+<p class="text-xs text-gray-500">23 posts</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-1 text-gray-500 hover:text-primary !rounded-button">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-edit-line"></i>
+</div>
+</button>
+<button class="p-1 text-gray-500 hover:text-red-500 !rounded-button">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-delete-bin-line"></i>
+</div>
+</button>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-600">
+<i class="ri-line-chart-line"></i>
+</div>
+<div>
+<p class="text-sm font-medium text-gray-800">Market Trends</p>
+<p class="text-xs text-gray-500">17 posts</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-1 text-gray-500 hover:text-primary !rounded-button">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-edit-line"></i>
+</div>
+</button>
+<button class="p-1 text-gray-500 hover:text-red-500 !rounded-button">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-delete-bin-line"></i>
+</div>
+</button>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600">
+<i class="ri-award-line"></i>
+</div>
+<div>
+<p class="text-sm font-medium text-gray-800">Success Stories</p>
+<p class="text-xs text-gray-500">12 posts</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-1 text-gray-500 hover:text-primary !rounded-button">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-edit-line"></i>
+</div>
+</button>
+<button class="p-1 text-gray-500 hover:text-red-500 !rounded-button">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-delete-bin-line"></i>
+</div>
+</button>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center text-red-600">
+<i class="ri-robot-line"></i>
+</div>
+<div>
+<p class="text-sm font-medium text-gray-800">Agricultural Technology</p>
+<p class="text-xs text-gray-500">9 posts</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-1 text-gray-500 hover:text-primary !rounded-button">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-edit-line"></i>
+</div>
+</button>
+<button class="p-1 text-gray-500 hover:text-red-500 !rounded-button">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-delete-bin-line"></i>
+</div>
+</button>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center text-orange-600">
+<i class="ri-government-line"></i>
+</div>
+<div>
+<p class="text-sm font-medium text-gray-800">Policy & Regulation</p>
+<p class="text-xs text-gray-500">7 posts</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-1 text-gray-500 hover:text-primary !rounded-button">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-edit-line"></i>
+</div>
+</button>
+<button class="p-1 text-gray-500 hover:text-red-500 !rounded-button">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-delete-bin-line"></i>
+</div>
+</button>
+</div>
+</div>
+</div>
+<div class="mt-6 pt-6 border-t border-gray-200 flex justify-end">
+<button id="closeCategoriesBtn" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 !rounded-button whitespace-nowrap">Done</button>
+</div>
+</div>
+</div>
+<!-- Manage Tags Modal -->
+<div id="manageTagsModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+<div class="bg-white rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto mx-4">
+<div class="p-6 border-b border-gray-200">
+<div class="flex items-center justify-between">
+<h2 class="text-xl font-semibold text-gray-800">Manage Tags</h2>
+<button id="closeManageTagsModal" class="text-gray-400 hover:text-gray-500">
+<div class="w-6 h-6 flex items-center justify-center">
+<i class="ri-close-line"></i>
+</div>
+</button>
+</div>
+</div>
+<div class="p-6">
+<div class="mb-6">
+<div class="flex items-center gap-3">
+<input type="text" placeholder="Add new tag" class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30">
+<button class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 !rounded-button whitespace-nowrap">
+Add Tag
+</button>
+</div>
+</div>
+<div class="flex flex-wrap gap-3">
+<div class="flex items-center px-3 py-2 bg-blue-50 rounded-full">
+<span class="text-sm text-blue-700 mr-2">Organic</span>
+<button class="text-blue-400 hover:text-blue-700">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-close-line"></i>
+</div>
+</button>
+</div>
+<div class="flex items-center px-3 py-2 bg-purple-50 rounded-full">
+<span class="text-sm text-purple-700 mr-2">Analysis</span>
+<button class="text-purple-400 hover:text-purple-700">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-close-line"></i>
+</div>
+</button>
+</div>
+<div class="flex items-center px-3 py-2 bg-green-50 rounded-full">
+<span class="text-sm text-green-700 mr-2">Guide</span>
+<button class="text-green-400 hover:text-green-700">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-close-line"></i>
+</div>
+</button>
+</div>
+<div class="flex items-center px-3 py-2 bg-yellow-50 rounded-full">
+<span class="text-sm text-yellow-700 mr-2">Seasonal</span>
+<button class="text-yellow-400 hover:text-yellow-700">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-close-line"></i>
+</div>
+</button>
+</div>
+<div class="flex items-center px-3 py-2 bg-red-50 rounded-full">
+<span class="text-sm text-red-700 mr-2">Innovation</span>
+<button class="text-red-400 hover:text-red-700">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-close-line"></i>
+</div>
+</button>
+</div>
+<div class="flex items-center px-3 py-2 bg-orange-50 rounded-full">
+<span class="text-sm text-orange-700 mr-2">Policy</span>
+<button class="text-orange-400 hover:text-orange-700">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-close-line"></i>
+</div>
+</button>
+</div>
+<div class="flex items-center px-3 py-2 bg-teal-50 rounded-full">
+<span class="text-sm text-teal-700 mr-2">Sustainable</span>
+<button class="text-teal-400 hover:text-teal-700">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-close-line"></i>
+</div>
+</button>
+</div>
+<div class="flex items-center px-3 py-2 bg-pink-50 rounded-full">
+<span class="text-sm text-pink-700 mr-2">Women Farmers</span>
+<button class="text-pink-400 hover:text-pink-700">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-close-line"></i>
+</div>
+</button>
+</div>
+<div class="flex items-center px-3 py-2 bg-indigo-50 rounded-full">
+<span class="text-sm text-indigo-700 mr-2">Research</span>
+<button class="text-indigo-400 hover:text-indigo-700">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-close-line"></i>
+</div>
+</button>
+</div>
+<div class="flex items-center px-3 py-2 bg-gray-50 rounded-full">
+<span class="text-sm text-gray-700 mr-2">Interview</span>
+<button class="text-gray-400 hover:text-gray-700">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-close-line"></i>
+</div>
+</button>
+</div>
+<div class="flex items-center px-3 py-2 bg-lime-50 rounded-full">
+<span class="text-sm text-lime-700 mr-2">Crops</span>
+<button class="text-lime-400 hover:text-lime-700">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-close-line"></i>
+</div>
+</button>
+</div>
+<div class="flex items-center px-3 py-2 bg-cyan-50 rounded-full">
+<span class="text-sm text-cyan-700 mr-2">Water Management</span>
+<button class="text-cyan-400 hover:text-cyan-700">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-close-line"></i>
+</div>
+</button>
+</div>
+</div>
+<div class="mt-6 pt-6 border-t border-gray-200 flex justify-end">
+<button id="closeTagsBtn" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 !rounded-button whitespace-nowrap">Done</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+<script>
+function toggleDropdown() {
+document.getElementById('userMenu').classList.toggle('show');
+}
+document.addEventListener('DOMContentLoaded', function() {
+// Toggle filters
+const toggleFiltersBtn = document.getElementById('toggleFiltersBtn');
+const filtersContainer = document.getElementById('filtersContainer');
+toggleFiltersBtn.addEventListener('click', function() {
+if (filtersContainer.style.display === 'none') {
+filtersContainer.style.display = 'block';
+toggleFiltersBtn.querySelector('i').classList.remove('ri-arrow-down-s-line');
+toggleFiltersBtn.querySelector('i').classList.add('ri-arrow-up-s-line');
+} else {
+filtersContainer.style.display = 'none';
+toggleFiltersBtn.querySelector('i').classList.remove('ri-arrow-up-s-line');
+toggleFiltersBtn.querySelector('i').classList.add('ri-arrow-down-s-line');
+}
+});
+// Filter dropdowns
+const statusFilterBtn = document.getElementById('statusFilterBtn');
+const statusFilterDropdown = document.getElementById('statusFilterDropdown');
+const categoryFilterBtn = document.getElementById('categoryFilterBtn');
+const categoryFilterDropdown = document.getElementById('categoryFilterDropdown');
+const authorFilterBtn = document.getElementById('authorFilterBtn');
+const authorFilterDropdown = document.getElementById('authorFilterDropdown');
+const sortByBtn = document.getElementById('sortByBtn');
+const sortByDropdown = document.getElementById('sortByDropdown');
+function toggleDropdown(button, dropdown) {
+button.addEventListener('click', function(e) {
+e.stopPropagation();
+dropdown.classList.toggle('show');
+});
+}
+toggleDropdown(statusFilterBtn, statusFilterDropdown);
+toggleDropdown(categoryFilterBtn, categoryFilterDropdown);
+toggleDropdown(authorFilterBtn, authorFilterDropdown);
+toggleDropdown(sortByBtn, sortByDropdown);
+// Close dropdowns when clicking outside
+document.addEventListener('click', function(e) {
+if (!e.target.closest('#statusFilterBtn') && !e.target.closest('#statusFilterDropdown')) {
+statusFilterDropdown.classList.remove('show');
+}
+if (!e.target.closest('#categoryFilterBtn') && !e.target.closest('#categoryFilterDropdown')) {
+categoryFilterDropdown.classList.remove('show');
+}
+if (!e.target.closest('#authorFilterBtn') && !e.target.closest('#authorFilterDropdown')) {
+authorFilterDropdown.classList.remove('show');
+}
+if (!e.target.closest('#sortByBtn') && !e.target.closest('#sortByDropdown')) {
+sortByDropdown.classList.remove('show');
+}
+if (!e.target.closest('#userMenuButton') && !e.target.closest('#userMenu')) {
+document.getElementById('userMenu').classList.remove('show');
+}
+});
+// Custom checkboxes
+const checkboxes = document.querySelectorAll('.custom-checkbox');
+checkboxes.forEach(checkbox => {
+checkbox.addEventListener('click', function() {
+this.classList.toggle('checked');
+const value = this.getAttribute('data-value');
+const parentDropdown = this.closest('.filter-dropdown');
+const buttonText = parentDropdown.previousElementSibling.querySelector('span');
+if (this.classList.contains('checked')) {
+if (value === 'all') {
+// Uncheck all other checkboxes in this dropdown
+parentDropdown.querySelectorAll('.custom-checkbox').forEach(cb => {
+if (cb !== this) cb.classList.remove('checked');
+});
+}
+else {
+// If a specific value is selected, uncheck the "All" option
+const allCheckbox = parentDropdown.querySelector('.custom-checkbox[data-value="all"]');
+if (allCheckbox) allCheckbox.classList.remove('checked');
+}
+}
+// Update button text based on selection
+if (parentDropdown.id === 'statusFilterDropdown') {
+if (value === 'all' || !this.classList.contains('checked')) {
+buttonText.textContent = 'All Status';
+} else if (value === 'published') {
+buttonText.textContent = 'Published';
+} else if (value === 'draft') {
+buttonText.textContent = 'Draft';
+} else if (value === 'scheduled') {
+buttonText.textContent = 'Scheduled';
+}
+}
+else if (parentDropdown.id === 'categoryFilterDropdown') {
+if (value === 'all' || !this.classList.contains('checked')) {
+buttonText.textContent = 'All Categories';
+} else if (value === 'farming-tips') {
+buttonText.textContent = 'Farming Tips';
+} else if (value === 'market-trends') {
+buttonText.textContent = 'Market Trends';
+} else if (value === 'success-stories') {
+buttonText.textContent = 'Success Stories';
+} else if (value === 'technology') {
+buttonText.textContent = 'Agricultural Technology';
+}
+}
+else if (parentDropdown.id === 'authorFilterDropdown') {
+if (value === 'all' || !this.classList.contains('checked')) {
+buttonText.textContent = 'All Authors';
+} else if (value === 'krushal') {
+buttonText.textContent = 'Krushal Vataliya';
+} else if (value === 'priya') {
+buttonText.textContent = 'Priya Sharma';
+} else if (value === 'rajesh') {
+buttonText.textContent = 'Rajesh Kumar';
+} else if (value === 'anita') {
+buttonText.textContent = 'Anita Desai';
+}
+}
+});
+});
+// Select all checkbox
+const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+const rowCheckboxes = document.querySelectorAll('.custom-checkbox[data-row-id]');
+selectAllCheckbox.addEventListener('click', function() {
+this.classList.toggle('checked');
+const isChecked = this.classList.contains('checked');
+rowCheckboxes.forEach(checkbox => {
+if (isChecked) {
+checkbox.classList.add('checked');
+} else {
+checkbox.classList.remove('checked');
+}
+});
+});
+// Create Post Modal
+const createPostModal = document.getElementById('createPostModal');
+const createPostBtn = document.getElementById('createPostBtn');
+const closeCreatePostModal = document.getElementById('closeCreatePostModal');
+const cancelCreatePost = document.getElementById('cancelCreatePost');
+const createPostForm = document.getElementById('createPostForm');
+function openCreatePostModal() {
+createPostModal.classList.remove('hidden');
+createPostModal.classList.add('flex');
+document.body.style.overflow = 'hidden';
+}
+function closeCreatePostModal() {
+createPostModal.classList.add('hidden');
+createPostModal.classList.remove('flex');
+document.body.style.overflow = '';
+}
+document.addEventListener('DOMContentLoaded', function() {
+    const createPostBtn = document.getElementById('createPostBtn');
+    if (createPostBtn) {
+        createPostBtn.addEventListener('click', function() {
+            const createPostModal = document.getElementById('createPostModal');
+            if (createPostModal) {
+                createPostModal.classList.remove('hidden');
+                createPostModal.classList.add('flex');
+                document.body.style.overflow = 'hidden';
+            }
+        });
+    }
+});
+closeCreatePostModal.addEventListener('click', closeCreatePostModal);
+cancelCreatePost.addEventListener('click', closeCreatePostModal);
+createPostModal.addEventListener('click', function(e) {
+if (e.target === createPostModal) {
+closeCreatePostModal();
+}
+});
+// Schedule container visibility
+const statusRadios = document.querySelectorAll('input[name="status"]');
+const scheduleContainer = document.getElementById('scheduleContainer');
+statusRadios.forEach(radio => {
+radio.addEventListener('change', function() {
+if (this.value === 'schedule') {
+scheduleContainer.classList.remove('hidden');
+} else {
+scheduleContainer.classList.add('hidden');
+}
+});
+});
+createPostForm.addEventListener('submit', function(e) {
+e.preventDefault();
+const formData = new FormData(createPostForm);
+const data = Object.fromEntries(formData.entries());
+// Show success message
+const successMessage = document.createElement('div');
+successMessage.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 flex items-center';
+successMessage.innerHTML = `
+<div class="w-6 h-6 flex items-center justify-center mr-2">
+<i class="ri-check-line"></i>
+</div>
+<span>Blog post created successfully!</span>
+`;
+document.body.appendChild(successMessage);
+closeCreatePostModal();
+setTimeout(() => {
+successMessage.remove();
+}, 3000);
+});
+// Manage Categories Modal
+const manageCategoriesModal = document.getElementById('manageCategoriesModal');
+const manageCategoriesBtn = document.getElementById('manageCategoriesBtn');
+const closeManageCategoriesModal = document.getElementById('closeManageCategoriesModal');
+const closeCategoriesBtn = document.getElementById('closeCategoriesBtn');
+function openManageCategoriesModal() {
+manageCategoriesModal.classList.remove('hidden');
+manageCategoriesModal.classList.add('flex');
+document.body.style.overflow = 'hidden';
+}
+function closeManageCategoriesModal() {
+manageCategoriesModal.classList.add('hidden');
+manageCategoriesModal.classList.remove('flex');
+document.body.style.overflow = '';
+}
+manageCategoriesBtn.addEventListener('click', openManageCategoriesModal);
+closeManageCategoriesModal.addEventListener('click', closeManageCategoriesModal);
+closeCategoriesBtn.addEventListener('click', closeManageCategoriesModal);
+manageCategoriesModal.addEventListener('click', function(e) {
+if (e.target === manageCategoriesModal) {
+closeManageCategoriesModal();
+}
+});
+// Manage Tags Modal
+const manageTagsModal = document.getElementById('manageTagsModal');
+const manageTagsBtn = document.getElementById('manageTagsBtn');
+const closeManageTagsModal = document.getElementById('closeManageTagsModal');
+const closeTagsBtn = document.getElementById('closeTagsBtn');
+function openManageTagsModal() {
+manageTagsModal.classList.remove('hidden');
+manageTagsModal.classList.add('flex');
+document.body.style.overflow = 'hidden';
+}
+function closeManageTagsModal() {
+manageTagsModal.classList.add('hidden');
+manageTagsModal.classList.remove('flex');
+document.body.style.overflow = '';
+}
+manageTagsBtn.addEventListener('click', openManageTagsModal);
+closeManageTagsModal.addEventListener('click', closeManageTagsModal);
+closeTagsBtn.addEventListener('click', closeManageTagsModal);
+manageTagsModal.addEventListener('click', function(e) {
+if (e.target === manageTagsModal) {
+closeManageTagsModal();
+}
+});
+// Sort by dropdown items
+const sortByItems = document.querySelectorAll('#sortByDropdown div.p-2');
+sortByItems.forEach(item => {
+item.addEventListener('click', function() {
+sortByBtn.querySelector('span').textContent = this.textContent;
+sortByDropdown.classList.remove('show');
+});
+});
+});
+</script>
+</body>
+</html>
